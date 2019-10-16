@@ -1,0 +1,10 @@
+#pragma once
+#include <esu/numeric/abs.hpp>
+#include <esu/numeric/const.hpp>
+#include <esu/numeric/det.hpp>
+#include <esu/numeric/even_odd.hpp>
+#include <esu/numeric/find_root_newton.hpp>
+#include <esu/numeric/linear_grid.hpp>
+#include <esu/numeric/power.hpp>
+#include <esu/numeric/special.hpp>
+#include <esu/numeric/trapez_int.hpp>

@@ -1,0 +1,42 @@
+// #include "math/geom/Boundary.h"
+// #include "math/geom/Geometry.h"
+// #include <cassert>
+// 
+// namespace math
+// {
+// 	namespace geom
+// 	{
+// 		bool Boundary::contains(const Point& point) const
+// 		{
+// 			for (std::size_t i = 1; i < numberOfPoints(); ++i)
+// 				if (is_point_on_line_segment(point, points_[i - 1], points_[i]))
+// 					return true;
+// 
+// 			return false;
+// 		}
+// 
+// 		double Boundary::GetDistance(const Point& point) const
+// 		{
+// 			double minimumDistance = GetDistanceToLineSegment(point, points_[0], points_[1]);
+// 
+// 			for (unsigned int i = 2; i < numberOfPoints(); ++i)
+// 			{
+// 				double distance = GetDistanceToLineSegment(point, points_[i - 1], points_[i]);
+// 				if (distance < minimumDistance)
+// 					minimumDistance = distance;
+// 			}
+// 
+// 			return minimumDistance;
+// 		}
+// 
+// 		double Boundary::length() const
+// 		{
+// 			double length = 0;
+// 			for (std::size_t i = 1; i < numberOfPoints(); ++i)
+// 				length += distance(points_[i - 1], points_[i]);
+// 
+// 			return length;
+// 		}
+// 	}
+
+// }
