@@ -62,6 +62,6 @@ struct Traits<Scalar_expr<Expr, Scalar, Fn>>
 	using Layout = Layout_tag<Expr>;
 
 	static constexpr std::size_t rows = ct_rows_value<Expr>;
-	static constexpr std::size_t cols = ct_rows_value<Expr>;
+	static constexpr std::size_t cols = ct_cols_value<Expr>;
 };
 } // namespace esl
