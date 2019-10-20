@@ -1,7 +1,7 @@
 #pragma once
-#include <esf/geometry/algorithm/equals.hpp>
 #include <esf/geometry/compare.hpp>
-#include <esf/types.hpp>
+#include <esf/geometry/function/equals.hpp>
+#include <esf/geometry/tags.hpp>
 
 #include <esl/dense.hpp>
 #include <esu/numeric.hpp>
@@ -10,6 +10,7 @@
 #include <cmath>
 #include <cstddef>
 #include <iosfwd>
+#include <string>
 
 namespace esf
 {
@@ -47,6 +48,8 @@ public:
 	{
 		return (*this)[1];
 	}
+
+	std::string to_string() const;
 };
 
 // inline Point operator*(Point p, double scalar)

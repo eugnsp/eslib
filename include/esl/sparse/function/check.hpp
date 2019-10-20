@@ -39,7 +39,8 @@ private:
 };
 
 template<typename Value, class Symmetry_tag>
-Csr_matrix_check_error_code check(const Csr_matrix<Value, Symmetry_tag, MKL_UINT>& matrix, bool print_error = false)
+Csr_matrix_check_error_code check(
+	const Csr_matrix<Value, Symmetry_tag, MKL_UINT>& matrix, bool print_error = false)
 {
 	assert(matrix.rows() == matrix.cols());
 
@@ -52,8 +53,8 @@ Csr_matrix_check_error_code check(const Csr_matrix<Value, Symmetry_tag, MKL_UINT
 	handle.indexing = ::sparse_matrix_indexing::MKL_ZERO_BASED;
 	handle.matrix_format = ::sparse_matrix_formats::MKL_CSR;
 	handle.print_style = ::sparse_matrix_print_styles::MKL_C_STYLE;
-	handle.message_level =
-		print_error ? ::sparse_matrix_message_levels::MKL_PRINT : ::sparse_matrix_message_levels::MKL_NO_PRINT;
+	handle.message_level = print_error ? ::sparse_matrix_message_levels::MKL_PRINT
+									   : ::sparse_matrix_message_levels::MKL_NO_PRINT;
 
 	if constexpr (std::is_same_v<Symmetry_tag, Symmetric_upper>)
 		handle.matrix_structure = ::sparse_matrix_structures::MKL_UPPER_TRIANGULAR;

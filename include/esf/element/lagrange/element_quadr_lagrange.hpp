@@ -1,17 +1,20 @@
 #pragma once
-#include <esf/types.hpp>
+#include <esf/index.hpp>
 
 #include <esl/dense.hpp>
 
 namespace esf
 {
-template<esf::Local_index order, esf::Local_index dim, class Quadr>
-class Element_quadr<esf::Lagrange<order, dim>, Quadr>
+template<class Element_, class Quadr_>
+class Element_quadr_lagrange
 {
 private:
-	using Element = esf::Lagrange<order, dim>;
+	using Element = Element_;
+	using Quadr = Quadr_;
 	static constexpr auto n_points = Quadr::size;
 	static constexpr auto n_dofs = Element::n_total_cell_dofs;
+
+	static_assert(Element::dim == Quadr::dim);
 
 public:
 	// Returns the values of basis functions at the quadrature points
@@ -32,8 +35,14 @@ public:
 	}
 };
 
-template<esf::Local_index order, esf::Local_index dim, class Quadr>
-class Element_quadr<esf::Discontinuous_lagrange<order, dim>, Quadr> :
-	public Element_quadr<esf::Lagrange<order, dim>, Quadr>
+template<Local_index order, Local_index dim, class Quadr>
+class Element_quadr<Lagrange<order, dim>, Quadr> :
+	public Element_quadr_lagrange<Lagrange<order, dim>, Quadr>
 {};
+
+template<Local_index order, Local_index dim, class Quadr>
+class Element_quadr<Discontinuous_lagrange<order, dim>, Quadr> :
+	public Element_quadr_lagrange<Discontinuous_lagrange<order, dim>, Quadr>
+{};
+
 } // namespace esf

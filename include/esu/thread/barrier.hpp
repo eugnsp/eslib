@@ -2,8 +2,8 @@
 #include <esu/type_traits/functor.hpp>
 
 #include <cassert>
-#include <cstddef>
 #include <condition_variable>
+#include <cstddef>
 #include <mutex>
 #include <type_traits>
 #include <utility>

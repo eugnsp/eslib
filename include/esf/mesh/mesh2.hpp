@@ -2,22 +2,23 @@
 #include <esf/geometry/point2.hpp>
 #include <esf/geometry/rect.hpp>
 #include <esf/mesh/halfedge_structure.hpp>
+#include <esf/mesh/index.hpp>
 #include <esf/mesh/iterator/circulator_halfedge_edge.hpp>
 #include <esf/mesh/iterator/circulator_vertex_face.hpp>
 #include <esf/mesh/iterator/random_access.hpp>
+#include <esf/mesh/tags.hpp>
 #include <esf/mesh/view/edge_mesh2.hpp>
 #include <esf/mesh/view/face_mesh2.hpp>
 #include <esf/mesh/view/halfedge_mesh2.hpp>
 #include <esf/mesh/view/vertex_mesh2.hpp>
 #include <esf/type_traits.hpp>
-#include <esf/types.hpp>
 
-#include <esu/error.hpp>
 #include <esu/iterator.hpp>
 
 #include <cassert>
 #include <cstddef>
 #include <iosfwd>
+#include <optional>
 #include <string>
 #include <type_traits>
 #include <utility>
@@ -162,7 +163,7 @@ public:
 	};
 
 	// Performs some basic checks of mesh data structure consistency
-	esu::Error check() const;
+	std::optional<std::string> check() const;
 
 	// Clears edges and cells preserving vertices
 	void clearEdgesAndCells()
@@ -175,6 +176,16 @@ public:
 	{
 		for (auto& v : vertices_)
 			v.point *= scale;
+	}
+
+	void set_output_scale(double scale)
+	{
+		output_scale_ = scale;
+	}
+
+	double output_scale() const
+	{
+		return output_scale_;
 	}
 
 	// Outputs human readable information about the mesh
@@ -190,6 +201,9 @@ private:
 	{
 		return twin(outgoing_halfedge(vertex));
 	}
+
+private:
+	double output_scale_ = 1;
 };
 
 // Outputs human readable information about the mesh

@@ -14,7 +14,8 @@
 namespace esl::internal
 {
 template<std::size_t ct_rows, class Derived, class Layout>
-class Matrix_base<ct_rows, dynamic, Derived, Layout> : public Matrix_dynamic_base<ct_rows, dynamic, Derived, Layout>
+class Matrix_base<ct_rows, dynamic, Derived, Layout> :
+	public Matrix_dynamic_base<ct_rows, dynamic, Derived, Layout>
 {
 private:
 	using Base = Matrix_dynamic_base<ct_rows, dynamic, Derived, Layout>;
@@ -56,7 +57,8 @@ protected:
 };
 
 template<std::size_t t_cols, class Derived, class Layout>
-class Matrix_base<dynamic, t_cols, Derived, Layout> : public Matrix_dynamic_base<dynamic, t_cols, Derived, Layout>
+class Matrix_base<dynamic, t_cols, Derived, Layout> :
+	public Matrix_dynamic_base<dynamic, t_cols, Derived, Layout>
 {
 private:
 	using Base = Matrix_dynamic_base<dynamic, t_cols, Derived, Layout>;
@@ -73,7 +75,8 @@ public:
 	Matrix_base(const std::size_t rows, const Value& value) : Base(Internal{}, rows, t_cols, value)
 	{}
 
-	Matrix_base(const std::size_t rows, std::initializer_list<Value> values) : Base(Internal{}, rows, t_cols, values)
+	Matrix_base(const std::size_t rows, std::initializer_list<Value> values) :
+		Base(Internal{}, rows, t_cols, values)
 	{}
 
 	Matrix_base(std::initializer_list<Value> values) : Matrix_base(values.size() / t_cols, values)
@@ -97,7 +100,8 @@ protected:
 };
 
 template<class Derived, class Layout>
-class Matrix_base<dynamic, dynamic, Derived, Layout> : public Matrix_dynamic_base<dynamic, dynamic, Derived, Layout>
+class Matrix_base<dynamic, dynamic, Derived, Layout> :
+	public Matrix_dynamic_base<dynamic, dynamic, Derived, Layout>
 {
 private:
 	using Base = Matrix_dynamic_base<dynamic, dynamic, Derived, Layout>;
@@ -118,7 +122,8 @@ public:
 		Base(Internal{}, rows, cols, value)
 	{}
 
-	Matrix_base(const std::size_t rows, const std::size_t cols, std::initializer_list<Value> values) :
+	Matrix_base(
+		const std::size_t rows, const std::size_t cols, std::initializer_list<Value> values) :
 		Base(Internal{}, rows, cols, values)
 	{}
 

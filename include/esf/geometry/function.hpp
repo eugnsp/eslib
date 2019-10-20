@@ -1,0 +1,10 @@
+#pragma once
+#include <esf/geometry/function/area.hpp>
+#include <esf/geometry/function/bounding_rect.hpp>
+#include <esf/geometry/function/center.hpp>
+#include <esf/geometry/function/circumcentre.hpp>
+#include <esf/geometry/function/contains.hpp>
+#include <esf/geometry/function/diam.hpp>
+#include <esf/geometry/function/distance.hpp>
+#include <esf/geometry/function/equals.hpp>
+#include <esf/geometry/function/length.hpp>

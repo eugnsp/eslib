@@ -1,6 +1,5 @@
 #pragma once
 #include <esf/matrix_based/solver_base.hpp>
-#include <esf/matrix_based/solution_view.hpp>
 
 #include <esl/dense.hpp>
 
@@ -18,12 +17,6 @@ private:
 public:
 	using Base::Base;
 
-	template<class... Args>
-	void init(Args&&... args)
-	{
-		Base::init(std::forward<Args>(args)...);
-	}
-
 	void solve()
 	{
 		matrix_.zero();
@@ -35,13 +28,13 @@ public:
 		assemble();
 		after_assemble();
 
-		linear_solver_.analyze_factorize_solve(rhs_, solution_);
+		linear_solver_.analyze_factorize_solve(rhs_, solution_.rows_view(0, rhs_.size()));
 
 		after_solve();
 	}
 
 protected:
-	virtual void set_bnd_values() = 0;
+	//irtual void set_bnd_values() = 0;
 
 	virtual void before_solve()
 	{}
@@ -55,9 +48,11 @@ protected:
 	virtual void assemble() = 0;
 
 protected:
-	using Base::solution_;
-	using Base::rhs_;
-	using Base::matrix_;
 	using Base::linear_solver_;
+	using Base::matrix_;
+	using Base::rhs_;
+	using Base::solution_;
+
+	using Base::set_bnd_values;
 };
 } // namespace esf

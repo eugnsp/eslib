@@ -1,6 +1,6 @@
 #pragma once
-#include <esu/tuple/core.hpp>
 #include <esu/tuple/all_any_none.hpp>
+#include <esu/tuple/core.hpp>
 #include <esu/tuple/for_each.hpp>
 #include <esu/tuple/forward_as_zipped.hpp>
 #include <esu/tuple/map.hpp>

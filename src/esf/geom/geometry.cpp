@@ -4,7 +4,7 @@
 #include <esl/dense.hpp>
 
 //#include <esu/numeric.hpp>
-#include <esf/geometry/algorithm.hpp>
+#include <esf/geometry/function.hpp>
 //#include "math/LA/VectorFunction.h"
 
 #include <algorithm>
@@ -158,7 +158,7 @@ Point2 GetSegmentAndLineIntersectionPoint2(
 //	}
 //}
 
-double circumradius(const Point2& , const Point2& , const Point2& )
+double circumradius(const Point2&, const Point2&, const Point2&)
 {
 	throw 0;
 	// return distance(a, b) * distance(b, c) * distance(c, a) / (4 * area(a, b, c));

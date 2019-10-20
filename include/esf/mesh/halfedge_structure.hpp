@@ -1,11 +1,12 @@
 #pragma once
 #include <esf/geometry/point2.hpp>
-#include <esf/types.hpp>
-
-#include <esu/error.hpp>
+#include <esf/mesh/index.hpp>
+#include <esf/mesh/tags.hpp>
 
 #include <array>
 #include <cstddef>
+#include <optional>
+#include <string>
 #include <type_traits>
 #include <vector>
 
@@ -15,68 +16,65 @@ namespace esf::internal
 class Halfedge_structure
 {
 public:
-	using Cell_index = esf::Face_index;
+	using Cell_index = Face_index;
 
 	struct Vertex
 	{
-		explicit Vertex(const esf::Point2& pt) : point(pt)
+		explicit Vertex(const Point2& pt) : point(pt)
 		{}
 
-		Vertex(const esf::Point2& pt, esf::Halfedge_index halfedge) :
-			point(pt), halfedge(halfedge)
+		Vertex(const Point2& pt, Halfedge_index halfedge) : point(pt), halfedge(halfedge)
 		{}
 
-		esf::Point2 point;
+		Point2 point;
 
 		// An arbitrary halfedge that starts at the vertex (for a boundary
 		// vertex this must always be the outer (boundary) half-edge)
-		esf::Halfedge_index halfedge = esf::Halfedge_index::invalid;
+		Halfedge_index halfedge = Halfedge_index::invalid;
 	};
 
 	struct Halfedge
 	{
-		explicit Halfedge(esf::Vertex_index vertex) : vertex(vertex)
+		explicit Halfedge(Vertex_index vertex) : vertex(vertex)
 		{}
 
-		Halfedge(esf::Vertex_index vertex, esf::Halfedge_index next_halfedge,
-			esf::Face_index face) :
-			vertex(vertex),
-			next(next_halfedge), face(face)
+		Halfedge(Vertex_index vertex, Halfedge_index next_halfedge, Face_index face) :
+			vertex(vertex), next(next_halfedge), face(face)
 		{}
 
 		// Index of the vertex the half-edge points to
-		esf::Vertex_index vertex;
+		Vertex_index vertex;
 
 		// Index of the next half-edge
-		esf::Halfedge_index next = esf::Halfedge_index::invalid;
+		Halfedge_index next = Halfedge_index::invalid;
 
 		// Index of the face the half-edge belongs to
-		esf::Face_index face = esf::Face_index::invalid;
+		Face_index face = Face_index::invalid;
 	};
 
 	struct Face
 	{
-		explicit Face(esf::Halfedge_index halfedge) : halfedge(halfedge)
+		explicit Face(Halfedge_index halfedge) : halfedge(halfedge)
 		{}
 
 		// One of the half-edges bounding the face
-		esf::Halfedge_index halfedge;
+		Halfedge_index halfedge;
 	};
 
 public:
 	//////////////////////////////////////////////////////////////////////////
 	/** Capacity */
 
-	esf::Vertex_index n_vertices() const;
-	esf::Halfedge_index n_halfedges() const;
-	esf::Edge_index n_edges() const;
-	esf::Face_index n_faces() const;
+	Vertex_index n_vertices() const;
+	Halfedge_index n_halfedges() const;
+	Edge_index n_edges() const;
+	Face_index n_faces() const;
 	Cell_index n_cells() const;
 
-	esf::Vertex_index n_elements(Vertex_tag) const;
-	esf::Halfedge_index n_elements(Halfedge_tag) const;
-	esf::Edge_index n_elements(Edge_tag) const;
-	esf::Face_index n_elements(Face_tag) const;
+	Vertex_index n_elements(Vertex_tag) const;
+	Halfedge_index n_elements(Halfedge_tag) const;
+	Edge_index n_elements(Edge_tag) const;
+	Face_index n_elements(Face_tag) const;
 	Cell_index n_elements(Cell_tag) const;
 
 	bool is_empty() const;
@@ -90,7 +88,7 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	/** Element access */
 
-	const esf::Point2& vertex(esf::Vertex_index vertex) const
+	const Point2& vertex(esf::Vertex_index vertex) const
 	{
 		return vertices_[*vertex].point;
 	}
@@ -226,7 +224,7 @@ public:
 	}
 
 	// Performs some basic checks of mesh data structure consistency
-	esu::Error check() const;
+	std::optional<std::string> check() const;
 
 	// TODO : generic
 	void debug_check_index([[maybe_unused]] esf::Vertex_index index) const
@@ -253,8 +251,7 @@ private:
 	// Adds a pair of half-edges without adjusting the data structure, returns
 	// the index of the first half-edge in the newly added pair (the first (second)
 	// half-edge points to the vertex2 (vertex1)
-	esf::Halfedge_index insert_halfedges_raw(
-		esf::Vertex_index vertex1, esf::Vertex_index vertex2)
+	esf::Halfedge_index insert_halfedges_raw(esf::Vertex_index vertex1, esf::Vertex_index vertex2)
 	{
 		halfedges_.emplace_back(vertex1);
 		halfedges_.emplace_back(vertex2);

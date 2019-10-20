@@ -4,7 +4,7 @@
 #include <esf/element/lagrange/lagrange_base_2.hpp>
 #include <esf/element/linear_element.hpp>
 #include <esf/element/triangular_element.hpp>
-#include <esf/types.hpp>
+#include <esf/index.hpp>
 
 namespace esf
 {

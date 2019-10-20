@@ -1,8 +1,8 @@
 #pragma once
 #include <cassert>
 #include <cstddef>
-#include <esf/mesh/mesh2.hpp>
 #include <es_geom/algorithm.hpp>
+#include <esf/mesh/mesh2.hpp>
 #include <esu/error.hpp>
 #include <vector>
 

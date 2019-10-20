@@ -1,6 +1,6 @@
 #pragma once
-#include <esf/types.hpp>
-#include <esf/util/algorithm.hpp>
+#include <esf/index.hpp>
+#include <esf/var.hpp>
 
 #include <esl/sparse/sparsity_pattern.hpp>
 
@@ -27,15 +27,16 @@ esl::Sparsity_pattern<Symmetry_tag> sparsity_pattern(const System& system)
 	{
 		const auto dofs_list = dof_mapper.all_dofs(cell);
 		indices.clear();
-		esf::for_each_var<typename System::Var_list>([&](auto var) {
+		System::Var_list::for_each([&](auto var) {
 			const auto& dofs = std::get<var>(dofs_list);
 			const auto n_dofs = static_cast<esf::Local_index>(dofs.size());
 
 			for (esf::Local_index i = 0; i < n_dofs; ++i)
 				if (dofs[i].is_free)
 					for (esf::Index d = 0; d < system.variable(var).dim(); ++d)
-						indices.push_back(dofs[i].index + d * n_dofs);
+						indices.push_back(dofs[i].index + d);
 		});
+
 		for (std::size_t i = 0; i < indices.size(); ++i)
 		{
 			cols.clear();

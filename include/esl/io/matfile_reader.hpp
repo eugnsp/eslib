@@ -89,13 +89,14 @@ private:
 			throw std::runtime_error("Unsupported MAT-file endianness");
 
 		header_text_.assign(header.text, sizeof(header.text));
-		header_text_.erase(
-			std::find_if(header_text_.rbegin(), header_text_.rend(), [](char ch) { return ch != ' '; }).base(),
+		header_text_.erase(std::find_if(header_text_.rbegin(), header_text_.rend(),
+							   [](char ch) { return ch != ' '; })
+							   .base(),
 			header_text_.end());
 	}
 
-	void read_array_flags_subelement(
-		internal::matfile::Class_types& class_type, internal::matfile::Flags& flags, std::size_t& nnz)
+	void read_array_flags_subelement(internal::matfile::Class_types& class_type,
+		internal::matfile::Flags& flags, std::size_t& nnz)
 	{
 		internal::matfile::Array_flags array_flags;
 		read_raw(array_flags);

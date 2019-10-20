@@ -1,6 +1,7 @@
 #pragma once
+#include <esf/geometry/point1.hpp>
+#include <esf/mesh/tags.hpp>
 #include <esf/mesh/view/base.hpp>
-#include <esf/types.hpp>
 
 #include <iosfwd>
 

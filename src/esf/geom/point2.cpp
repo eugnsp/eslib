@@ -6,13 +6,16 @@
 
 namespace esf
 {
-std::ostream& operator<<(std::ostream& os, const Point2& p)
+std::string Point2::to_string() const
 {
 	std::stringstream ss;
+	ss << std::fixed << std::setprecision(2) << '(' << x() << ", " << y() << ')';
+	return ss.str();
+}
 
-	ss << std::fixed << std::setprecision(2) << '(' << p.x() << ", " << p.y() << ')';
-	os << ss.str() << std::flush;
-
+std::ostream& operator<<(std::ostream& os, const Point2& p)
+{
+	os << p.to_string();
 	return os;
 }
 } // namespace esf

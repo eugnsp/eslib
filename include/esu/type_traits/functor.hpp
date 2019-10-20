@@ -8,4 +8,4 @@ struct Nop_fn
 	void operator()(const Args&...)
 	{}
 };
-}
+} // namespace esu

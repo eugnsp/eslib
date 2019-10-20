@@ -1,9 +1,10 @@
 #pragma once
-#include <cassert>
 #include <esf/geometry/point2.hpp>
-#include <esf/types.hpp>
+#include <esf/geometry/tags.hpp>
 
-namespace fe
+#include <cassert>
+
+namespace esf
 {
 class Segment
 {

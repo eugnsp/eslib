@@ -1,5 +1,5 @@
 #pragma once
-#include <esf/types.hpp>
+#include <esf/forward.hpp>
 
 #include <cassert>
 

@@ -54,13 +54,14 @@ public:
 		call_pardiso(Phase::ANALYZE_FACTORIZE);
 	}
 
-	template<class Dense_matrix>
-	void analyze_factorize_solve(const Dense_matrix& rhs, Dense_matrix& solution)
+	// TODO
+	template<class Dense_matrix1, class Dense_matrix2>
+	void analyze_factorize_solve(const Dense_matrix1& rhs, Dense_matrix2&& solution)
 	{
 		assert(rhs.rows() == solution.rows() && rhs.cols() == solution.cols());
 
-		const auto n_rhs = is_col_major<Dense_matrix> ? rhs.cols() : rhs.rows();
-		call_pardiso(Phase::ANALYZE_FACTORIZE_SOLVE, rhs.data(), solution.data(), n_rhs);
+		const auto n_rhs = is_col_major<Dense_matrix1> ? rhs.cols() : rhs.rows();
+		call_pardiso(Phase::ANALYZE_FACTORIZE_SOLVE, rhs.self().data(), solution.self().data(), n_rhs);
 	}
 
 	void factorize()
@@ -87,8 +88,8 @@ public:
 	}
 
 private:
-	void call_pardiso(
-		Phase phase, const Value* const rhs = nullptr, Value* const solution = nullptr, const std::size_t n_rhss = 1)
+	void call_pardiso(Phase phase, const Value* const rhs = nullptr,
+		Value* const solution = nullptr, const std::size_t n_rhss = 1)
 	{
 		constexpr auto matrix_type = static_cast<MKL_INT>(pardiso_matrix_type());
 		const auto n_rhs = static_cast<MKL_INT>(n_rhss);
@@ -97,10 +98,11 @@ private:
 		const MKL_INT n_equations = matrix_.cols();
 
 		MKL_INT error = 0;
-		::pardiso(handle_, &max_factors, &matrix_number, &matrix_type, reinterpret_cast<const MKL_INT*>(&phase),
-			&n_equations, matrix_.values(), reinterpret_cast<const MKL_INT*>(matrix_.row_indices()),
-			reinterpret_cast<const MKL_INT*>(matrix_.col_indices()), nullptr, &n_rhs, params_, &message_level_,
-			const_cast<Value*>(rhs), solution, &error);
+		::pardiso(handle_, &max_factors, &matrix_number, &matrix_type,
+			reinterpret_cast<const MKL_INT*>(&phase), &n_equations, matrix_.values(),
+			reinterpret_cast<const MKL_INT*>(matrix_.row_indices()),
+			reinterpret_cast<const MKL_INT*>(matrix_.col_indices()), nullptr, &n_rhs, params_,
+			&message_level_, const_cast<Value*>(rhs), solution, &error);
 
 		if (error)
 			throw std::runtime_error(pardiso_error_string(error));

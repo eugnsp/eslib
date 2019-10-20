@@ -115,16 +115,14 @@ Transform_iterator(Iterator, Unary_operation)->Transform_iterator<Iterator, Unar
 /** Input/forward iterator free functions */
 
 template<class Iterator1, class Iterator2, class Unary_operation>
-bool operator==(
-	const Transform_iterator<Iterator1, Unary_operation>& it1,
+bool operator==(const Transform_iterator<Iterator1, Unary_operation>& it1,
 	const Transform_iterator<Iterator2, Unary_operation>& it2)
 {
 	return it1.base() == it2.base();
 }
 
 template<class Iterator1, class Iterator2, class Unary_operation>
-bool operator!=(
-	const Transform_iterator<Iterator1, Unary_operation>& it1,
+bool operator!=(const Transform_iterator<Iterator1, Unary_operation>& it1,
 	const Transform_iterator<Iterator2, Unary_operation>& it2)
 {
 	return it1.base() != it2.base();

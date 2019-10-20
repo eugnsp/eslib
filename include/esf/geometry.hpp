@@ -1,5 +1,5 @@
 #pragma once
-#include <esf/geometry/algorithm.hpp>
+#include <esf/geometry/function.hpp>
 #include <esf/geometry/compare.hpp>
 #include <esf/geometry/geometry.hpp>
 #include <esf/geometry/linear_grid.hpp>

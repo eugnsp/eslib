@@ -1,5 +1,4 @@
 #pragma once
-#include <esf/matrix_based/solution_view.hpp>
 #include <esf/matrix_based/solver_base.hpp>
 
 #include <esl/dense.hpp>
@@ -70,12 +69,6 @@ public:
 		}
 	}
 
-	template<class System2, class T>
-	void set_init_guess(const internal::Solution_base<System2, T>& solution)
-	{
-		solution_ = solution.values();
-	}
-
 	std::size_t memory_size() const
 	{
 		return Base::memory_size() + step_.memory_size();
@@ -93,8 +86,8 @@ protected:
 	virtual void before_solve()
 	{}
 
-	virtual void after_step(
-		unsigned int /* n_iter */, double /* residual_norm */, double /* step_norm */, double /* solution_norm */)
+	virtual void after_step(unsigned int /* n_iter */, double /* residual_norm */,
+		double /* step_norm */, double /* solution_norm */)
 	{}
 
 	virtual void after_line_search_step(

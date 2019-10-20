@@ -67,7 +67,8 @@ template<class Matrix>
 }
 
 template<typename Value, class Symmetry, typename Index>
-::sparse_status_t mkl_sparse_create(::sparse_matrix_t& handle, const Csr_matrix<Value, Symmetry, Index>& matrix)
+::sparse_status_t mkl_sparse_create(
+	::sparse_matrix_t& handle, const Csr_matrix<Value, Symmetry, Index>& matrix)
 {
 	static_assert(sizeof(Index) == sizeof(MKL_UINT));
 

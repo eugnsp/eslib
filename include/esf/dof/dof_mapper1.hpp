@@ -1,6 +1,6 @@
 #pragma once
 #include <esf/dof/dof_mapper_base.hpp>
-#include <esf/types.hpp>
+#include <esf/mesh/index.hpp>
 
 #include <array>
 
@@ -56,7 +56,7 @@ public:
 	Var_vertex_dofs<var> vertex_dofs(Vertex_index vertex) const
 	{
 		Var_vertex_dofs<var> dofs;
-		var_vertex_dofs<var>(vertex,  dofs);
+		var_vertex_dofs<var>(vertex, dofs);
 		return dofs;
 	}
 

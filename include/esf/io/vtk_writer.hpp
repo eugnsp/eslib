@@ -80,7 +80,8 @@ private:
 	template<typename... Ts>
 	void write_ln(const Ts&... args)
 	{
-		(file_ << ... << args);
+		if constexpr (sizeof...(Ts) > 0)
+			(file_ << ... << args);
 		file_ << '\n';
 		if (file_.bad())
 			throw std::runtime_error("Error writing file");
@@ -114,9 +115,9 @@ private:
 		// TODO :: all triangles
 		for (const auto& face : mesh_.faces())
 		{
-			const auto n = 3;
-			cell_types[**face] = get_vtk_element_type(3);
-			cell_list_size += 3;
+			constexpr auto n = 3;
+			cell_types[**face] = get_vtk_element_type(n);
+			cell_list_size += n;
 		}
 
 		write_ln("CELLS ", *mesh_.n_faces(), ' ', cell_list_size);

@@ -229,21 +229,22 @@ public:
 
 	///////////////////////////////////////////////////////////////////////
 
-	auto view(const std::size_t start_row, const std::size_t start_col, const std::size_t rows, const std::size_t cols)
+	auto view(const std::size_t start_row, const std::size_t start_col, const std::size_t rows,
+		const std::size_t cols)
 	{
 		using Range = internal::Range<dynamic, dynamic>;
 		return view_impl(Range{start_row, rows}, Range{start_col, cols});
 	}
 
-	auto view(
-		const std::size_t start_row, const std::size_t start_col, const std::size_t rows, const std::size_t cols) const
+	auto view(const std::size_t start_row, const std::size_t start_col, const std::size_t rows,
+		const std::size_t cols) const
 	{
 		using Range = internal::Range<dynamic, dynamic>;
 		return view_impl(Range{start_row, rows}, Range{start_col, cols});
 	}
 
-	auto cview(
-		const std::size_t start_row, const std::size_t start_col, const std::size_t rows, const std::size_t cols) const
+	auto cview(const std::size_t start_row, const std::size_t start_col, const std::size_t rows,
+		const std::size_t cols) const
 	{
 		return view(start_row, start_col, rows, cols);
 	}

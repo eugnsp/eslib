@@ -35,7 +35,6 @@ public:
 	// template<class Solver, std::size_t var>
 	// friend class Solution_view;
 
-
 public:
 	Matrix_based_eigen_solver(const Mesh& mesh) : eigen_solver_(matrix_a_, matrix_b_), system_(mesh)
 	{}
@@ -79,8 +78,8 @@ public:
 			if (has_initial_guess > 0)
 			{
 				// Randomize the rest of eigenvectors
-				eigen_vectors_.cols_view(old_dim, dim - old_dim) =
-					esl::Random_matrix(size, dim - old_dim, std::uniform_real_distribution{}, rand_gen_);
+				eigen_vectors_.cols_view(old_dim, dim - old_dim) = esl::Random_matrix(
+					size, dim - old_dim, std::uniform_real_distribution{}, rand_gen_);
 			}
 
 			if (eigen_solver_.solve(eigen_vectors_, eigen_values_, range, has_initial_guess))
@@ -134,8 +133,8 @@ public:
 
 	std::size_t memory_size() const
 	{
-		return eigen_values_.memory_size() + eigen_vectors_.memory_size() + matrix_a_.memory_size() +
-			   matrix_b_.memory_size();
+		return eigen_values_.memory_size() + eigen_vectors_.memory_size() +
+			   matrix_a_.memory_size() + matrix_b_.memory_size();
 	}
 
 protected:

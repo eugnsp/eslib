@@ -1,7 +1,8 @@
 #pragma once
+#include <esf/geometry/point2.hpp>
 #include <esf/mesh/view/base.hpp>
 #include <esf/type_traits.hpp>
-#include <esf/types.hpp>
+#include <esf/mesh/index.hpp>
 
 #include <array>
 #include <utility>
@@ -13,6 +14,8 @@ class Element_view<Face_tag, Mesh2> : public internal::Element_view_base<Face_ta
 {
 public:
 	using Geometry_tag = Triangle_tag;
+
+	using Vertices = std::array<Point2, 3>;
 
 	using Vertex_indices = std::array<Vertex_index, 3>;
 	using Halfedge_indices = std::array<Halfedge_index, 3>;
@@ -41,6 +44,8 @@ public:
 	void get_indices(Vertex_indices&, Edge_with_dir_indices&) const;
 
 	void get_indices(Halfedge_index, Vertex_indices&, Halfedge_indices&) const;
+
+	void get_vertices(Vertices&) const;
 
 	// 	Vertex_index vertex_index(Local_index) const;
 	// 	void vertex_indices(std::vector<Vertex_index>&) const;

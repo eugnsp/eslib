@@ -34,7 +34,8 @@ public:
 	//> Constructors
 
 	Matrix_dynamic_base() :
-		Matrix_dynamic_base(Internal{}, extent_static_or_zero(ct_rows), extent_static_or_zero(ct_cols))
+		Matrix_dynamic_base(
+			Internal{}, extent_static_or_zero(ct_rows), extent_static_or_zero(ct_cols))
 	{}
 
 	Matrix_dynamic_base(const Matrix_dynamic_base& matrix) :
@@ -49,7 +50,8 @@ public:
 	}
 
 	template<class Expr2>
-	Matrix_dynamic_base(const Expression<Expr2>& expr) : Matrix_dynamic_base(Internal{}, expr.rows(), expr.cols())
+	Matrix_dynamic_base(const Expression<Expr2>& expr) :
+		Matrix_dynamic_base(Internal{}, expr.rows(), expr.cols())
 	{
 		this->assign_expr(expr);
 	}
@@ -137,7 +139,8 @@ protected:
 	//////////////////////////////////////////////////////////////////////
 	//> Constructor
 
-	Matrix_dynamic_base(Internal, std::size_t rows, std::size_t cols) : Shape_base(rows, cols), data_(rows * cols)
+	Matrix_dynamic_base(Internal, std::size_t rows, std::size_t cols) :
+		Shape_base(rows, cols), data_(rows * cols)
 	{
 		std::uninitialized_default_construct_n(data_.data(), size());
 	}
@@ -148,8 +151,10 @@ protected:
 		std::uninitialized_fill_n(data_.data(), size(), value);
 	}
 
-	Matrix_dynamic_base(Internal, std::size_t rows, std::size_t cols, std::initializer_list<Value> values) :
-		Shape_base(rows, cols), data_(rows * cols)
+	Matrix_dynamic_base(
+		Internal, std::size_t rows, std::size_t cols, std::initializer_list<Value> values) :
+		Shape_base(rows, cols),
+		data_(rows * cols)
 	{
 		assert(values.size() == this->size());
 		std::uninitialized_copy_n(values.begin(), size(), data_.data());
@@ -179,12 +184,14 @@ protected:
 			auto new_data = Dynamic_storage<Value>(new_size);
 			if (new_size > size())
 			{
-				const auto tail = std::uninitialized_move_n(data_.data(), size(), new_data.data()).second;
+				const auto tail =
+					std::uninitialized_move_n(data_.data(), size(), new_data.data()).second;
 				std::uninitialized_default_construct_n(tail, new_size - size());
 			}
 			else
 			{
-				const auto tail = std::uninitialized_move_n(data_.data(), new_size, new_data.data()).first;
+				const auto tail =
+					std::uninitialized_move_n(data_.data(), new_size, new_data.data()).first;
 				std::destroy_n(tail, size() - new_size);
 			}
 

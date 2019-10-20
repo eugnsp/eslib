@@ -3,30 +3,30 @@
 
 namespace esu::au
 {
-#define ES_UTIL_DEFINE_AU_UNIT(Name, factor)                                                                           \
-	inline constexpr double from_##Name(double x)                                                                      \
-	{                                                                                                                  \
-		constexpr auto fac = (factor);                                                                                 \
-		return fac * x;                                                                                                \
-	}                                                                                                                  \
-                                                                                                                       \
-	inline constexpr double to_##Name(double x)                                                                        \
-	{                                                                                                                  \
-		constexpr auto fac = 1. / (factor);                                                                            \
-		return fac * x;                                                                                                \
-	}                                                                                                                  \
-                                                                                                                       \
-	inline namespace literals                                                                                          \
-	{                                                                                                                  \
-	inline constexpr double operator"" _##Name(long double x)                                                          \
-	{                                                                                                                  \
-		return from_##Name(static_cast<double>(x));                                                                    \
-	}                                                                                                                  \
-                                                                                                                       \
-	inline constexpr double operator"" _##Name(unsigned long long x)                                                   \
-	{                                                                                                                  \
-		return from_##Name(static_cast<double>(x));                                                                    \
-	}                                                                                                                  \
+#define ES_UTIL_DEFINE_AU_UNIT(Name, factor)                                                       \
+	inline constexpr double from_##Name(double x)                                                  \
+	{                                                                                              \
+		constexpr auto fac = (factor);                                                             \
+		return fac * x;                                                                            \
+	}                                                                                              \
+                                                                                                   \
+	inline constexpr double to_##Name(double x)                                                    \
+	{                                                                                              \
+		constexpr auto fac = 1. / (factor);                                                        \
+		return fac * x;                                                                            \
+	}                                                                                              \
+                                                                                                   \
+	inline namespace literals                                                                      \
+	{                                                                                              \
+	inline constexpr double operator"" _##Name(long double x)                                      \
+	{                                                                                              \
+		return from_##Name(static_cast<double>(x));                                                \
+	}                                                                                              \
+                                                                                                   \
+	inline constexpr double operator"" _##Name(unsigned long long x)                               \
+	{                                                                                              \
+		return from_##Name(static_cast<double>(x));                                                \
+	}                                                                                              \
 	} // namespace literals
 
 // Units of length

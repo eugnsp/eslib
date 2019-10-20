@@ -1,5 +1,5 @@
 #pragma once
-#include <esf/geometry/algorithm/distance.hpp>
+#include <esf/geometry/function/distance.hpp>
 #include <esf/geometry/point2.hpp>
 
 #include <esu/numeric.hpp>
@@ -40,8 +40,8 @@ Side which_side(const esf::Point2&, const esf::Point2& a, const esf::Point2& b);
 
 // Computes the intersection point between the line segment [x1, x2] and
 // the line passing through points (y1) and (y2)
-esf::Point2 GetSegmentAndLineIntersectionPoint(const esf::Point2& _x1, const esf::Point2& _x2,
-	const esf::Point2& _y1, const esf::Point2& _y2);
+esf::Point2 GetSegmentAndLineIntersectionPoint(
+	const esf::Point2& _x1, const esf::Point2& _x2, const esf::Point2& _y1, const esf::Point2& _y2);
 
 // Clips simple by the line passing through points (y1) and (y2)
 // void ClipSimpleByLine(SimplePolygon& _out, const SimplePolygon& _in, const Point2& _y1, const

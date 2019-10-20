@@ -36,8 +36,9 @@ public:
 		Dense_base::assign_scalar(value);
 	}
 
-	template<typename... Values, typename = std::enable_if_t<sizeof...(Values) == ct_rows * ct_cols &&
-															 (std::is_convertible_v<Values, Value> && ...)>>
+	template<typename... Values,
+		typename = std::enable_if_t<sizeof...(Values) == ct_rows * ct_cols &&
+									(std::is_convertible_v<Values, Value> && ...)>>
 	explicit constexpr Matrix_base(Values&&... values) : data_{std::forward<Values>(values)...}
 	{}
 

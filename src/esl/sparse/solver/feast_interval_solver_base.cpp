@@ -19,34 +19,35 @@ Feast_interval_solver_base::Feast_interval_solver_base()
 #endif
 }
 
-#define ESL_IMPL_MKL_FEAST_RCI(func, T)                                                                              \
-	Feast_interval_solver_base::Status Feast_interval_solver_base::mkl_feast_rci(Job& job, MKL_UINT n,                 \
-		Add_complex<T>& ze, T* work1, Add_complex<T>* work2, T* work3, T* work4, Remove_complex<T>& eps,               \
-		MKL_UINT& n_loops, std::pair<Remove_complex<T>, Remove_complex<T>> eigen_values_interval,                      \
-		MKL_UINT n_eigen_values0, Remove_complex<T>* eigen_values, T* eigen_vectors, MKL_UINT& n_eigen_values,         \
-		Remove_complex<T>* residues)                                                                                   \
-	{                                                                                                                  \
-		using TM = internal::Mkl_type<T>;                                                                              \
-		using CM = internal::Mkl_type<Add_complex<T>>;                                                                 \
-                                                                                                                       \
-		auto m_job = reinterpret_cast<MKL_INT*>(&job);                                                                 \
-		auto m_n = reinterpret_cast<const MKL_INT*>(&n);                                                               \
-		auto m_ze = reinterpret_cast<CM*>(&ze);                                                                        \
-		auto m_work1 = reinterpret_cast<TM*>(work1);                                                                   \
-		auto m_work2 = reinterpret_cast<CM*>(work2);                                                                   \
-		auto m_work3 = reinterpret_cast<TM*>(work3);                                                                   \
-		auto m_work4 = reinterpret_cast<TM*>(work4);                                                                   \
-		auto m_n_loops = reinterpret_cast<MKL_INT*>(&n_loops);                                                         \
-		auto m_n_eigen_values0 = reinterpret_cast<MKL_INT*>(&n_eigen_values0);                                         \
-		auto m_n_eigen_values = reinterpret_cast<MKL_INT*>(&n_eigen_values);                                           \
-		auto m_eigen_vectors = reinterpret_cast<TM*>(eigen_vectors);                                                   \
-                                                                                                                       \
-		MKL_INT info = 0;                                                                                              \
-		::func(m_job, m_n, m_ze, m_work1, m_work2, m_work3, m_work4, params_, &eps, m_n_loops,                         \
-			&eigen_values_interval.first, &eigen_values_interval.second, m_n_eigen_values0, eigen_values,              \
-			m_eigen_vectors, m_n_eigen_values, residues, &info);                                                       \
-                                                                                                                       \
-		return static_cast<Status>(info);                                                                              \
+#define ESL_IMPL_MKL_FEAST_RCI(func, T)                                                            \
+	Feast_interval_solver_base::Status Feast_interval_solver_base::mkl_feast_rci(Job& job,         \
+		MKL_UINT n, Add_complex<T>& ze, T* work1, Add_complex<T>* work2, T* work3, T* work4,       \
+		Remove_complex<T>& eps, MKL_UINT& n_loops,                                                 \
+		std::pair<Remove_complex<T>, Remove_complex<T>> eigen_values_interval,                     \
+		MKL_UINT n_eigen_values0, Remove_complex<T>* eigen_values, T* eigen_vectors,               \
+		MKL_UINT& n_eigen_values, Remove_complex<T>* residues)                                     \
+	{                                                                                              \
+		using TM = internal::Mkl_type<T>;                                                          \
+		using CM = internal::Mkl_type<Add_complex<T>>;                                             \
+                                                                                                   \
+		auto m_job = reinterpret_cast<MKL_INT*>(&job);                                             \
+		auto m_n = reinterpret_cast<const MKL_INT*>(&n);                                           \
+		auto m_ze = reinterpret_cast<CM*>(&ze);                                                    \
+		auto m_work1 = reinterpret_cast<TM*>(work1);                                               \
+		auto m_work2 = reinterpret_cast<CM*>(work2);                                               \
+		auto m_work3 = reinterpret_cast<TM*>(work3);                                               \
+		auto m_work4 = reinterpret_cast<TM*>(work4);                                               \
+		auto m_n_loops = reinterpret_cast<MKL_INT*>(&n_loops);                                     \
+		auto m_n_eigen_values0 = reinterpret_cast<MKL_INT*>(&n_eigen_values0);                     \
+		auto m_n_eigen_values = reinterpret_cast<MKL_INT*>(&n_eigen_values);                       \
+		auto m_eigen_vectors = reinterpret_cast<TM*>(eigen_vectors);                               \
+                                                                                                   \
+		MKL_INT info = 0;                                                                          \
+		::func(m_job, m_n, m_ze, m_work1, m_work2, m_work3, m_work4, params_, &eps, m_n_loops,     \
+			&eigen_values_interval.first, &eigen_values_interval.second, m_n_eigen_values0,        \
+			eigen_values, m_eigen_vectors, m_n_eigen_values, residues, &info);                     \
+                                                                                                   \
+		return static_cast<Status>(info);                                                          \
 	}
 
 ESL_IMPL_MKL_FEAST_RCI(sfeast_srci, float)
@@ -78,21 +79,25 @@ std::string Feast_interval_solver_base::error_string(Status status)
 	case Status::ERR_ALLOC:
 		return str + "Internal error for allocation memory";
 	case Status::ERR_LINEAR_SOLVER:
-		return str + "Internal error of the inner system solver (not enough memory for inner linear "
-					 "system solver or inconsistent input)";
+		return str +
+			   "Internal error of the inner system solver (not enough memory for inner linear "
+			   "system solver or inconsistent input)";
 	case Status::ERR_EIGENVALUE_SOLVER:
-		return str + "Internal error of the reduced eigenvalue solver (matrix B may not be positive "
-					 "definite)";
+		return str +
+			   "Internal error of the reduced eigenvalue solver (matrix B may not be positive "
+			   "definite)";
 	case Status::ERR_B_NOT_POS_DEFINIT:
 		return str + "Matrix B is not positive definite";
 	}
 
 	if (static_cast<MKL_INT>(status) >= 101)
-		return str + "Problem with the value " + std::to_string(static_cast<MKL_INT>(status) - 101) +
+		return str + "Problem with the value " +
+			   std::to_string(static_cast<MKL_INT>(status) - 101) +
 			   " of the input Extended Eigensolver parameter (fpm)";
 
 	if (static_cast<MKL_INT>(status) <= -101)
-		return str + "Problem with the argument " + std::to_string(-(static_cast<MKL_INT>(status) + 101)) +
+		return str + "Problem with the argument " +
+			   std::to_string(-(static_cast<MKL_INT>(status) + 101)) +
 			   " of the Extended Eigensolver interface";
 
 	return str + "Unknown error";

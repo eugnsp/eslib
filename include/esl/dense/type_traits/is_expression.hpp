@@ -15,7 +15,8 @@ int expression_match(...);
 } // namespace internal
 
 template<class Expr>
-struct Is_expression_trait : std::is_void<decltype(internal::expression_match(std::declval<Expr>()))>
+struct Is_expression_trait :
+	std::is_void<decltype(internal::expression_match(std::declval<Expr>()))>
 {};
 
 template<class Expr>

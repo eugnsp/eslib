@@ -52,7 +52,7 @@ public:
 	template<class Symmetry_tag_type>
 	void write(const std::string& var_name, const Csr_matrix<double, Symmetry_tag_type>& matrix)
 	{
-		const MKL_INT n = matrix.n_cols();
+		const MKL_INT n = matrix.cols();
 		auto nnz = matrix.nnz();
 
 		const auto size_in_bytes = nnz * sizeof(double);
@@ -69,16 +69,17 @@ public:
 
 		job[0] = 0;			 // The matrix in the CSR format is converted to the CSC format
 		job[1] = job[2] = 0; // Zero-based indexing
-		job[5] = 1;			 // All output arrays (acsc, ja1, and ia1) are filled in for the output storage
+		job[5] = 1; // All output arrays (acsc, ja1, and ia1) are filled in for the output storage
 
-		mkl_dcsrcsc(job, &n, const_cast<double*>(matrix.data()), (MKL_INT*)(matrix.col_indices()),
-			(MKL_INT*)(matrix.row_indices()), csc_values.data(), csc_rows.data(), csc_cols.data(), &info);
+		mkl_dcsrcsc(job, &n, const_cast<double*>(matrix.values()), (MKL_INT*)(matrix.col_indices()),
+			(MKL_INT*)(matrix.row_indices()), csc_values.data(), csc_rows.data(), csc_cols.data(),
+			&info);
 
 		if (info != 0)
 			throw std::runtime_error("Matrix format conversion error");
 
-		write_sparse_array_element(var_name, matrix.n_rows(), matrix.n_cols(), matrix.nnz(), csc_rows.data(),
-			csc_cols.data(), csc_values.data());
+		write_sparse_array_element(var_name, matrix.rows(), matrix.cols(), matrix.nnz(),
+			csc_rows.data(), csc_cols.data(), csc_values.data());
 	}
 
 	void close()
@@ -108,19 +109,21 @@ private:
 
 	void write_header();
 
-	void write_array_flags_subelement(internal::matfile::Class_types, bool is_complex, std::size_t nnz);
+	void write_array_flags_subelement(
+		internal::matfile::Class_types, bool is_complex, std::size_t nnz);
 
 	void write_dimensions_subelement(std::size_t rows, std::size_t cols);
 
 	void write_array_name_subelement(const std::string& name);
 
 	template<typename T>
-	void write_array_element(const std::string& name, std::size_t rows, std::size_t cols, const T* real_values,
-		esu::Type_identity<const T*> complex_values = nullptr);
+	void write_array_element(const std::string& name, std::size_t rows, std::size_t cols,
+		const T* real_values, esu::Type_identity<const T*> complex_values = nullptr);
 
 	template<typename T, typename Index>
-	void write_sparse_array_element(const std::string& name, std::size_t rows, std::size_t cols, std::size_t nnz,
-		const Index* ir, const Index* jc, const T* real_values, esu::Type_identity<const T*> complex_values = nullptr);
+	void write_sparse_array_element(const std::string& name, std::size_t rows, std::size_t cols,
+		std::size_t nnz, const Index* ir, const Index* jc, const T* real_values,
+		esu::Type_identity<const T*> complex_values = nullptr);
 
 private:
 	std::ofstream file_;
@@ -131,8 +134,8 @@ private:
 /************************************************************************/
 
 template<typename T>
-void Matfile_writer::write_array_element(const std::string& name, std::size_t rows, std::size_t cols,
-	const T* real_values, esu::Type_identity<const T*> complex_values)
+void Matfile_writer::write_array_element(const std::string& name, std::size_t rows,
+	std::size_t cols, const T* real_values, esu::Type_identity<const T*> complex_values)
 {
 	assert(real_values);
 
@@ -142,11 +145,12 @@ void Matfile_writer::write_array_element(const std::string& name, std::size_t ro
 	if (data_size_in_bytes > INT32_MAX)
 		throw std::length_error("Level 5 MAT-files cannot hold variables exceeding 2GB");
 
-	const std::size_t total_size_in_bytes =							  // The total size includes all subelement paddings
-		sizeof(internal::matfile::Array_flags) +					  // Array flags
-		sizeof(internal::matfile::Dimensions) +						  // Dimensions array
+	const std::size_t total_size_in_bytes =		 // The total size includes all subelement paddings
+		sizeof(internal::matfile::Array_flags) + // Array flags
+		sizeof(internal::matfile::Dimensions) +	 // Dimensions array
 		sizeof(internal::matfile::Tag) + padded_size(name.length()) + // Array name
-		(sizeof(internal::matfile::Tag) + padded_size(data_size_in_bytes)) * (is_complex_data ? 2 : 1); // Data size
+		(sizeof(internal::matfile::Tag) + padded_size(data_size_in_bytes)) *
+			(is_complex_data ? 2 : 1); // Data size
 
 	write_tag(internal::matfile::Data_types::MATRIX, total_size_in_bytes);
 
@@ -169,8 +173,8 @@ void Matfile_writer::write_array_element(const std::string& name, std::size_t ro
 }
 
 template<typename T, typename Index>
-void Matfile_writer::write_sparse_array_element(const std::string& name, std::size_t rows, std::size_t cols,
-	std::size_t nnz, const Index* ir, const Index* jc, const T* real_values,
+void Matfile_writer::write_sparse_array_element(const std::string& name, std::size_t rows,
+	std::size_t cols, std::size_t nnz, const Index* ir, const Index* jc, const T* real_values,
 	esu::Type_identity<const T*> complex_values)
 {
 	static_assert(std::is_integral_v<Index>);
@@ -184,13 +188,14 @@ void Matfile_writer::write_sparse_array_element(const std::string& name, std::si
 	if (data_size_in_bytes > INT32_MAX)
 		throw std::length_error("Level 5 MAT-files cannot hold variables exceeding 2GB");
 
-	const std::size_t total_size_in_bytes =							  // Total size includes all subelement paddings
-		sizeof(internal::matfile::Array_flags) +					  // Array flags
-		sizeof(internal::matfile::Dimensions) +						  // Dimensions array
-		sizeof(internal::matfile::Tag) + padded_size(name.length()) + // Array name
+	const std::size_t total_size_in_bytes =		 // Total size includes all subelement paddings
+		sizeof(internal::matfile::Array_flags) + // Array flags
+		sizeof(internal::matfile::Dimensions) +	 // Dimensions array
+		sizeof(internal::matfile::Tag) + padded_size(name.length()) +			 // Array name
 		sizeof(internal::matfile::Tag) + padded_size(row_ind_size_in_bytes) +	 // Row indices
 		sizeof(internal::matfile::Tag) + padded_size(column_ind_size_in_bytes) + // Column indices
-		(sizeof(internal::matfile::Tag) + padded_size(data_size_in_bytes)) * (is_complex_data ? 2 : 1); // Data size
+		(sizeof(internal::matfile::Tag) + padded_size(data_size_in_bytes)) *
+			(is_complex_data ? 2 : 1); // Data size
 
 	write_tag(internal::matfile::Data_types::MATRIX, total_size_in_bytes);
 

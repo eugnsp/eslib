@@ -69,5 +69,6 @@ struct Offset_integer_sequence_impl<std::integer_sequence<T, is...>, offset>
 } // namespace internal
 
 template<class Sequence, typename Sequence::value_type offset>
-using Offset_integer_sequence = typename internal::Offset_integer_sequence_impl<Sequence, offset>::Type;
+using Offset_integer_sequence =
+	typename internal::Offset_integer_sequence_impl<Sequence, offset>::Type;
 } // namespace esu

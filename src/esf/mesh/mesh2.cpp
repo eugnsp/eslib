@@ -6,7 +6,9 @@
 
 #include <algorithm>
 #include <cassert>
+#include <optional>
 #include <ostream>
+#include <string>
 
 namespace esf
 {
@@ -38,18 +40,22 @@ Rect Mesh2::bounding_rect() const
 }
 
 // Performs some basic checks of mesh data structure consistency
-esu::Error Mesh2::check() const
+std::optional<std::string> Mesh2::check() const
 {
 	auto err = Halfedge_structure::check();
 	if (err)
 		return err;
 
 	// Check for counter-clockwise order of vertices
+	std::string err_str;
 	for (auto& face : this->faces())
 		if (area(face) < 0)
-			err.append_ln("face #", **face, " has incorrect vertex order");
+			err_str += "Face #" + std::to_string(**face) + " has incorrect vertex order\n";
 
-	return err;
+	if (!err_str.empty())
+		return err_str;
+	else
+		return {};
 }
 
 // Outputs human readable information about the mesh

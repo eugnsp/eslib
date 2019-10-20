@@ -41,8 +41,7 @@ constexpr bool tuple_all_of(Pred pred, Tuples&&... tuples)
 		return internal::tuple_all_of(
 			pred, std::forward<Tuples>(tuples)..., internal::index_sequence_for_tuple<Tuples...>);
 	else
-		return tuple_all_of(
-			internal::forward_with_apply(pred),
+		return tuple_all_of(internal::forward_with_apply(pred),
 			tuple_forward_as_zipped(std::forward<Tuples>(tuples)...));
 }
 
@@ -57,8 +56,7 @@ constexpr bool tuple_any_of(Pred pred, Tuples&&... tuples)
 		return internal::tuple_any_of(
 			pred, std::forward<Tuples>(tuples)..., internal::index_sequence_for_tuple<Tuples...>);
 	else
-		return tuple_any_of(
-			internal::forward_with_apply(pred),
+		return tuple_any_of(internal::forward_with_apply(pred),
 			tuple_forward_as_zipped(std::forward<Tuples>(tuples)...));
 }
 
@@ -73,8 +71,7 @@ constexpr bool tuple_none_of(Pred pred, Tuples&&... tuples)
 		return internal::tuple_none_of(
 			pred, std::forward<Tuples>(tuples)..., internal::index_sequence_for_tuple<Tuples...>);
 	else
-		return tuple_none_of(
-			internal::forward_with_apply(pred),
+		return tuple_none_of(internal::forward_with_apply(pred),
 			tuple_forward_as_zipped(std::forward<Tuples>(tuples)...));
 }
 } // namespace esu

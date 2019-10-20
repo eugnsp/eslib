@@ -42,7 +42,7 @@ void eigenvalues(Dense<Expr1, Lvalue>& mat, Dense<Expr2, Lvalue>& eigenvalues)
 	assert(mat.rows() == mat.cols());
 	assert(mat.rows() == eigenvalues.size());
 
-	internal::Fn_eigenvalues<Expr1, internal::Mkl_expr_decay<Expr1>, Expr2, internal::Mkl_expr_decay<Expr2>>{}(
-		mat.self(), eigenvalues.self());
+	internal::Fn_eigenvalues<Expr1, internal::Mkl_expr_decay<Expr1>, Expr2,
+		internal::Mkl_expr_decay<Expr2>>{}(mat.self(), eigenvalues.self());
 }
 } // namespace esl

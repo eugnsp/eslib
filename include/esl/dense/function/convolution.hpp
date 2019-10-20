@@ -12,12 +12,13 @@
 #include <stdexcept>
 #include <string>
 
-#define ESL_CALL_MKL_VSL(fn, ...)                                                                                    \
-	do                                                                                                                 \
-	{                                                                                                                  \
-		[[maybe_unused]] const auto status = fn(__VA_ARGS__);                                                          \
-		if (status != VSL_STATUS_OK)                                                                                   \
-			throw std::runtime_error("Exception in " #fn ": " + internal::mkl_vsl_status_string(status));              \
+#define ESL_CALL_MKL_VSL(fn, ...)                                                                  \
+	do                                                                                             \
+	{                                                                                              \
+		[[maybe_unused]] const auto status = fn(__VA_ARGS__);                                      \
+		if (status != VSL_STATUS_OK)                                                               \
+			throw std::runtime_error(                                                              \
+				"Exception in " #fn ": " + internal::mkl_vsl_status_string(status));               \
 	} while (0)
 
 namespace esl
@@ -28,14 +29,15 @@ std::string mkl_vsl_status_string(MKL_INT);
 } // namespace internal
 
 template<class Expr1, class Expr2>
-void cols_convolution(const Dense<Expr1, Lvalue>& x, Dense<Expr2, Lvalue>& y, std::optional<std::size_t> y_start = {})
+void cols_convolution(
+	const Dense<Expr1, Lvalue>& x, Dense<Expr2, Lvalue>& y, std::optional<std::size_t> y_start = {})
 {
 	static_assert(internal::have_same_value_types<Expr1, Expr2>, "Incompatible data types");
 	static_assert(internal::is_vector<Expr1>, "Expression should be a vector");
 
 	::VSLConvTaskPtr task;
-	ESL_CALL_MKL_VSL(::vsldConvNewTaskX1D, &task, VSL_CONV_MODE_AUTO, x.size(), y.rows(), y.rows(), x.self().data(),
-		x.self().row_stride());
+	ESL_CALL_MKL_VSL(::vsldConvNewTaskX1D, &task, VSL_CONV_MODE_AUTO, x.size(), y.rows(), y.rows(),
+		x.self().data(), x.self().row_stride());
 
 	if (y_start)
 	{
@@ -55,14 +57,15 @@ void cols_convolution(const Dense<Expr1, Lvalue>& x, Dense<Expr2, Lvalue>& y, st
 }
 
 template<class Expr1, class Expr2>
-void rows_convolution(const Dense<Expr1, Lvalue>& x, Dense<Expr2, Lvalue>& y, std::optional<std::size_t> y_start = {})
+void rows_convolution(
+	const Dense<Expr1, Lvalue>& x, Dense<Expr2, Lvalue>& y, std::optional<std::size_t> y_start = {})
 {
 	static_assert(internal::have_same_value_types<Expr1, Expr2>, "Incompatible data types");
 	static_assert(internal::is_vector<Expr1>, "Expression should be a vector");
 
 	::VSLConvTaskPtr task;
-	ESL_CALL_MKL_VSL(::vsldConvNewTaskX1D, &task, VSL_CONV_MODE_AUTO, x.size(), y.cols(), y.cols(), x.self().data(),
-		x.self().row_stride());
+	ESL_CALL_MKL_VSL(::vsldConvNewTaskX1D, &task, VSL_CONV_MODE_AUTO, x.size(), y.cols(), y.cols(),
+		x.self().data(), x.self().row_stride());
 
 	if (y_start)
 	{

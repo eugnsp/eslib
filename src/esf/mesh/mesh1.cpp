@@ -24,8 +24,7 @@ bool Mesh1::is_boundary(esf::Edge_index index) const
 	return *index == 0 || index == (n_edges() - 1);
 }
 
-std::pair<esf::Vertex_index, esf::Vertex_index> Mesh1::vertex_indices(
-	esf::Edge_index edge) const
+std::pair<esf::Vertex_index, esf::Vertex_index> Mesh1::vertex_indices(esf::Edge_index edge) const
 {
 	const auto first_vertex = esf::Vertex_index{*edge};
 	return {first_vertex, first_vertex + 1};

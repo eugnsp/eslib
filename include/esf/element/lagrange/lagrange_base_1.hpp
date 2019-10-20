@@ -1,7 +1,7 @@
 #pragma once
 #include <esf/element/lagrange/util.hpp>
 #include <esf/geometry/point1.hpp>
-#include <esf/types.hpp>
+#include <esf/index.hpp>
 
 #include <array>
 #include <cassert>

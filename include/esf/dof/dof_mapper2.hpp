@@ -1,10 +1,9 @@
 #pragma once
 #include <esf/dof/dof_index.hpp>
 #include <esf/dof/dof_mapper_base.hpp>
+#include <esf/dof/mesh_vars_map.hpp>
+#include <esf/mesh/index.hpp>
 #include <esf/type_traits.hpp>
-#include <esf/types.hpp>
-#include <esf/util/algorithm.hpp>
-#include <esf/util/mesh_vars_map.hpp>
 
 #include <esu/type_traits.hpp>
 
@@ -43,6 +42,9 @@ public:
 
 	template<std::size_t vi>
 	using Var_edge_dofs = typename Base::template Var_edge_dofs<vi>;
+
+	template<std::size_t vi>
+	using Var_cell_dofs = typename Base::template Var_cell_dofs<vi>;
 
 public:
 	// 	template<std::size_t var>
@@ -88,6 +90,12 @@ public:
 		var_edge_dofs<var>(edge, dofs_list);
 	}
 
+	template<std::size_t var = 0>
+	void cell_dofs(Face_index face, Var_cell_dofs<var>& dofs_list) const
+	{
+		var_cell_dofs<var>(face, dofs_list);
+	}
+
 private:
 	template<std::size_t var>
 	void dofs_impl(const Face_view& face, Var_dofs<var>& dofs) const
@@ -130,6 +138,16 @@ private:
 		static_assert(Base::template Var<var>::Element::has_edge_dofs);
 
 		const Dof_index& first_dof = this->indices_.at(edge, Var_index<var>{});
+		for (std::size_t i = 0; i < dofs.size(); ++i)
+			dofs[i] = first_dof + i;
+	}
+
+	template<std::size_t var, class Dofs>
+	void var_cell_dofs(Face_index face, Dofs& dofs) const
+	{
+		static_assert(Base::template Var<var>::Element::has_cell_dofs);
+
+		const Dof_index& first_dof = this->indices_.at(face, Var_index<var>{});
 		for (std::size_t i = 0; i < dofs.size(); ++i)
 			dofs[i] = first_dof + i;
 	}

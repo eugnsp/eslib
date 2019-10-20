@@ -69,12 +69,10 @@ double ln_binom(unsigned int n, unsigned int m);
 
 // Returns the Wigner 3-j symbol (j1 j2 j3; m1 m2 m3),
 // the arguments are given in half-integer units: j1x2 = 2j1, etc.
-double wigner_3j(unsigned int j1x2, unsigned int j2x2, unsigned int j3x2,
-	int m1x2, int m2x2, int m3x2);
+double wigner_3j(
+	unsigned int j1x2, unsigned int j2x2, unsigned int j3x2, int m1x2, int m2x2, int m3x2);
 
-double gaunt(unsigned int l1, unsigned int l2, unsigned int l3,
-	int m1, int m2, int m3);
+double gaunt(unsigned int l1, unsigned int l2, unsigned int l3, int m1, int m2, int m3);
 
-double real_gaunt(unsigned int l1, unsigned int l2, unsigned int l3,
-	int m1, int m2, int m3);
-}
+double real_gaunt(unsigned int l1, unsigned int l2, unsigned int l3, int m1, int m2, int m3);
+} // namespace esu

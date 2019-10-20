@@ -48,7 +48,8 @@ constexpr auto make_vector(std::size_t size, Fn fn)
 template<std::size_t rows, std::size_t cols, class Layout = Col_major, class Fn>
 constexpr auto make_matrix(Fn fn)
 {
-	return internal::make_matrix_impl<rows, cols, Layout>(std::make_index_sequence<rows * cols>{}, fn);
+	return internal::make_matrix_impl<rows, cols, Layout>(
+		std::make_index_sequence<rows * cols>{}, fn);
 }
 
 template<class Layout = Col_major, class Fn>

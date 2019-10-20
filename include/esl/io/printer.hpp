@@ -26,7 +26,8 @@ public:
 			if constexpr (is_col_major<Expr>)
 				os << " column-major";
 			if constexpr (is_lvalue_block<Expr>)
-				os << ", row stride = " << expr_.row_stride() << ", col_stride = " << expr_.col_stride()
+				os << ", row stride = " << expr_.row_stride()
+				   << ", col_stride = " << expr_.col_stride()
 				   << ", lead_dim = " << expr_.lead_dim();
 			os << '\n';
 		}

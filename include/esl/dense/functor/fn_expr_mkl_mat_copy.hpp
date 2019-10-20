@@ -41,7 +41,8 @@ private:
 	template<class Expr_dst, class Expr_src, typename Alpha>
 	void operator()(Expr_dst& dst, const Expr_src& src, Alpha alpha) const
 	{
-		using Transp_tag = std::conditional_t<have_same_layouts<Expr_dst, Expr_src>, No_transpose, Transpose>;
+		using Transp_tag =
+			std::conditional_t<have_same_layouts<Expr_dst, Expr_src>, No_transpose, Transpose>;
 
 		const auto rows = have_same_layouts<Expr_dst, Expr_src> ? dst.rows() : dst.cols();
 		const auto cols = have_same_layouts<Expr_dst, Expr_src> ? dst.cols() : dst.rows();

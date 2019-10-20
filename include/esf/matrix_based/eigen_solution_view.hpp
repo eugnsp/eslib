@@ -23,8 +23,10 @@ private:
 	using Matrix = esl::Matrix_x<Value>;
 
 public:
-	Eigen_solution_view(const System& system, const Vector& eigen_values, const Matrix& eigen_vectors) :
-		eigen_values_(eigen_values), eigen_vectors_(eigen_vectors), system_(system)
+	Eigen_solution_view(
+		const System& system, const Vector& eigen_values, const Matrix& eigen_vectors) :
+		eigen_values_(eigen_values),
+		eigen_vectors_(eigen_vectors), system_(system)
 	{}
 
 	std::size_t size() const
@@ -64,7 +66,8 @@ public:
 				if (dofs[id].is_free)
 				{
 					const auto v = eigen_vectors_(dofs[id].index, index);
-					vals_at_quadr[iq] += esf::Element_quadr<Element<var>, Quadr>::basis()(iq, id) * v;
+					vals_at_quadr[iq] +=
+						esf::Element_quadr<Element<var>, Quadr>::basis()(iq, id) * v;
 				}
 
 		return vals_at_quadr;
@@ -97,8 +100,8 @@ auto at_quadr(const Eigen_solution_view<System, Value>& solution, std::size_t in
 }
 
 template<class Quadr, std::size_t var = 0, class System, class Value>
-auto at_quadr(
-	const Eigen_solution_view<System, Value>& solution, std::size_t index, const typename System::Mesh::Cell_view& cell)
+auto at_quadr(const Eigen_solution_view<System, Value>& solution, std::size_t index,
+	const typename System::Mesh::Cell_view& cell)
 {
 	return solution.template at_quadr<Quadr, var>(index, cell);
 }

@@ -17,8 +17,7 @@ public:
 	{}
 
 	template<class Container>
-	Iterable(Container&& container) :
-		begin_(std::begin(container)), end_(std::end(container))
+	Iterable(Container&& container) : begin_(std::begin(container)), end_(std::end(container))
 	{}
 
 	template<class Container>
@@ -46,8 +45,9 @@ public:
 
 	auto size() const
 	{
-		const auto size = std::distance<Iterator_begin>(begin_, end_);
-		assert(size > 0);
+		using std::distance;
+		const auto size = distance<Iterator_begin>(begin_, end_);
+		assert(size >= 0);
 
 		return static_cast<std::make_unsigned_t<decltype(size)>>(size);
 	}
@@ -63,6 +63,6 @@ private:
 };
 
 template<class Container>
-Iterable(Container&& container) ->
-	Iterable<decltype(std::begin(container)), decltype(std::end(container))>;
+Iterable(Container&& container)
+	->Iterable<decltype(std::begin(container)), decltype(std::end(container))>;
 } // namespace esu

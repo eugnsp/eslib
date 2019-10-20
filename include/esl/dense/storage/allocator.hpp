@@ -15,7 +15,6 @@
 	#error Unsupported version of MKL
 #endif
 
-
 namespace esl::internal
 {
 template<typename T>
@@ -32,8 +31,8 @@ template<typename T, std::size_t alignment>
 class Allocator
 {
 public:
-	[[nodiscard, gnu::malloc, gnu::assume_aligned(alignment)]]
-	static T* allocate(const std::size_t size)
+	[[nodiscard, gnu::malloc, gnu::assume_aligned(alignment)]] static T* allocate(
+		const std::size_t size)
 	{
 		if (size == 0)
 			return nullptr;
@@ -46,8 +45,8 @@ public:
 		throw std::bad_alloc{};
 	}
 
-	[[nodiscard, gnu::assume_aligned(alignment)]]
-	static T* reallocate(T* const old_ptr, std::size_t new_size)
+	[[nodiscard, gnu::assume_aligned(alignment)]] static T* reallocate(
+		T* const old_ptr, std::size_t new_size)
 	{
 		static_assert(esu::is_trivially_relocatable<T>);
 

@@ -17,8 +17,10 @@ public:
 	using Value = Value_type<Random_matrix>;
 
 public:
-	Random_matrix(const std::size_t rows, const std::size_t cols, Random_distribution distr, Random_generator& gen) :
-		rows_(rows), cols_(cols), distr_(std::move(distr)), gen_(gen)
+	Random_matrix(const std::size_t rows, const std::size_t cols, Random_distribution distr,
+		Random_generator& gen) :
+		rows_(rows),
+		cols_(cols), distr_(std::move(distr)), gen_(gen)
 	{}
 
 	std::size_t rows() const

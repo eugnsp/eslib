@@ -4,7 +4,7 @@
 #include <esf/type_traits.hpp>
 #include <esf/types.hpp>
 #include <esf/util/mesh_vars_map.hpp>
-#include <esf/var_list.hpp>
+#include <esf/var.hpp>
 
 #include <vector>
 
@@ -134,7 +134,7 @@ public:
 			});
 
 		// Assign indices
-		this->indices_.init_storage(mesh, Dof_index::invalid_free(), n_layers_);
+		this->indices_.init_storage(mesh, Dof_index{}, n_layers_);
 
 		// Mark const dofs
 		this->n_free_dofs_ = this->n_dofs_;

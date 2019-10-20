@@ -1,6 +1,5 @@
 #pragma once
 #include <esf/mesh/iterator/iterator_base.hpp>
-#include <esf/types.hpp>
 
 #include <cassert>
 #include <iterator>

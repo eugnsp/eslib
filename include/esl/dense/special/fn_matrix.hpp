@@ -16,7 +16,8 @@ public:
 	using Value = Value_type<Fn_matrix>;
 
 public:
-	Fn_matrix(std::size_t rows, std::size_t cols, Fn fn) : rows_(rows), cols_(cols), fn_(std::move(fn))
+	Fn_matrix(std::size_t rows, std::size_t cols, Fn fn) :
+		rows_(rows), cols_(cols), fn_(std::move(fn))
 	{}
 
 	std::size_t rows() const

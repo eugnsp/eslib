@@ -1,10 +1,10 @@
 #include "function.hpp"
 #if __has_include(<mkl_version.h>)
-#	include <mkl_version.h>
+	#include <mkl_version.h>
 #endif
 #include <cctype>
-#include <sstream>
 #include <iomanip>
+#include <sstream>
 
 namespace esu
 {
@@ -37,9 +37,9 @@ std::string compiler_and_mkl_info()
 		 << "Intel C++ Compiler Version " << __INTEL_COMPILER << " (" << __INTEL_COMPILER_BUILD_DATE
 		 << ')';
 #else
-#	ifdef _MSC_VER
+	#ifdef _MSC_VER
 	info << '\n' << "Microsoft C/C++ Compiler Version " << _MSC_FULL_VER;
-#	endif
+	#endif
 #endif
 
 #ifdef __INTEL_MKL__

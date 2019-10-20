@@ -1,7 +1,10 @@
 #pragma once
 #include <esf/geometry/point1.hpp>
+#include <esf/geometry/tags.hpp>
+#include <esf/mesh/index.hpp>
 #include <esf/mesh/view/base.hpp>
-#include <esf/types.hpp>
+
+#include <array>
 
 namespace esf
 {
@@ -18,7 +21,7 @@ public:
 
 	bool is_boundary() const;
 
-	const esf::Point1& vertex(Local_index) const;
+	const Point1& vertex(Local_index) const;
 	Vertex_index vertex_index(Local_index) const;
 
 	void get_indices(Vertex_indices&) const;

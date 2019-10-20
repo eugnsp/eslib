@@ -22,9 +22,8 @@ public:
 		return Linear_grid{x_min, step, size};
 	}
 
-	explicit Linear_grid(T x0)
-		: x0_(x0), dx_(0), size_(1)
-	{ }
+	explicit Linear_grid(T x0) : x0_(x0), dx_(0), size_(1)
+	{}
 
 	void set_x0_dx_size(T x0, T dx, std::size_t size)
 	{
@@ -71,8 +70,7 @@ public:
 	}
 
 private:
-	Linear_grid(T x0, T dx, std::size_t size)
-		: x0_(x0), dx_(dx), size_(size)
+	Linear_grid(T x0, T dx, std::size_t size) : x0_(x0), dx_(dx), size_(size)
 	{
 		assert(size > 0);
 	}
@@ -100,4 +98,4 @@ private:
 // {
 // 	return (grid -= offset);
 // }
-}
+} // namespace esu

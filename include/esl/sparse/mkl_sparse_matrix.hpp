@@ -17,12 +17,13 @@
 #include <type_traits>
 #include <utility>
 
-#define ESL_CALL_MKL_SPARSE(fn, ...)                                                                                 \
-	do                                                                                                                 \
-	{                                                                                                                  \
-		[[maybe_unused]] const auto status = fn(__VA_ARGS__);                                                          \
-		if (status != ::sparse_status_t::SPARSE_STATUS_SUCCESS)                                                        \
-			throw std::runtime_error("Exception in " #fn ": " + internal::mkl_sparse_status_string(status));           \
+#define ESL_CALL_MKL_SPARSE(fn, ...)                                                               \
+	do                                                                                             \
+	{                                                                                              \
+		[[maybe_unused]] const auto status = fn(__VA_ARGS__);                                      \
+		if (status != ::sparse_status_t::SPARSE_STATUS_SUCCESS)                                    \
+			throw std::runtime_error(                                                              \
+				"Exception in " #fn ": " + internal::mkl_sparse_status_string(status));            \
 	} while (0)
 
 namespace esl
@@ -118,8 +119,8 @@ private:
 			MKL_UINT rows, cols, *rows_start, *rows_end, *col_index;
 			Value* values;
 
-			ESL_CALL_MKL_SPARSE(internal::mkl_sparse_export_csr, handle_, indexing, rows, cols, rows_start, rows_end,
-				col_index, values);
+			ESL_CALL_MKL_SPARSE(internal::mkl_sparse_export_csr, handle_, indexing, rows, cols,
+				rows_start, rows_end, col_index, values);
 			return {static_cast<Index>(rows), static_cast<Index>(cols)};
 		}
 		else

@@ -20,10 +20,7 @@ public:
 	RuntimeException(const std::string& error) : runtime_error(error)
 	{}
 
-	RuntimeException(
-		const std::string& error,
-		const std::string& function,
-		const std::string& file,
+	RuntimeException(const std::string& error, const std::string& function, const std::string& file,
 		std::size_t line) :
 		runtime_error(error + " in " + function + " (" + file + ':' + std::to_string(line) + ')')
 	{}

@@ -1,6 +1,6 @@
 #pragma once
 #include <esf/element/lagrange/util.hpp>
-#include <esf/types.hpp>
+#include <esf/index.hpp>
 
 #include <esl/dense.hpp>
 
@@ -53,11 +53,13 @@ public:
 			pz_dz += prod_frac_xmk_nmk(z, r[2], p);
 
 		// pz/dx = pz/dy = -pz/dz
-		return esl::Vector_2d(py * (px * -pz_dz + pz * px_dx) * order, px * (py * -pz_dz + pz * py_dy) * order);
+		return esl::Vector_2d(
+			py * (px * -pz_dz + pz * px_dx) * order, px * (py * -pz_dz + pz * py_dy) * order);
 	}
 
 private:
-	static constexpr std::array<Local_index, 3> ijk_by_dof_index(Local_index dof, Local_index order = order_)
+	static constexpr std::array<Local_index, 3> ijk_by_dof_index(
+		Local_index dof, Local_index order = order_)
 	{
 		[[maybe_unused]] const auto n_total_dofs = (order + 1) * (order + 2) / 2;
 		assert(dof < n_total_dofs && order <= order_);

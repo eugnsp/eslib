@@ -1,6 +1,6 @@
 #pragma once
-#include <limits>
 #include <cmath>
+#include <limits>
 
 namespace esu::math
 {

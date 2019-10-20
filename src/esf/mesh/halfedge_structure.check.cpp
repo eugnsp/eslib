@@ -1,10 +1,9 @@
 #include <esf/geometry.hpp>
 #include <esf/mesh/halfedge_structure.hpp>
-#include <esf/types.hpp>
-
-#include <esu/error.hpp>
+#include <esf/mesh/index.hpp>
 
 #include <algorithm>
+#include <optional>
 #include <set>
 #include <string>
 #include <utility>
@@ -18,29 +17,29 @@ std::string index_string(Index index)
 namespace esf::internal
 {
 // Performs some basic checks of mesh data structure consistency
-esu::Error Halfedge_structure::check() const
+std::optional<std::string> Halfedge_structure::check() const
 {
-	esu::Error err;
+	std::string err;
 
 	if (*n_vertices() == 0)
-		err.append_ln("The mesh contains no vertices");
+		err += "The mesh contains no vertices\n";
 
 	if (*n_edges() == 0)
-		err.append_ln("The mesh contains no edges");
+		err += "The mesh contains no edges\n";
 
 	if (*n_cells() == 0)
-		err.append_ln("The mesh contains no faces");
+		err += "The mesh contains no faces\n";
 
-	if (err)
+	if (!err.empty())
 		return err;
 
 	// Check vertices
 	for (Index i = 0; i < *n_vertices(); ++i)
 		if (vertices_[i].halfedge >= n_halfedges())
-			err.append_ln("The vertex #", i, " has bad halfedge index (",
-				index_string(vertices_[i].halfedge), ')');
+			err += "The vertex #" + std::to_string(i) + " has bad halfedge index " +
+				   index_string(vertices_[i].halfedge) + '\n';
 
-	if (err)
+	if (!err.empty())
 		return err;
 
 	// Check edges
@@ -49,29 +48,29 @@ esu::Error Halfedge_structure::check() const
 		auto& halfedge = halfedges_[i];
 
 		if (halfedge.vertex >= n_vertices())
-			err.append_ln(
-				"The halfedge #", i, " has bad vertex index (", index_string(halfedge.vertex), ')');
+			err += "The halfedge #" + std::to_string(i) + " has bad vertex index " +
+				   index_string(halfedge.vertex) + '\n';
 
 		if (halfedge.next >= n_halfedges())
-			err.append_ln("The halfedge #", i, " has bad next halfedge index (",
-				index_string(halfedge.next), ')');
+			err += "The halfedge #" + std::to_string(i) + " has bad next halfedge index " +
+				   index_string(halfedge.next) + '\n';
 
 		// halfedge.face is invalid for outter halfedges
 		if (is_valid(halfedge.face) && halfedge.face >= n_cells())
-			err.append_ln(
-				"The halfedge #", i, " has bad cell index (", index_string(halfedge.face), ')');
+			err += "The halfedge #" + std::to_string(i) + " has bad cell index " +
+				   index_string(halfedge.face) + '\n';
 	}
 
-	if (err)
+	if (!err.empty())
 		return err;
 
 	// Check faces
 	for (Index i = 0; i < *n_cells(); ++i)
 		if (faces_[i].halfedge >= n_halfedges())
-			err.append_ln("The face #", i, " has bad halfedge index (",
-				index_string(faces_[i].halfedge), ')');
+			err += "The face #" + std::to_string(i) + " has bad halfedge index " +
+				   index_string(faces_[i].halfedge) + '\n';
 
-	if (err)
+	if (!err.empty())
 		return err;
 
 	// Check face-based cycles
@@ -84,7 +83,8 @@ esu::Error Halfedge_structure::check() const
 			[i, &seen_indices, &err](Halfedge_index edge) {
 				if (seen_indices.count(*edge))
 				{
-					err.append_ln("The halfedges of the face #", i, " do not form a cycle");
+					err += "The halfedges of the face #" + std::to_string(i) +
+						   " do not form a cycle\n";
 					return true;
 				}
 
@@ -94,7 +94,7 @@ esu::Error Halfedge_structure::check() const
 			Face_circ_tag{});
 	}
 
-	if (err)
+	if (!err.empty())
 		return err;
 
 	// Check vertex-based cycles
@@ -107,7 +107,8 @@ esu::Error Halfedge_structure::check() const
 			[i, &seen_indices, &err](Halfedge_index edge) {
 				if (seen_indices.count(edge))
 				{
-					err.append_ln("The halfedges of the vertex #", i, " do not form a cycle");
+					err += "The halfedges of the vertex #" + std::to_string(i) +
+						   " do not form a cycle";
 					return true;
 				}
 
@@ -117,11 +118,11 @@ esu::Error Halfedge_structure::check() const
 			Vertex_out_circ_tag{});
 	}
 
-	if (err)
+	if (!err.empty())
 		return err;
 
 	// Check for duplicated vertices
-	using Vertices = std::vector<std::pair<Index, esf::Point2>>;
+	using Vertices = std::vector<std::pair<Index, Point2>>;
 	Vertices vertices;
 	vertices.reserve(*n_vertices());
 
@@ -138,8 +139,9 @@ esu::Error Halfedge_structure::check() const
 		if (pos == vertices.end())
 			break;
 
-		err.append_ln(
-			"Vertices #", pos->first, " and #", (pos + 1)->first, " are identical, ", pos->second);
+		err += "Vertices #" + std::to_string(pos->first) + " and #" +
+			   std::to_string((pos + 1)->first) + " are identical, " + pos->second.to_string() +
+			   '\n';
 	}
 
 	// Check for unused nodes
@@ -149,8 +151,12 @@ esu::Error Halfedge_structure::check() const
 
 	for (Index i = 0; i < *n_vertices(); ++i)
 		if (!seen_nodes[i])
-			err.append_ln("Vertex #", i, " is unused, ", vertices_[i].point);
+			err += "Vertex #" + std::to_string(i) + " is unused, " +
+				   vertices_[i].point.to_string() + '\n';
 
-	return err;
+	if (!err.empty())
+		return err;
+	else
+		return {};
 }
 } // namespace esf::internal

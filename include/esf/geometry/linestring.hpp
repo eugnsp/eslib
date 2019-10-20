@@ -1,9 +1,10 @@
 #pragma once
 #include <esf/geometry/point2.hpp>
 #include <esf/geometry/points2.hpp>
-#include <esf/types.hpp>
+#include <esf/geometry/tags.hpp>
 
 #include <cassert>
+#include <initializer_list>
 #include <utility>
 #include <vector>
 

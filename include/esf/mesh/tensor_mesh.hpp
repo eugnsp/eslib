@@ -93,15 +93,15 @@ private:
 			{
 				const Rect rect({grid_x_[i], grid_y_[j - 1]}, {grid_x_[i + 1], grid_y_[j]});
 				if (bisection(rect))
-				{                                                  //     *---*  next
+				{												   //     *---*  next
 					add_cell({prev[i], prev[i + 1], next[i + 1]}); //     | / |
-					add_cell({prev[i], next[i + 1], next[i]});     //     *---*  prev
-				}                                                  //	    i  i+1
+					add_cell({prev[i], next[i + 1], next[i]});	   //     *---*  prev
+				}												   //	    i  i+1
 				else
-				{                                                  //     *---*  next
-					add_cell({next[i], prev[i], prev[i + 1]});     //     | \ |
+				{												   //     *---*  next
+					add_cell({next[i], prev[i], prev[i + 1]});	   //     | \ |
 					add_cell({next[i], prev[i + 1], next[i + 1]}); //     *---*  prev
-				}                                                  //	    i  i+1
+				}												   //	    i  i+1
 			}
 
 			std::swap(prev, next);

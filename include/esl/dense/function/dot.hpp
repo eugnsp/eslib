@@ -45,7 +45,7 @@ auto dot(const Dense<Expr1, Category1>& expr1, const Dense<Expr2, Category2>& ex
 	assert(expr1.rows() == expr2.rows());
 	assert(expr1.cols() == expr2.cols());
 
-	return internal::Fn_dot<Expr1, Expr2, internal::Mkl_expr_decay<Expr1>, internal::Mkl_expr_decay<Expr2>>{}(
-		expr1.self(), expr2.self());
+	return internal::Fn_dot<Expr1, Expr2, internal::Mkl_expr_decay<Expr1>,
+		internal::Mkl_expr_decay<Expr2>>{}(expr1.self(), expr2.self());
 }
 } // namespace esl

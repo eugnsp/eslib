@@ -1,7 +1,7 @@
 #pragma once
-#include <esf/geometry/algorithm/equals.hpp>
 #include <esf/geometry/compare.hpp>
-#include <esf/types.hpp>
+#include <esf/geometry/function/equals.hpp>
+#include <esf/geometry/tags.hpp>
 
 #include <esl/dense.hpp>
 #include <esu/numeric.hpp>

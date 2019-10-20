@@ -1,6 +1,6 @@
 #pragma once
-#include <string>
 #include <sstream>
+#include <string>
 
 namespace esu
 {

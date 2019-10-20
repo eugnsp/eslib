@@ -25,8 +25,10 @@ struct Fn_expr_sub_assign_trait
 	using Type = Fn_expr_sub_assign_loop;
 };
 
-template<class Expr1, class Expr2, template<class, class, class, class, typename = void> class Trait>
-using Make_fn_expr_type = typename Trait<Expr1, Expr2, Mkl_expr_decay<Expr1>, Mkl_expr_decay<Expr2>>::Type;
+template<class Expr1, class Expr2,
+	template<class, class, class, class, typename = void> class Trait>
+using Make_fn_expr_type =
+	typename Trait<Expr1, Expr2, Mkl_expr_decay<Expr1>, Mkl_expr_decay<Expr2>>::Type;
 
 //////////////////////////////////////////////////////////////////////
 

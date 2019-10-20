@@ -1,11 +1,11 @@
 #pragma once
-#include <esu/tuple.hpp>
+#include <cassert>
 #include <esu/iterator/iterable.hpp>
 #include <esu/iterator/smart_ptr_iterator.hpp>
 #include <esu/iterator/transform_iterator.hpp>
+#include <esu/tuple.hpp>
 #include <iterator>
 #include <type_traits>
-#include <cassert>
 
 namespace esu
 {

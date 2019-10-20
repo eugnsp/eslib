@@ -12,13 +12,15 @@
 namespace esl
 {
 template<typename Value, std::size_t ct_rows, std::size_t ct_cols, class Layout>
-class Matrix : public internal::Matrix_base<ct_rows, ct_cols, Matrix<Value, ct_rows, ct_cols, Layout>, Layout>
+class Matrix :
+	public internal::Matrix_base<ct_rows, ct_cols, Matrix<Value, ct_rows, ct_cols, Layout>, Layout>
 {
 	static_assert(!std::is_const_v<Value>);
 	static_assert(!std::is_reference_v<Value>);
 
 private:
-	using Base = internal::Matrix_base<ct_rows, ct_cols, Matrix<Value, ct_rows, ct_cols, Layout>, Layout>;
+	using Base =
+		internal::Matrix_base<ct_rows, ct_cols, Matrix<Value, ct_rows, ct_cols, Layout>, Layout>;
 
 public:
 	//> Constructors

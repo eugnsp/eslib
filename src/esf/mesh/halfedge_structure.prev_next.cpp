@@ -1,5 +1,5 @@
 #include <esf/mesh/halfedge_structure.hpp>
-#include <esf/types.hpp>
+#include <esf/mesh/index.hpp>
 
 namespace esf::internal
 {

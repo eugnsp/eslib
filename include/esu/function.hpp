@@ -1,12 +1,12 @@
 #pragma once
 #include <algorithm>
-#include <cstdint>
 #include <cstddef>
-#include <utility>
-#include <string>
-#include <sstream>
+#include <cstdint>
 #include <iterator>
+#include <sstream>
+#include <string>
 #include <type_traits>
+#include <utility>
 
 namespace esu
 {

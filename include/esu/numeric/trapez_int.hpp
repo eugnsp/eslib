@@ -22,4 +22,4 @@ auto trapez_int(N n_points, Xs&& xs, Fn&& fn, const T init = {})
 
 	return value;
 }
-}
+} // namespace esu

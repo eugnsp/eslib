@@ -1,9 +1,10 @@
 #pragma once
 #include <esf/geometry/point1.hpp>
+#include <esf/mesh/index.hpp>
 #include <esf/mesh/iterator/random_access.hpp>
+#include <esf/mesh/tags.hpp>
 #include <esf/mesh/view/edge_mesh1.hpp>
 #include <esf/mesh/view/vertex_mesh1.hpp>
-#include <esf/types.hpp>
 
 #include <esu/iterator.hpp>
 
@@ -24,7 +25,7 @@ public:
 	static constexpr std::size_t dim = 1;
 
 public:
-	using Cell_index = esf::Edge_index;
+	using Cell_index = Edge_index;
 	using Vertex_view = Element_view<Vertex_tag, Mesh>;
 	using Edge_view = Element_view<Edge_tag, Mesh>;
 	using Cell_view = Edge_view;
@@ -36,13 +37,13 @@ public:
 public:
 	Mesh() = default;
 
-	Mesh(std::vector<esf::Point1> vertices) : vertices_(std::move(vertices))
+	explicit Mesh(std::vector<esf::Point1> vertices) : vertices_(std::move(vertices))
 	{
 		assert(std::is_sorted(vertices_.begin(), vertices_.end()));
 	}
 
 	//////////////////////////////////////////////////////////////////////
-	//* Capacity */
+	/** Capacity */
 
 	esf::Vertex_index n_vertices() const;
 	esf::Edge_index n_edges() const;
@@ -81,6 +82,16 @@ public:
 	const esf::Point1& vertex(esf::Vertex_index vertex) const
 	{
 		return vertices_[*vertex];
+	}
+
+	void set_output_scale(double scale)
+	{
+		output_scale_ = scale;
+	}
+
+	double output_scale() const
+	{
+		return output_scale_;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -122,6 +133,7 @@ public:
 	//
 private:
 	std::vector<esf::Point1> vertices_;
+	double output_scale_ = 1;
 };
 //
 // std::ostream& operator<<(std::ostream&, const Mesh1&);

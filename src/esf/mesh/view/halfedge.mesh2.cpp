@@ -1,6 +1,7 @@
 #include <esf/geometry.hpp>
+#include <esf/mesh/index.hpp>
 #include <esf/mesh/mesh2.hpp>
-#include <esf/types.hpp>
+#include <esf/mesh/tags.hpp>
 
 #include <cassert>
 

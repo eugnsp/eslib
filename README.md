@@ -30,13 +30,13 @@ This is a collection of libraries that is being developed mostly for educational
 - Guass and Dunavant rules for itegration
 - Matrix-based linear, non-linear and eigensolvers
 - Mesh faces colouring and multi-threaded matrix assembly
-- Import from Gmsh mesh files, export into VTK `.vtk` and Matlab `.mat` files
+- Import from Gmsh mesh files, export into VTK, Matlab and Gnuplot files
 
 ## Dependencies
 
 - Intel MKL
 
-Requires C++17 compiler. Tested with GCC 8.3.0 and Clang 7.0.0.
+Requires C++17/C++20 compiler (the only C++20 feature used is template parameter list for generic lambdas P0428R2). Tested with GCC 8.3.0. <!-- and Clang 9.0.0. -->
 
 <!--
 ## Documentation

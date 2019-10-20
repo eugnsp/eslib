@@ -1,5 +1,5 @@
 #include <esf/mesh/mesh2.hpp>
-#include <esf/types.hpp>
+#include <esf/mesh/tags.hpp>
 
 #include <ostream>
 

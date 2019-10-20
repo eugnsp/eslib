@@ -1,12 +1,12 @@
 #include <esf/geometry.hpp>
 #include <esf/mesh/halfedge_structure.hpp>
-#include <esf/types.hpp>
+#include <esf/mesh/index.hpp>
 
 #include <algorithm>
 
 namespace esf::internal
 {
-auto Halfedge_structure::find_vertex(const esf::Point2& point) const -> Vertex_index
+auto Halfedge_structure::find_vertex(const Point2& point) const -> Vertex_index
 {
 	const auto pos = std::find_if(vertices_.begin(), vertices_.end(),
 		[&point](auto& vertex) { return vertex.point == point; });

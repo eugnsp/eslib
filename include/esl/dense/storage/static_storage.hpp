@@ -49,14 +49,12 @@ public:
 		return data_[index];
 	}
 
-	[[gnu::assume_aligned(alignment)]]
-	constexpr Value* data() noexcept
+	[[gnu::assume_aligned(alignment)]] constexpr Value* data() noexcept
 	{
 		return data_;
 	}
 
-	[[gnu::assume_aligned(alignment)]]
-	constexpr const Value* data() const noexcept
+	[[gnu::assume_aligned(alignment)]] constexpr const Value* data() const noexcept
 	{
 		return data_;
 	}

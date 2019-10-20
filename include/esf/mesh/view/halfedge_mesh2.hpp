@@ -1,7 +1,7 @@
 #pragma once
 #include <esf/geometry/point2.hpp>
 #include <esf/mesh/view/base.hpp>
-#include <esf/types.hpp>
+#include <esf/mesh/tags.hpp>
 
 namespace esf
 {
@@ -18,10 +18,10 @@ public:
 public:
 	using Element_view_base::Element_view_base;
 
-	const esf::Point2& vertex() const;
-	const esf::Point2& vertex(Local_index) const;
+	const Point2& vertex() const;
+	const Point2& vertex(Local_index) const;
 
-	esf::Point2 vector() const;
+	Point2 vector() const;
 
 	Vertex_index vertex_index() const;
 	Vertex_index vertex_index(Local_index) const;

@@ -1,5 +1,5 @@
+#include <esf/mesh/index.hpp>
 #include <esf/mesh/mesh2.hpp>
-#include <esf/types.hpp>
 
 namespace esf
 {

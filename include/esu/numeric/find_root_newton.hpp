@@ -23,4 +23,4 @@ T find_root_newton(Fn fn, T x, T x_acc, unsigned int max_n_its = 20)
 
 	throw std::runtime_error("Too many iterations in find_root_newton");
 }
-}
+} // namespace esu

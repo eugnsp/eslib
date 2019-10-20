@@ -25,8 +25,8 @@ private:
 		const auto descr = mkl_matrix_descr<Expr1>();
 		constexpr auto transp = transp_op_as_mkl_enum_sparse(No_transpose{});
 		constexpr auto layout = layout_as_mkl_enum_sparse(Layout_tag<Expr_dst>{});
-		mkl_sparse_mm(transp, 1., expr1.handle(), descr, layout, expr2.data(), expr2.cols(), expr2.lead_dim(), 0.,
-			dst.data(), dst.lead_dim());
+		mkl_sparse_mm(transp, 1., expr1.handle(), descr, layout, expr2.data(), expr2.cols(),
+			expr2.lead_dim(), 0., dst.data(), dst.lead_dim());
 	}
 };
 } // namespace esl::internal

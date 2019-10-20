@@ -16,4 +16,4 @@ struct Select
 
 using Select_first = Select<0>;
 using Select_second = Select<1>;
-}
+} // namespace esu

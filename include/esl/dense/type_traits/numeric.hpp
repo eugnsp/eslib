@@ -16,7 +16,8 @@ template<typename T>
 inline constexpr bool is_fd = Is_fd<T>::value;
 
 template<typename T>
-struct Is_cfd : esu::Is_one_of<T, std::complex<float>, std::complex<double>, ::MKL_Complex8, ::MKL_Complex16>
+struct Is_cfd :
+	esu::Is_one_of<T, std::complex<float>, std::complex<double>, ::MKL_Complex8, ::MKL_Complex16>
 {};
 
 template<typename T>

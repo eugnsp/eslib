@@ -8,7 +8,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 file(GLOB_RECURSE CPP_FILES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 add_library(eslib "${CPP_FILES}")
 target_include_directories(eslib PUBLIC "include")
-target_compile_features(eslib PUBLIC cxx_std_17)
+target_compile_features(eslib PUBLIC cxx_std_20)
 target_compile_options(eslib PRIVATE -Wall -Wpedantic -Wextra -Werror=return-type -m64 -march=native 
 					   $<$<CONFIG:DEBUG>:-O0 -g> $<$<CONFIG:RELEASE>:-Wno-unused-parameter -Wno-deprecated-declarations -O3 -DNDEBUG>)
 

@@ -51,11 +51,13 @@ private:
 		constexpr auto alpha = 1;
 
 		if constexpr (is_vector<Expr_dst> || is_vector<Expr2>)
-			mkl_gemv<Layout_tag<Expr1>, No_transpose>(expr1.rows(), expr1.cols(), alpha, expr1.data(), expr1.lead_dim(),
-				expr2.data(), expr2.row_stride(), beta, dst.data(), dst.row_stride());
+			mkl_gemv<Layout_tag<Expr1>, No_transpose>(expr1.rows(), expr1.cols(), alpha,
+				expr1.data(), expr1.lead_dim(), expr2.data(), expr2.row_stride(), beta, dst.data(),
+				dst.row_stride());
 		else
-			mkl_gemm<Layout, Transp_a, Transp_b>(dst.rows(), dst.cols(), expr1.cols(), alpha, expr1.data(),
-				expr1.lead_dim(), expr2.data(), expr2.lead_dim(), beta, dst.data(), dst.lead_dim());
+			mkl_gemm<Layout, Transp_a, Transp_b>(dst.rows(), dst.cols(), expr1.cols(), alpha,
+				expr1.data(), expr1.lead_dim(), expr2.data(), expr2.lead_dim(), beta, dst.data(),
+				dst.lead_dim());
 	}
 };
 } // namespace esl::internal

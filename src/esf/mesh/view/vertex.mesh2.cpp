@@ -1,6 +1,7 @@
-#include <esf/geometry.hpp>
+#include <esf/geometry/point2.hpp>
+#include <esf/index.hpp>
 #include <esf/mesh/mesh2.hpp>
-#include <esf/types.hpp>
+#include <esf/mesh/tags.hpp>
 
 namespace esf
 {

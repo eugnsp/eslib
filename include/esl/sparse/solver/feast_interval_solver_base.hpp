@@ -64,11 +64,12 @@ protected:
 protected:
 	Feast_interval_solver_base();
 
-#define ESL_MKL_FEAST_RCI(T)                                                                                         \
-	Status mkl_feast_rci(Job&, MKL_UINT n, Add_complex<T>& ze, T* work1, Add_complex<T>* work2, T* work3, T* work4,    \
-		Remove_complex<T>& eps, MKL_UINT& n_loops,                                                                     \
-		std::pair<Remove_complex<T>, Remove_complex<T>> eigen_values_interval, MKL_UINT n_eigen_values0,               \
-		Remove_complex<T>* eigen_values, T* eigen_vectors, MKL_UINT& n_eigen_values, Remove_complex<T>* residues);
+#define ESL_MKL_FEAST_RCI(T)                                                                       \
+	Status mkl_feast_rci(Job&, MKL_UINT n, Add_complex<T>& ze, T* work1, Add_complex<T>* work2,    \
+		T* work3, T* work4, Remove_complex<T>& eps, MKL_UINT& n_loops,                             \
+		std::pair<Remove_complex<T>, Remove_complex<T>> eigen_values_interval,                     \
+		MKL_UINT n_eigen_values0, Remove_complex<T>* eigen_values, T* eigen_vectors,               \
+		MKL_UINT& n_eigen_values, Remove_complex<T>* residues);
 
 	ESL_MKL_FEAST_RCI(float)
 	ESL_MKL_FEAST_RCI(double)
