@@ -1,3 +1,3 @@
 #pragma once
-#include <esf/geometry/tags.hpp>
-#include <esf/mesh/tags.hpp>
+#include <esf/tags/geometry_tags.hpp>
+#include <esf/tags/mesh_tags.hpp>

@@ -1,6 +1,6 @@
 #pragma once
 #include <esf/geometry/point1.hpp>
-#include <esf/mesh/index.hpp>
+#include <esf/index.hpp>
 #include <esf/mesh/mesh1.hpp>
 
 #include <esu/iterator.hpp>

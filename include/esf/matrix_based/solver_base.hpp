@@ -91,7 +91,7 @@ protected:
 				if constexpr (Element::has_vertex_dofs)
 					for (auto& vertex : bnd_cond.vertices())
 					{
-						const auto vertex_dofs = dofs(system(), var_index, vertex);
+						const auto vertex_dofs = dofs(system(), vertex, var_index);
 						for (std::size_t i = 0; i < vertex_dofs.size(); ++i)
 						{
 							assert(!vertex_dofs[i].is_free);
@@ -102,7 +102,7 @@ protected:
 				if constexpr (System::dim == 2 && Element::has_edge_dofs)
 					for (auto& halfedge : bnd_cond.halfedges())
 					{
-						const auto halfedge_dofs = dofs(system(), var_index, halfedge);
+						const auto halfedge_dofs = dofs(system(), halfedge, var_index);
 						for (std::size_t i = 0; i < halfedge_dofs.size(); ++i)
 						{
 							assert(!halfedge_dofs[i].is_free);

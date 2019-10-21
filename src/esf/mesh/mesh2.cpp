@@ -1,7 +1,6 @@
 #include <esf/geometry.hpp>
 #include <esf/mesh/mesh2.hpp>
 
-#include <esu/error.hpp>
 #include <esu/string.hpp>
 
 #include <algorithm>
@@ -19,37 +18,35 @@ Rect Mesh2::bounding_rect() const
 
 	const auto first = boundary_vertex_circ();
 
-	esf::Point2 bottom_left = first->vertex();
-	esf::Point2 top_right = first->vertex();
+	double x_min, x_max;
+	double y_min, y_max;
+	x_min = x_max = first->vertex().x();
+	y_min = y_max = first->vertex().y();
 
 	auto circ = first;
 	do
 	{
 		auto& v = circ->vertex();
 
-		bottom_left.x() = std::min(bottom_left.x(), v.x());
-		bottom_left.y() = std::min(bottom_left.y(), v.y());
+		x_min = std::min(x_min, v.x());
+		y_min = std::min(y_min, v.y());
+		x_max = std::max(x_max, v.x());
+		y_max = std::max(y_max, v.y());
+	} while (++circ != first);
 
-		top_right.x() = std::max(top_right.x(), v.x());
-		top_right.y() = std::max(top_right.y(), v.y());
-
-		++circ;
-	} while (circ != first);
-
-	return {bottom_left, top_right};
+	return {Point2{x_min, y_min}, Point2{x_max, y_max}};
 }
 
 // Performs some basic checks of mesh data structure consistency
 std::optional<std::string> Mesh2::check() const
 {
-	auto err = Halfedge_structure::check();
-	if (err)
+	if (const auto err = Halfedge_structure::check(); err)
 		return err;
 
 	// Check for counter-clockwise order of vertices
 	std::string err_str;
 	for (auto& face : this->faces())
-		if (area(face) < 0)
+		if (esf::area(face) < 0)
 			err_str += "Face #" + std::to_string(**face) + " has incorrect vertex order\n";
 
 	if (!err_str.empty())

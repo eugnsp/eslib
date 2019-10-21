@@ -28,18 +28,18 @@ public:
 		values_.assign(n_layers * block_size() * *mesh.n_elements(Element_tag{}), value);
 	}
 
-	template<std::size_t var>
+	template<std::size_t var_idx>
 	typename std::vector<T>::reference at(
-		Element_index element, Var_index<var>, Index layer = 0, Index n_layers = 1)
+		Element_index element, Var_index<var_idx>, Index layer = 0, Index n_layers = 1)
 	{
-		return values_[layer + n_layers * pos<var>(element)];
+		return values_[layer + n_layers * pos<var_idx>(element)];
 	}
 
-	template<std::size_t var>
+	template<std::size_t var_idx>
 	typename std::vector<T>::const_reference at(
-		Element_index element, Var_index<var>, Index layer = 0, Index n_layers = 1) const
+		Element_index element, Var_index<var_idx>, Index layer = 0, Index n_layers = 1) const
 	{
-		return values_[layer + n_layers * pos<var>(element)];
+		return values_[layer + n_layers * pos<var_idx>(element)];
 	}
 
 	template<class Pred>
@@ -57,12 +57,12 @@ private:
 	static constexpr auto has_dof_flags =
 		esu::make_array(Vars::Element::has_dofs(Element_tag{})...);
 
-	template<std::size_t var>
+	template<std::size_t var_idx>
 	static constexpr std::size_t pos(Element_index element)
 	{
-		static_assert(has_dof_flags[var], "Variable has no DoF of this type");
+		static_assert(has_dof_flags[var_idx], "Variable has no DoF of this type");
 
-		constexpr auto offset = esu::array_sum_n<var, std::size_t>(has_dof_flags, 0);
+		constexpr auto offset = esu::array_sum_n<var_idx>(has_dof_flags, std::size_t{0});
 		return offset + (*element) * block_size();
 	}
 

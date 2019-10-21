@@ -25,7 +25,7 @@ void write_scattered(const std::string& file_name, Solution_view<System, var, Va
 		for (auto& face : mesh.faces())
 		{
 			const auto c = center(face);
-			writer.write_ln(c.x(), '\t', c.y(), '\t', solution_view.at(*face));
+			writer.write_ln(c.x(), '\t', c.y(), '\t', solution_view[*face]);
 		}
 	}
 }

@@ -1,8 +1,9 @@
 #pragma once
-#include <esf/system/dofs.hpp>
+#include <esf/dof/function.hpp>
 #include <esf/function.hpp>
 #include <esf/geometry.hpp>
 #include <esf/index.hpp>
+#include <esf/type_traits.hpp>
 
 #include <esl/dense.hpp>
 
@@ -49,46 +50,43 @@ public:
 	}
 
 	template<class Quadr>
-	auto at_quadr(const typename System::Mesh::Cell_view& cell) const
+	auto at_quadr(const typename Mesh::Cell_view& cell) const
 	{
 		const auto dofs = system_.dof_mapper().template dofs<var_idx>(cell);
 		return at_quadr<Quadr>(dofs);
 	}
 
-	auto& at(Vertex_index vertex) const
+	template<class Mesh_element_index,
+		class Mesh_tag = internal::Element_tag_by_index<Mesh_element_index>>
+	auto at(Mesh_element_index mesh_element_index) const
 	{
-		typename System::template Var_vertex_dofs<var_idx> dofs;
-		system_.dof_mapper().template vertex_dofs<var_idx>(vertex, dofs);
+		static_assert(Element::has_dofs(Mesh_tag{}));
+		constexpr auto n_element_dofs = Element::dofs(Mesh_tag{});
 
-		// TODO : return a vector if we have several DoFs
-		return solution_[dofs[0].index];
-	}
-
-	auto at(Face_index face) const
-	{
 		const auto& var = system_.variable(var_index);
-		const auto dofs = esf::dofs(system_, var_index, face);
+		const auto dofs = esf::dofs(system_, mesh_element_index, var_index);
 
-		if constexpr (Var::ct_dim == 1 && Element::face_dofs == 1)
-			return solution_[dofs[0]];
+		if constexpr (Var::ct_dim == 1 && n_element_dofs == 1)
+			return solution_[dofs[0].index];
 		else
 		{
-			esl::Matrix<Value, Var::ct_dim, Element::face_dofs> values;
-			values.resize(var.dim(), Element::face_dofs);
+			esl::Matrix<Value, Var::ct_dim, n_element_dofs> values;
+			values.resize(var.dim(), n_element_dofs);
 			for (std::size_t dim = 0; dim < var.dim(); ++dim)
-				for (std::size_t dof = 0; dof < Element::face_dofs; ++dof)
+				for (std::size_t dof = 0; dof < n_element_dofs; ++dof)
 					values(dim, dof) = solution_[dofs[0].index + dim + dof * var.dim()];
 
 			return values;
 		}
 	}
 
-	auto& operator[](Vertex_index vertex) const
+	template<class Mesh_element_index>
+	auto& operator[](Mesh_element_index mesh_element_index) const
 	{
-		return at(vertex);
+		return at(mesh_element_index);
 	}
 
-	Value at(const esf::Point2& pt, const typename Mesh::Cell_view& cell) const
+	Value at(const Point2& pt, const typename Mesh::Cell_view& cell) const
 	{
 		static_assert(Mesh::dim == 2);
 
@@ -100,7 +98,7 @@ public:
 		return value;
 	}
 
-	Value operator()(const esf::Point2& pt, const typename Mesh::Cell_view& cell) const
+	Value operator()(const Point2& pt, const typename Mesh::Cell_view& cell) const
 	{
 		return at(pt, cell);
 	}
@@ -110,7 +108,7 @@ public:
 		return system_;
 	}
 
-	const typename System::Mesh& mesh() const
+	const Mesh& mesh() const
 	{
 		return system_.mesh();
 	}

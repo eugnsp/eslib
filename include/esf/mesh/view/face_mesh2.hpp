@@ -1,6 +1,6 @@
 #pragma once
 #include <esf/geometry/point2.hpp>
-#include <esf/mesh/index.hpp>
+#include <esf/index.hpp>
 #include <esf/mesh/view/base.hpp>
 #include <esf/type_traits.hpp>
 

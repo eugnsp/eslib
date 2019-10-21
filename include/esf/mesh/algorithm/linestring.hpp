@@ -2,7 +2,7 @@
 #include <esf/geometry/function.hpp>
 #include <esf/geometry/linestring.hpp>
 #include <esf/mesh/mesh2.hpp>
-#include <esf/mesh/tags.hpp>
+#include <esf/tags.hpp>
 
 #include <stdexcept>
 #include <type_traits>

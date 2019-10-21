@@ -24,7 +24,7 @@ void write_gnuplot(const std::string& file_name, Solution_view<System, var, Valu
 		esl::Vector_x<Value> phi(*solution_view.mesh().n_vertices());
 
 		for (esf::Vertex_index vertex{0}; vertex < solution_view.mesh().n_vertices(); ++vertex)
-			phi[*vertex] = solution_view.at(vertex);
+			phi[*vertex] = solution_view[vertex];
 		writer.write_vertex_field(phi);
 	}
 	else if constexpr (Element::has_face_dofs)
@@ -32,7 +32,7 @@ void write_gnuplot(const std::string& file_name, Solution_view<System, var, Valu
 		esl::Vector_x<Value> phi(*solution_view.mesh().n_faces());
 
 		for (esf::Face_index face{0}; face < solution_view.mesh().n_faces(); ++face)
-			phi[*face] = solution_view.at(face);
+			phi[*face] = solution_view[face];
 		writer.write_face_field(phi);
 	}
 }

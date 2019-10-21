@@ -1,6 +1,6 @@
 #pragma once
 #include <esf/geometry/compare.hpp>
-#include <esf/geometry/tags.hpp>
+#include <esf/tags.hpp>
 
 #include <esu/algorithm.hpp>
 

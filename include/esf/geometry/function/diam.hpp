@@ -1,6 +1,6 @@
 #pragma once
 #include <esf/geometry/function/distance.hpp>
-#include <esf/geometry/tags.hpp>
+#include <esf/tags.hpp>
 
 #include <algorithm>
 #include <cmath>

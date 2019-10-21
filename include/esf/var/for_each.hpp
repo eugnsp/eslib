@@ -1,5 +1,5 @@
 #pragma once
-#include <esf/mesh/tags.hpp>
+#include <esf/tags.hpp>
 #include <esf/type_traits.hpp>
 
 #include <cstddef>

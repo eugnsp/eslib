@@ -27,30 +27,30 @@ public:
 			maps_);
 	}
 
-	template<class Element_index, std::size_t var>
-	decltype(auto) at(Element_index element, Var_index<var> v)
+	template<class Element_index, std::size_t var_idx>
+	decltype(auto) at(Element_index element, Var_index<var_idx> var_index)
 	{
 		assert(n_layers_ == 1);
-		return std::get<Map_t<Element_index>>(maps_).at(element, v);
+		return std::get<Map_t<Element_index>>(maps_).at(element, var_index);
 	}
 
-	template<class Element_index, std::size_t var>
-	decltype(auto) at(Element_index element, Var_index<var> v) const
+	template<class Element_index, std::size_t var_idx>
+	decltype(auto) at(Element_index element, Var_index<var_idx> var_index) const
 	{
 		assert(n_layers_ == 1);
-		return std::get<Map_t<Element_index>>(maps_).at(element, v);
+		return std::get<Map_t<Element_index>>(maps_).at(element, var_index);
 	}
 
-	template<class Element_index, std::size_t var>
-	decltype(auto) at(Index layer, Element_index element, Var_index<var> v)
+	template<class Element_index, std::size_t var_idx>
+	decltype(auto) at(Index layer, Element_index element, Var_index<var_idx> var_index)
 	{
-		return std::get<Map_t<Element_index>>(maps_).at(element, v, layer, n_layers_);
+		return std::get<Map_t<Element_index>>(maps_).at(element, var_index, layer, n_layers_);
 	}
 
-	template<class Element_index, std::size_t var>
-	decltype(auto) at(Index layer, Element_index element, Var_index<var> v) const
+	template<class Element_index, std::size_t var_idx>
+	decltype(auto) at(Index layer, Element_index element, Var_index<var_idx> var_index) const
 	{
-		return std::get<Map_t<Element_index>>(maps_).at(element, v, layer, n_layers_);
+		return std::get<Map_t<Element_index>>(maps_).at(element, var_index, layer, n_layers_);
 	}
 
 	// 	template<class Mesh_el_type, std::size_t var>

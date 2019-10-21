@@ -1,6 +1,6 @@
 #pragma once
 #include <esf/geometry/point2.hpp>
-#include <esf/mesh/tags.hpp>
+#include <esf/tags.hpp>
 #include <esf/mesh/view/base.hpp>
 
 namespace esf

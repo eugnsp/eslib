@@ -2,7 +2,7 @@
 #include <esf/dof/dof_index.hpp>
 #include <esf/dof/dof_mapper_base.hpp>
 #include <esf/dof/mesh_vars_map.hpp>
-#include <esf/mesh/index.hpp>
+#include <esf/index.hpp>
 #include <esf/type_traits.hpp>
 
 #include <esu/type_traits.hpp>
@@ -58,19 +58,20 @@ public:
 	// 		return dofs;
 	// 	}
 
-	template<std::size_t var = 0>
-	Var_dofs<var> dofs(const Face_view& cell, Halfedge_index first_halfedge) const
+	template<std::size_t var_idx = 0>
+	Var_dofs<var_idx> dofs(
+		const Face_view& cell, Halfedge_index first_halfedge, Var_index<var_idx> = {}) const
 	{
-		Var_dofs<var> dofs;
-		dofs_impl<var>(cell, first_halfedge, dofs);
+		Var_dofs<var_idx> dofs;
+		dofs_impl<var_idx>(cell, first_halfedge, dofs);
 		return dofs;
 	}
 
-	template<std::size_t var = 0>
-	Var_dofs<var> dofs(const Face_view& cell) const
+	template<std::size_t var_idx = 0>
+	Var_dofs<var_idx> dofs(const Face_view& cell, Var_index<var_idx> = {}) const
 	{
-		Var_dofs<var> dofs;
-		dofs_impl<var>(cell, dofs);
+		Var_dofs<var_idx> dofs;
+		dofs_impl<var_idx>(cell, dofs);
 		return dofs;
 	}
 
@@ -81,22 +82,36 @@ public:
 		return dofs_list;
 	}
 
-	template<std::size_t var = 0>
-	void vertex_dofs(Vertex_index vertex, Var_vertex_dofs<var>& dofs_list) const
+	template<std::size_t var_idx = 0>
+	Var_vertex_dofs<var_idx> dofs(Vertex_index vertex, Var_index<var_idx> = {}) const
 	{
-		var_vertex_dofs<var>(vertex, dofs_list);
+		Var_vertex_dofs<var_idx> dofs_list;
+		var_vertex_dofs<var_idx>(vertex, dofs_list);
+		return dofs_list;
 	}
 
-	template<std::size_t var = 0>
-	void edge_dofs(Edge_index edge, Var_edge_dofs<var>& dofs_list) const
+	template<std::size_t var_idx = 0>
+	Var_edge_dofs<var_idx> dofs(Halfedge_index halfedge, Var_index<var_idx> = {}) const
 	{
-		var_edge_dofs<var>(edge, dofs_list);
+		Var_edge_dofs<var_idx> dofs_list;
+		var_edge_dofs<var_idx>(edge(halfedge), dofs_list);
+		return dofs_list;
 	}
 
-	template<std::size_t var = 0>
-	void face_dofs(Face_index face, Var_face_dofs<var>& dofs_list) const
+	template<std::size_t var_idx = 0>
+	Var_edge_dofs<var_idx> dofs(Edge_index edge, Var_index<var_idx> = {}) const
 	{
-		var_face_dofs<var>(face, dofs_list);
+		Var_edge_dofs<var_idx> dofs_list;
+		var_edge_dofs<var_idx>(edge, dofs_list);
+		return dofs_list;
+	}
+
+	template<std::size_t var_idx = 0>
+	Var_face_dofs<var_idx> dofs(Face_index face, Var_index<var_idx> = {}) const
+	{
+		Var_face_dofs<var_idx> dofs_list;
+		var_face_dofs<var_idx>(face, dofs_list);
+		return dofs_list;
 	}
 
 private:

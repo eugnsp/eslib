@@ -1,5 +1,6 @@
 #pragma once
 #include <esf/boundary_cond.hpp>
+#include <esf/dof/function.hpp>
 #include <esf/element.hpp>
 #include <esf/function.hpp>
 #include <esf/io.hpp>

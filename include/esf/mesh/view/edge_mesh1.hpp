@@ -1,7 +1,7 @@
 #pragma once
 #include <esf/geometry/point1.hpp>
-#include <esf/geometry/tags.hpp>
-#include <esf/mesh/index.hpp>
+#include <esf/tags.hpp>
+#include <esf/index.hpp>
 #include <esf/mesh/view/base.hpp>
 
 #include <array>

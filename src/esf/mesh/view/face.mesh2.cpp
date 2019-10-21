@@ -1,6 +1,6 @@
-#include <esf/mesh/index.hpp>
+#include <esf/index.hpp>
 #include <esf/mesh/mesh2.hpp>
-#include <esf/mesh/tags.hpp>
+#include <esf/tags.hpp>
 
 #include <cassert>
 

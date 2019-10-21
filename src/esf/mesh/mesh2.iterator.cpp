@@ -1,4 +1,4 @@
-#include <esf/mesh/index.hpp>
+#include <esf/index.hpp>
 #include <esf/mesh/mesh2.hpp>
 
 #include <esu/iterator.hpp>

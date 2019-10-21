@@ -1,7 +1,7 @@
 #pragma once
 #include <esf/forward.hpp>
-#include <esf/mesh/index.hpp>
-#include <esf/mesh/tags.hpp>
+#include <esf/index.hpp>
+#include <esf/tags.hpp>
 
 #include <esu/type_traits.hpp>
 
@@ -18,7 +18,8 @@ inline constexpr bool is_circulation_tag =
 // Element tag type by index type, and vice versa
 
 template<class Element_tag>
-struct Element_index_by_tag_impl;
+struct Element_index_by_tag_impl
+{};
 
 template<>
 struct Element_index_by_tag_impl<Vertex_tag>
@@ -45,7 +46,8 @@ struct Element_index_by_tag_impl<Face_tag>
 };
 
 template<class Element_index>
-struct Element_tag_by_index_impl;
+struct Element_tag_by_index_impl
+{};
 
 template<>
 struct Element_tag_by_index_impl<Vertex_index>

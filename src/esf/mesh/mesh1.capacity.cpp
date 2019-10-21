@@ -1,6 +1,6 @@
-#include <esf/mesh/index.hpp>
+#include <esf/index.hpp>
 #include <esf/mesh/mesh1.hpp>
-#include <esf/mesh/tags.hpp>
+#include <esf/tags.hpp>
 
 namespace esf
 {

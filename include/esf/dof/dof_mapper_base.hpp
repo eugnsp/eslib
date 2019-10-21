@@ -1,6 +1,6 @@
 #pragma once
 #include <esf/dof/dof_index.hpp>
-#include <esf/dof/dof_mapper_util.hpp>
+#include <esf/dof/function.hpp>
 #include <esf/dof/mesh_vars_map.hpp>
 #include <esf/type_traits.hpp>
 #include <esf/var.hpp>

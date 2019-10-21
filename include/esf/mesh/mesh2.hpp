@@ -2,11 +2,11 @@
 #include <esf/geometry/point2.hpp>
 #include <esf/geometry/rect.hpp>
 #include <esf/mesh/halfedge_structure.hpp>
-#include <esf/mesh/index.hpp>
+#include <esf/index.hpp>
 #include <esf/mesh/iterator/circulator_halfedge_edge.hpp>
 #include <esf/mesh/iterator/circulator_vertex_face.hpp>
 #include <esf/mesh/iterator/random_access.hpp>
-#include <esf/mesh/tags.hpp>
+#include <esf/tags.hpp>
 #include <esf/mesh/view/edge_mesh2.hpp>
 #include <esf/mesh/view/face_mesh2.hpp>
 #include <esf/mesh/view/halfedge_mesh2.hpp>

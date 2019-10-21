@@ -1,6 +1,6 @@
 #pragma once
 #include <esf/dof/dof_mapper_base.hpp>
-#include <esf/mesh/index.hpp>
+#include <esf/index.hpp>
 
 #include <array>
 

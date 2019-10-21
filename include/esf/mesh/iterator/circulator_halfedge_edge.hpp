@@ -1,6 +1,6 @@
 #pragma once
 #include <esf/mesh/iterator/iterator_base.hpp>
-#include <esf/mesh/tags.hpp>
+#include <esf/tags.hpp>
 
 #include <cassert>
 #include <type_traits>

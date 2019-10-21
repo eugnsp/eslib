@@ -1,7 +1,7 @@
 #pragma once
 #include <esf/geometry/point2.hpp>
 #include <esf/geometry/points2.hpp>
-#include <esf/geometry/tags.hpp>
+#include <esf/tags.hpp>
 
 #include <cassert>
 #include <initializer_list>

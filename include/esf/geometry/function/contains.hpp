@@ -2,7 +2,7 @@
 #include <esf/geometry/compare.hpp>
 #include <esf/geometry/geometry.hpp>
 #include <esf/geometry/point2.hpp>
-#include <esf/geometry/tags.hpp>
+#include <esf/tags.hpp>
 
 #include <esu/algorithm.hpp>
 

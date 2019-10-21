@@ -1,5 +1,5 @@
 #pragma once
-#include <esf/geometry/tags.hpp>
+#include <esf/tags.hpp>
 
 #include <esu/algorithm.hpp>
 #include <esu/numeric.hpp>
