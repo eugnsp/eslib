@@ -153,8 +153,8 @@ struct Decay_element_index_in_view_impl
 template<class Element_index>
 struct Decay_element_index_in_view_impl<Element_index, Mesh2>
 {
-	using Type = std::conditional_t<std::is_same_v<Element_index, Edge_index>, Halfedge_index,
-		Element_index>;
+	using Type = std::
+		conditional_t<std::is_same_v<Element_index, Edge_index>, Halfedge_index, Element_index>;
 };
 
 // For Edge_index returns Halfedge_index,

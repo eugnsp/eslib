@@ -5,8 +5,10 @@
 
 namespace esf::internal
 {
-template<std::size_t dim_, std::size_t vertex_dofs_, std::size_t edge_dofs_,
-	std::size_t face_dofs_ = 0>
+template<std::size_t dim_,
+		 std::size_t vertex_dofs_,
+		 std::size_t edge_dofs_,
+		 std::size_t face_dofs_ = 0>
 class Element_base
 {
 	static_assert(dim_ == 1 || dim_ == 2);
@@ -39,7 +41,8 @@ public:
 		(dim == 1) ? 0 : 3 * vertex_dofs + 3 * edge_dofs + face_dofs;
 
 	// The total number of cell dofs
-	static constexpr std::size_t total_cell_dofs = (dim == 1) ? total_edge_dofs : total_face_dofs;
+	static constexpr std::size_t total_cell_dofs =
+		(dim == 1) ? total_edge_dofs : total_face_dofs;
 
 	// Returns the number of vertex dofs
 	static constexpr std::size_t dofs(Vertex_tag)

@@ -11,12 +11,15 @@ namespace esf
 {
 // Writes the solution into a text file as a scattered data set in the format:
 // <x> <y> <solution at (x, y)>
-template<class System, std::size_t var, typename Value>
-void write_scattered(const std::string& file_name, Solution_view<System, var, Value> solution_view)
+template<class System,
+	     std::size_t var,
+		 typename Value>
+void write_scattered(const std::string& file_name,
+                     Solution_view<System, var, Value> solution_view)
 {
 	internal::Text_file_writer writer(file_name);
 
-	using Element = typename System::template Var_t<var>::Element;
+	using Element = typename System::template Var<var>::Element;
 	const auto& mesh = solution_view.mesh();
 
 	// TODO

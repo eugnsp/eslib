@@ -1,5 +1,5 @@
-#include <esf/mesh/halfedge_structure.hpp>
 #include <esf/index.hpp>
+#include <esf/mesh/halfedge_structure.hpp>
 #include <esf/tags.hpp>
 
 #include <cstddef>

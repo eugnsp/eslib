@@ -45,8 +45,8 @@ public:
 		throw std::bad_alloc{};
 	}
 
-	[[nodiscard, gnu::assume_aligned(alignment)]] static T* reallocate(
-		T* const old_ptr, std::size_t new_size)
+	[[nodiscard, gnu::assume_aligned(alignment)]] static T* reallocate(T* const old_ptr,
+																	   std::size_t new_size)
 	{
 		static_assert(esu::is_trivially_relocatable<T>);
 

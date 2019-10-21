@@ -38,7 +38,9 @@ bool equals(const Polygon1& polygon1, const Polygon2& polygon2, Polygon_tag, Pol
 template<class Geometry1, class Geometry2>
 bool equals(const Geometry1& geometry1, const Geometry2& geometry2)
 {
-	return internal::equals(geometry1, geometry2, typename Geometry1::Geometry_tag{},
-		typename Geometry2::Geometry_tag{});
+	return internal::equals(geometry1,
+							geometry2,
+							typename Geometry1::Geometry_tag{},
+							typename Geometry2::Geometry_tag{});
 }
 } // namespace esf

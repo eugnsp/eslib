@@ -10,8 +10,8 @@ namespace esf
 template<class Element_tag, class Circ_tag>
 class Circulator_halfedge_edge : public internal::Iterator_base<Element_tag, Mesh<2>>
 {
-	static_assert(
-		std::is_same_v<Element_tag, Halfedge_tag> || std::is_same_v<Element_tag, Edge_tag>);
+	static_assert(std::is_same_v<Element_tag, Halfedge_tag> ||
+				  std::is_same_v<Element_tag, Edge_tag>);
 
 private:
 	using Base = internal::Iterator_base<Element_tag, Mesh<2>>;

@@ -14,8 +14,9 @@ namespace esf
 // where points <x> and <y> are obtained by fine-meshing faces such that the
 // distance between any two neighbouring points is not greater than `dist`
 template<class System, std::size_t var, typename Value>
-void write_interp(
-	const std::string& file_name, Solution_view<System, var, Value> solution_view, double dist)
+void write_interp(const std::string& file_name,
+				  Solution_view<System, var, Value> solution_view,
+				  double dist)
 {
 	assert(dist > 0);
 

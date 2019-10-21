@@ -20,50 +20,21 @@ template<class Var_list>
 class Dof_mapper_base
 {
 private:
-	//////////////////////////////////////////////////////////////////////
-	//* DoFs */
-
 	template<std::size_t size>
 	using Dof_index_vector = esl::Vector<Dof_index, size>;
 
-	template<class Var>
-	using Vars_dofs_fn = Dof_index_vector<Var::Element::total_cell_dofs>;
-
-	template<class Var>
-	using Vars_vertex_dofs_fn = Dof_index_vector<Var::Element::vertex_dofs>;
-
-	template<class Var>
-	using Vars_edge_dofs_fn = Dof_index_vector<Var::Element::edge_dofs>;
-
-	template<class Var>
-	using Vars_face_dofs_fn = Dof_index_vector<Var::Element::face_dofs>;
-
-	template<class Var>
-	using Vars_cell_dofs_fn = Dof_index_vector<Var::Element::cell_dofs>;
-
 protected:
-	template<std::size_t vi>
-	using Var = typename Var_list::template Nth<vi>;
+	template<std::size_t var_idx>
+	using Var = typename Var_list::template Nth<var_idx>;
 
 	using Mesh = esf::Mesh<Var_list::space_dim>;
 
 public:
-	template<std::size_t vi>
-	using Var_dofs = Vars_dofs_fn<Var<vi>>;
+	template<std::size_t var_idx, class Mesh_element_tag>
+	using Var_dofs = Dof_index_vector<Var<var_idx>::Element::dofs(Mesh_element_tag{})>;
 
-	using Vars_dofs = typename Var_list::template Tuple_map<Vars_dofs_fn>;
-
-	template<std::size_t vi>
-	using Var_vertex_dofs = Dof_index_vector<Var<vi>::Element::vertex_dofs>;
-
-	template<std::size_t vi>
-	using Var_edge_dofs = Dof_index_vector<Var<vi>::Element::edge_dofs>;
-
-	template<std::size_t vi>
-	using Var_face_dofs = Dof_index_vector<Var<vi>::Element::face_dofs>;
-
-	template<std::size_t vi>
-	using Var_cell_dofs = Dof_index_vector<Var<vi>::Element::cell_dofs>;
+	template<std::size_t var_idx, class Mesh_element_tag>
+	using Var_total_dofs = Dof_index_vector<Var<var_idx>::Element::total_dofs(Mesh_element_tag{})>;
 
 public:
 	template<class System>
@@ -79,13 +50,14 @@ public:
 	}
 
 	template<class Symmetry_tag, class System>
-	static esl::Sparsity_pattern<Symmetry_tag> sparsity_pattern(const System& system)
+	static auto sparsity_pattern(const System& system)
+		-> esl::Sparsity_pattern<Symmetry_tag>
 	{
 		return esf::internal::sparsity_pattern<Symmetry_tag>(system);
 	}
 
 	///////////////////////////////////////////////////////////////////////
-	//* Capacity */
+	/** Capacity */
 
 	esf::Index n_dofs() const
 	{
@@ -104,7 +76,7 @@ public:
 
 private:
 	////////////////////////////////////////////////////////////////////////
-	//* Initialization */
+	/** Initialization */
 
 	template<class System>
 	void compute_n_dofs(const System& system)

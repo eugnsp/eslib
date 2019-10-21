@@ -134,8 +134,8 @@ void Gmsh_file_reader::read_elements_section(Mesh2& mesh)
 	read_and_check_section_footer("$EndElements");
 }
 
-void Gmsh_file_reader::read_elements_section(
-	std::vector<unsigned int>& tags, unsigned int tag_index)
+void Gmsh_file_reader::read_elements_section(std::vector<unsigned int>& tags,
+											 unsigned int tag_index)
 {
 	Index n_elements;
 	read(n_elements);

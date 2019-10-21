@@ -15,4 +15,4 @@ inline constexpr bool is_vector_expr_impl = ct_cols_value<Expr> == 1;
 
 template<class Expr>
 inline constexpr bool is_vector_expr = internal::is_vector_expr_impl<esu::Remove_cv_ref<Expr>>;
-} // namespace esl::internal
+} // namespace esl

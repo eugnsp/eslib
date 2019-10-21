@@ -137,8 +137,9 @@ void Matfile_writer::write_header()
 	write_raw(header);
 }
 
-void Matfile_writer::write_array_flags_subelement(
-	internal::matfile::Class_types class_type, bool is_complex, std::size_t nnz)
+void Matfile_writer::write_array_flags_subelement(internal::matfile::Class_types class_type,
+												  bool is_complex,
+												  std::size_t nnz)
 {
 	[[maybe_unused]] constexpr std::uint8_t logical_flag = 0b0010;
 	[[maybe_unused]] constexpr std::uint8_t global_flag = 0b0100;

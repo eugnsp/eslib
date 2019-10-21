@@ -1,7 +1,7 @@
 #pragma once
 #include <esf/geometry/point2.hpp>
-#include <esf/tags.hpp>
 #include <esf/index.hpp>
+#include <esf/tags.hpp>
 
 #include <esu/numeric.hpp>
 

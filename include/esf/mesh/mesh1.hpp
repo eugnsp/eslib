@@ -2,9 +2,9 @@
 #include <esf/geometry/point1.hpp>
 #include <esf/index.hpp>
 #include <esf/mesh/iterator/random_access.hpp>
-#include <esf/tags.hpp>
 #include <esf/mesh/view/edge_mesh1.hpp>
 #include <esf/mesh/view/vertex_mesh1.hpp>
+#include <esf/tags.hpp>
 
 #include <esu/iterator.hpp>
 

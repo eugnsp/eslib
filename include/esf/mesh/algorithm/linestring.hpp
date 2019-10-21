@@ -13,16 +13,16 @@ namespace esf
 namespace internal
 {
 template<typename Index_type>
-void elements_in_linestring_push_back(
-	const Mesh2::Vertex_view& vertex_view, std::vector<Index_type>& indices)
+void elements_in_linestring_push_back(const Mesh2::Vertex_view& vertex_view,
+									  std::vector<Index_type>& indices)
 {
 	if constexpr (std::is_same_v<Index_type, Vertex_index>)
 		indices.push_back(*vertex_view);
 }
 
 template<typename Index_type>
-void elements_in_linestring_push_back(
-	const Mesh2::Halfedge_view& halfedge_view, std::vector<Index_type>& indices)
+void elements_in_linestring_push_back(const Mesh2::Halfedge_view& halfedge_view,
+									  std::vector<Index_type>& indices)
 {
 	if constexpr (std::is_same_v<Index_type, Halfedge_index>)
 		indices.push_back(*halfedge_view);
@@ -32,8 +32,9 @@ void elements_in_linestring_push_back(
 } // namespace internal
 
 template<typename... Index_types>
-void elements_in_linestring(
-	const Mesh2& mesh, const Linestring& linestring, std::vector<Index_types>&... indices)
+void elements_in_linestring(const Mesh2& mesh,
+							const Linestring& linestring,
+							std::vector<Index_types>&... indices)
 {
 	(indices.clear(), ...);
 

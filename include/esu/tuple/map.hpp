@@ -34,10 +34,11 @@ constexpr auto tuple_map(Fn&& fn, Tuples&&... tuples)
 		if constexpr (tuple_size<Tuples...> == 0)
 			return std::make_tuple();
 		else
-			return internal::tuple_map(std::forward<Fn>(fn), std::forward<Tuples>(tuples)...,
-				internal::index_sequence_for_tuple<Tuples...>);
+			return internal::tuple_map(std::forward<Fn>(fn),
+									   std::forward<Tuples>(tuples)...,
+									   internal::index_sequence_for_tuple<Tuples...>);
 	else
 		return tuple_map(internal::forward_with_apply(std::forward<Fn>(fn)),
-			tuple_forward_as_zipped(std::forward<Tuples>(tuples)...));
+						 tuple_forward_as_zipped(std::forward<Tuples>(tuples)...));
 }
 } // namespace esu

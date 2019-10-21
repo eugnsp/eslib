@@ -9,15 +9,15 @@
 namespace esl
 {
 template<class Expr, typename Scalar, typename = std::enable_if_t<!is_expression<Scalar>>>
-Scalar_expr<Expr, Scalar, internal::Scalar_mul_left_fn> operator*(
-	const Scalar& scalar, const Expression<Expr>& expr)
+Scalar_expr<Expr, Scalar, internal::Scalar_mul_left_fn> operator*(const Scalar& scalar,
+																  const Expression<Expr>& expr)
 {
 	return {expr.self(), scalar};
 }
 
 template<class Expr, typename Scalar, typename = std::enable_if_t<!is_expression<Scalar>>>
-Scalar_expr<Expr, Scalar, internal::Scalar_mul_right_fn> operator*(
-	const Expression<Expr>& expr, const Scalar& scalar)
+Scalar_expr<Expr, Scalar, internal::Scalar_mul_right_fn> operator*(const Expression<Expr>& expr,
+																   const Scalar& scalar)
 {
 	return {expr.self(), scalar};
 }

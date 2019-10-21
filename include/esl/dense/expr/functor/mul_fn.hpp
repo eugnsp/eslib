@@ -11,7 +11,7 @@ template<class Expr1, class Expr2>
 class Mul_fn
 {
 	static_assert(is_extent_dynamic_or_eq(ct_cols_value<Expr1>, ct_rows_value<Expr2>),
-		"Incompatible extents");
+				  "Incompatible extents");
 
 public:
 	using Value = decltype(std::declval<Value_type<Expr1>>() * std::declval<Value_type<Expr2>>());
@@ -20,8 +20,8 @@ public:
 	static constexpr auto ct_cols = ct_cols_value<Expr2>;
 
 public:
-	static void check_sizes(
-		[[maybe_unused]] const Expr1& expr1, [[maybe_unused]] const Expr2& expr2)
+	static void check_sizes([[maybe_unused]] const Expr1& expr1,
+							[[maybe_unused]] const Expr2& expr2)
 	{
 		assert(expr1.cols() == expr2.rows());
 	}

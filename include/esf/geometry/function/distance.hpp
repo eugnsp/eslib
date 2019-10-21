@@ -23,7 +23,9 @@ double distance(const Point1& point1, const Point2& point2, Point2_tag, Point2_t
 template<class Geometry1, class Geometry2>
 double distance(const Geometry1& geometry1, const Geometry2& geometry2)
 {
-	return internal::distance(geometry1, geometry2, typename Geometry1::Geometry_tag{},
-		typename Geometry2::Geometry_tag{});
+	return internal::distance(geometry1,
+							  geometry2,
+							  typename Geometry1::Geometry_tag{},
+							  typename Geometry2::Geometry_tag{});
 }
 } // namespace esf

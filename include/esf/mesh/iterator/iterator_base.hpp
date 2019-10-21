@@ -41,16 +41,16 @@ protected:
 };
 
 template<class Element_tag, class Mesh>
-bool operator==(
-	const Iterator_base<Element_tag, Mesh>& it1, const Iterator_base<Element_tag, Mesh>& it2)
+bool operator==(const Iterator_base<Element_tag, Mesh>& it1,
+				const Iterator_base<Element_tag, Mesh>& it2)
 {
 	assert(&it1->mesh() == &it2->mesh());
 	return **it1 == **it2;
 }
 
 template<class Element_tag, class Mesh>
-bool operator!=(
-	const Iterator_base<Element_tag, Mesh>& it1, const Iterator_base<Element_tag, Mesh>& it2)
+bool operator!=(const Iterator_base<Element_tag, Mesh>& it1,
+				const Iterator_base<Element_tag, Mesh>& it2)
 {
 	return !(it1 == it2);
 }

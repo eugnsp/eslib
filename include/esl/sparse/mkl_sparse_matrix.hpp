@@ -22,8 +22,8 @@
 	{                                                                                              \
 		[[maybe_unused]] const auto status = fn(__VA_ARGS__);                                      \
 		if (status != ::sparse_status_t::SPARSE_STATUS_SUCCESS)                                    \
-			throw std::runtime_error(                                                              \
-				"Exception in " #fn ": " + internal::mkl_sparse_status_string(status));            \
+			throw std::runtime_error("Exception in " #fn ": " +                                    \
+									 internal::mkl_sparse_status_string(status));                  \
 	} while (0)
 
 namespace esl
@@ -64,7 +64,7 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////
-	//* Extents */
+	/** Extents */
 
 	Index rows() const
 	{
@@ -77,7 +77,7 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////
-	//* Native MKL handle */
+	/** Native MKL handle */
 
 	::sparse_matrix_t handle()
 	{
@@ -90,7 +90,7 @@ public:
 	}
 
 	////////////////////////////////////////////////////////////////////////
-	//* Modifiers */
+	/** Modifiers */
 
 	void set(const Index row, const Index col, const Value value)
 	{
@@ -119,8 +119,15 @@ private:
 			MKL_UINT rows, cols, *rows_start, *rows_end, *col_index;
 			Value* values;
 
-			ESL_CALL_MKL_SPARSE(internal::mkl_sparse_export_csr, handle_, indexing, rows, cols,
-				rows_start, rows_end, col_index, values);
+			ESL_CALL_MKL_SPARSE(internal::mkl_sparse_export_csr,
+								handle_,
+								indexing,
+								rows,
+								cols,
+								rows_start,
+								rows_end,
+								col_index,
+								values);
 			return {static_cast<Index>(rows), static_cast<Index>(cols)};
 		}
 		else

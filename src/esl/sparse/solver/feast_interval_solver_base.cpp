@@ -20,12 +20,22 @@ Feast_interval_solver_base::Feast_interval_solver_base()
 }
 
 #define ESL_IMPL_MKL_FEAST_RCI(func, T)                                                            \
-	Feast_interval_solver_base::Status Feast_interval_solver_base::mkl_feast_rci(Job& job,         \
-		MKL_UINT n, Add_complex<T>& ze, T* work1, Add_complex<T>* work2, T* work3, T* work4,       \
-		Remove_complex<T>& eps, MKL_UINT& n_loops,                                                 \
+	Feast_interval_solver_base::Status Feast_interval_solver_base::mkl_feast_rci(                  \
+		Job& job,                                                                                  \
+		MKL_UINT n,                                                                                \
+		Add_complex<T>& ze,                                                                        \
+		T* work1,                                                                                  \
+		Add_complex<T>* work2,                                                                     \
+		T* work3,                                                                                  \
+		T* work4,                                                                                  \
+		Remove_complex<T>& eps,                                                                    \
+		MKL_UINT& n_loops,                                                                         \
 		std::pair<Remove_complex<T>, Remove_complex<T>> eigen_values_interval,                     \
-		MKL_UINT n_eigen_values0, Remove_complex<T>* eigen_values, T* eigen_vectors,               \
-		MKL_UINT& n_eigen_values, Remove_complex<T>* residues)                                     \
+		MKL_UINT n_eigen_values0,                                                                  \
+		Remove_complex<T>* eigen_values,                                                           \
+		T* eigen_vectors,                                                                          \
+		MKL_UINT& n_eigen_values,                                                                  \
+		Remove_complex<T>* residues)                                                               \
 	{                                                                                              \
 		using TM = internal::Mkl_type<T>;                                                          \
 		using CM = internal::Mkl_type<Add_complex<T>>;                                             \
@@ -43,9 +53,24 @@ Feast_interval_solver_base::Feast_interval_solver_base()
 		auto m_eigen_vectors = reinterpret_cast<TM*>(eigen_vectors);                               \
                                                                                                    \
 		MKL_INT info = 0;                                                                          \
-		::func(m_job, m_n, m_ze, m_work1, m_work2, m_work3, m_work4, params_, &eps, m_n_loops,     \
-			&eigen_values_interval.first, &eigen_values_interval.second, m_n_eigen_values0,        \
-			eigen_values, m_eigen_vectors, m_n_eigen_values, residues, &info);                     \
+		::func(m_job,                                                                              \
+			   m_n,                                                                                \
+			   m_ze,                                                                               \
+			   m_work1,                                                                            \
+			   m_work2,                                                                            \
+			   m_work3,                                                                            \
+			   m_work4,                                                                            \
+			   params_,                                                                            \
+			   &eps,                                                                               \
+			   m_n_loops,                                                                          \
+			   &eigen_values_interval.first,                                                       \
+			   &eigen_values_interval.second,                                                      \
+			   m_n_eigen_values0,                                                                  \
+			   eigen_values,                                                                       \
+			   m_eigen_vectors,                                                                    \
+			   m_n_eigen_values,                                                                   \
+			   residues,                                                                           \
+			   &info);                                                                             \
                                                                                                    \
 		return static_cast<Status>(info);                                                          \
 	}

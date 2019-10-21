@@ -122,8 +122,9 @@ public:
 		Base(Internal{}, rows, cols, value)
 	{}
 
-	Matrix_base(
-		const std::size_t rows, const std::size_t cols, std::initializer_list<Value> values) :
+	Matrix_base(const std::size_t rows,
+				const std::size_t cols,
+				std::initializer_list<Value> values) :
 		Base(Internal{}, rows, cols, values)
 	{}
 

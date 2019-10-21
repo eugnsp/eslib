@@ -1,6 +1,6 @@
 #include <esf/geometry.hpp>
-#include <esf/mesh/halfedge_structure.hpp>
 #include <esf/index.hpp>
+#include <esf/mesh/halfedge_structure.hpp>
 
 #include <algorithm>
 #include <optional>
@@ -146,8 +146,9 @@ std::optional<std::string> Halfedge_structure::check() const
 
 	// Check for unused nodes
 	std::vector<bool> seen_nodes(*n_vertices(), false);
-	std::for_each(halfedges_.begin(), halfedges_.end(),
-		[&seen_nodes](auto& edge) { seen_nodes[*edge.vertex] = true; });
+	std::for_each(halfedges_.begin(), halfedges_.end(), [&seen_nodes](auto& edge) {
+		seen_nodes[*edge.vertex] = true;
+	});
 
 	for (Index i = 0; i < *n_vertices(); ++i)
 		if (!seen_nodes[i])

@@ -30,7 +30,7 @@ auto tuple_forward_as_zipped(Tuples&&... tuples)
 	static_assert(sizeof...(Tuples) > 0);
 	static_assert(all_same<tuple_size<Tuples>...>);
 
-	return internal::tuple_forward_as_zipped(
-		internal::index_sequence_for_tuple<Head<Tuples...>>, std::forward<Tuples>(tuples)...);
+	return internal::tuple_forward_as_zipped(internal::index_sequence_for_tuple<Head<Tuples...>>,
+											 std::forward<Tuples>(tuples)...);
 }
 } // namespace esu

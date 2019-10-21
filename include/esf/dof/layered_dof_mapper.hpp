@@ -125,8 +125,8 @@ public:
 		this->n_dofs_ = 0;
 		for_each_var<Var_list>(
 			[this, &system, active_vertex_dofs, active_edge_dofs, active_face_dofs](auto var) {
-				this->n_dofs_ += static_cast<Index>(
-					system.variable(var).n_dofs(Vertex_tag{}) * active_vertex_dofs);
+				this->n_dofs_ += static_cast<Index>(system.variable(var).n_dofs(Vertex_tag{}) *
+													active_vertex_dofs);
 				this->n_dofs_ +=
 					static_cast<Index>(system.variable(var).n_dofs(Edge_tag{}) * active_edge_dofs);
 				this->n_dofs_ +=
@@ -140,38 +140,39 @@ public:
 		this->n_free_dofs_ = this->n_dofs_;
 		for_each_var<Var_list>([&](auto var) {
 			const auto& v = system.variable(var);
-			v.for_each_ess_bnd_cond([this, &mesh, &is_active_vertex, &is_active_edge,
-										&is_active_face, &v, var](auto& bc) {
-				using Element = typename Var_by_var_index<Var_list, decltype(var)>::Element;
+			v.for_each_ess_bnd_cond(
+				[this, &mesh, &is_active_vertex, &is_active_edge, &is_active_face, &v, var](
+					auto& bc) {
+					using Element = typename Var_by_var_index<Var_list, decltype(var)>::Element;
 
-				if constexpr (Element::has_vertex_dofs)
-					for (Index layer = 0; layer < n_layers_; ++layer)
-						for (Vertex_index vertex : bc.vertices(layer))
-						{
-							if (!is_active_vertex[*vertex + layer * *mesh.n_vertices()])
-								continue;
+					if constexpr (Element::has_vertex_dofs)
+						for (Index layer = 0; layer < n_layers_; ++layer)
+							for (Vertex_index vertex : bc.vertices(layer))
+							{
+								if (!is_active_vertex[*vertex + layer * *mesh.n_vertices()])
+									continue;
 
-							Dof_index& dof = this->indices_.at(layer, vertex, var);
-							assert(dof.is_free);
+								Dof_index& dof = this->indices_.at(layer, vertex, var);
+								assert(dof.is_free);
 
-							this->n_free_dofs_ -= v.n_dofs(Vertex_tag{});
-							dof.is_free = false;
-						}
+								this->n_free_dofs_ -= v.n_dofs(Vertex_tag{});
+								dof.is_free = false;
+							}
 
-				if constexpr (Element::has_edge_dofs)
-					for (Index layer = 0; layer < n_layers_; ++layer)
-						for (Halfedge_index halfedge : bc.halfedges(layer))
-						{
-							if (!is_active_edge[*edge(halfedge) + layer * *mesh.n_edges()])
-								continue;
+					if constexpr (Element::has_edge_dofs)
+						for (Index layer = 0; layer < n_layers_; ++layer)
+							for (Halfedge_index halfedge : bc.halfedges(layer))
+							{
+								if (!is_active_edge[*edge(halfedge) + layer * *mesh.n_edges()])
+									continue;
 
-							Dof_index& dof = this->indices_.at(layer, edge(halfedge), var);
-							assert(dof.is_free);
+								Dof_index& dof = this->indices_.at(layer, edge(halfedge), var);
+								assert(dof.is_free);
 
-							this->n_free_dofs_ -= v.n_dofs(Edge_tag{});
-							dof.is_free = false;
-						}
-			});
+								this->n_free_dofs_ -= v.n_dofs(Edge_tag{});
+								dof.is_free = false;
+							}
+				});
 		});
 
 		Index free_index = 0;
@@ -181,7 +182,8 @@ public:
 			auto& v = system.variable(var);
 
 			for (internal::Element_index_by_tag<decltype(tag)> element{0};
-				 element < system.mesh().n_elements(tag); ++element)
+				 element < system.mesh().n_elements(tag);
+				 ++element)
 				for (Index layer = 0; layer < n_layers_; ++layer)
 				{
 					if constexpr (std::is_same_v<decltype(tag), Vertex_tag>)
@@ -208,8 +210,8 @@ public:
 	}
 
 	template<class Symmetry_tag, class Couplig_func>
-	esl::Sparsity_pattern<Symmetry_tag> sparsity_pattern(
-		const My_system& system, Couplig_func coupling) const
+	esl::Sparsity_pattern<Symmetry_tag> sparsity_pattern(const My_system& system,
+														 Couplig_func coupling) const
 	{
 		esl::Sparsity_pattern<Symmetry_tag> pattern(this->n_free_dofs_);
 
@@ -294,8 +296,8 @@ public:
 	}
 
 	template<class Symmetry_tag, class Couplig_func>
-	esl::Sparsity_pattern<Symmetry_tag> sparsity_pattern2(
-		const My_system& system, Couplig_func coupling) const
+	esl::Sparsity_pattern<Symmetry_tag> sparsity_pattern2(const My_system& system,
+														  Couplig_func coupling) const
 	{
 		esl::Sparsity_pattern<Symmetry_tag> pattern(this->n_free_dofs_);
 		std::vector<Vars_dofs> dofs(n_layers_);
@@ -369,8 +371,10 @@ private:
 	}
 
 	template<class Dofs, std::size_t... vars>
-	void dofs_impl(const typename Mesh::Cell_view& cell, Index layer, Dofs& dofs,
-		std::index_sequence<vars...>) const
+	void dofs_impl(const typename Mesh::Cell_view& cell,
+				   Index layer,
+				   Dofs& dofs,
+				   std::index_sequence<vars...>) const
 	{
 		typename Cell_view::Vertex_indices vertices;
 		typename Cell_view::Edge_with_dir_indices edges;
@@ -381,8 +385,10 @@ private:
 
 	template<std::size_t var, class Dofs>
 	void var_dofs_impl(const typename Cell_view::Vertex_indices& vertices,
-		const typename Cell_view::Edge_with_dir_indices& edges, Face_index cell, Index layer,
-		Dofs& dofs) const // TODO Cell_index
+					   const typename Cell_view::Edge_with_dir_indices& edges,
+					   Face_index cell,
+					   Index layer,
+					   Dofs& dofs) const // TODO Cell_index
 	{
 		using Var = Var_t<var>;
 
@@ -404,8 +410,11 @@ private:
 	}
 
 	template<class T_Tag, std::size_t var, class Dofs>
-	void var_dofs_impl2(Index layer, internal::Element_index_by_tag<T_Tag> element, Dofs& dofs,
-		std::size_t& i, bool reversed = false) const
+	void var_dofs_impl2(Index layer,
+						internal::Element_index_by_tag<T_Tag> element,
+						Dofs& dofs,
+						std::size_t& i,
+						bool reversed = false) const
 	{
 		using Element = typename Var_t<var>::Element;
 

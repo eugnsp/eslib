@@ -70,8 +70,8 @@ private:
 
 	auto get_face_index() const
 	{
-		return view_.mesh().face_index(
-			std::is_same_v<Circ_tag, Face_circ_tag> ? twin(halfedge_) : halfedge_);
+		return view_.mesh().face_index(std::is_same_v<Circ_tag, Face_circ_tag> ? twin(halfedge_)
+																			   : halfedge_);
 	}
 
 private:

@@ -13,7 +13,7 @@
 namespace esl::internal
 {
 //////////////////////////////////////////////////////////////////////
-//* Matrix memory layouts */
+/** Matrix memory layouts */
 
 inline constexpr ::sparse_layout_t layout_as_mkl_enum_sparse(Col_major)
 {
@@ -26,7 +26,7 @@ inline constexpr ::sparse_layout_t layout_as_mkl_enum_sparse(Row_major)
 }
 
 ///////////////////////////////////////////////////////////////////////
-//* Matrix operations */
+/** Matrix operations */
 
 inline constexpr ::sparse_operation_t transp_op_as_mkl_enum_sparse(No_transpose)
 {
@@ -67,8 +67,8 @@ template<class Matrix>
 }
 
 template<typename Value, class Symmetry, typename Index>
-::sparse_status_t mkl_sparse_create(
-	::sparse_matrix_t& handle, const Csr_matrix<Value, Symmetry, Index>& matrix)
+::sparse_status_t mkl_sparse_create(::sparse_matrix_t& handle,
+									const Csr_matrix<Value, Symmetry, Index>& matrix)
 {
 	static_assert(sizeof(Index) == sizeof(MKL_UINT));
 

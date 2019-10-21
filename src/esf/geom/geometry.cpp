@@ -90,8 +90,10 @@ Side which_side(const Point2& point, const Point2& a, const Point2& b)
 
 // Computes the intersection point between the line segment [x1, x2] and
 // the line passing through points (y1) and (y2)
-Point2 GetSegmentAndLineIntersectionPoint2(
-	const Point2& x1, const Point2& x2, const Point2& y1, const Point2& y2)
+Point2 GetSegmentAndLineIntersectionPoint2(const Point2& x1,
+										   const Point2& x2,
+										   const Point2& y1,
+										   const Point2& y2)
 {
 	const double dXx = x2.x() - x1.x();
 	const double dXy = x2.y() - x1.y();

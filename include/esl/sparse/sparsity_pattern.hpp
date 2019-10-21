@@ -208,8 +208,8 @@ public:
 	}
 
 private:
-	static void debug_check_index(
-		[[maybe_unused]] std::size_t row, [[maybe_unused]] std::size_t col)
+	static void debug_check_index([[maybe_unused]] std::size_t row,
+								  [[maybe_unused]] std::size_t col)
 	{
 		if constexpr (std::is_same_v<Symmetry_tag, Symmetric_upper>)
 			assert(row <= col);
@@ -243,16 +243,22 @@ esu::Error Sparsity_pattern<Symmetry_tag>::check() const
 		if (!std::is_sorted(row.begin(), row.end()))
 		{
 			++n_errors;
-			err.append("\n* Error: not sorted row.\n", "The row #", i, " is not sorted.\n",
-				"The indices are: ", esu::join_as_string(row.begin(), row.end()));
+			err.append("\n* Error: not sorted row.\n",
+					   "The row #",
+					   i,
+					   " is not sorted.\n",
+					   "The indices are: ",
+					   esu::join_as_string(row.begin(), row.end()));
 		}
 
 		auto pos = std::adjacent_find(row.begin(), row.end());
 		if (pos != row.end())
 		{
 			++n_errors;
-			err.append("\n* Error: same indices in the row.\n", "The row #", i,
-				" contains two or more same indices: ");
+			err.append("\n* Error: same indices in the row.\n",
+					   "The row #",
+					   i,
+					   " contains two or more same indices: ");
 
 			for (;;)
 			{

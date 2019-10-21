@@ -71,15 +71,26 @@ public:
 		job[1] = job[2] = 0; // Zero-based indexing
 		job[5] = 1; // All output arrays (acsc, ja1, and ia1) are filled in for the output storage
 
-		mkl_dcsrcsc(job, &n, const_cast<double*>(matrix.values()), (MKL_INT*)(matrix.col_indices()),
-			(MKL_INT*)(matrix.row_indices()), csc_values.data(), csc_rows.data(), csc_cols.data(),
-			&info);
+		mkl_dcsrcsc(job,
+					&n,
+					const_cast<double*>(matrix.values()),
+					(MKL_INT*)(matrix.col_indices()),
+					(MKL_INT*)(matrix.row_indices()),
+					csc_values.data(),
+					csc_rows.data(),
+					csc_cols.data(),
+					&info);
 
 		if (info != 0)
 			throw std::runtime_error("Matrix format conversion error");
 
-		write_sparse_array_element(var_name, matrix.rows(), matrix.cols(), matrix.nnz(),
-			csc_rows.data(), csc_cols.data(), csc_values.data());
+		write_sparse_array_element(var_name,
+								   matrix.rows(),
+								   matrix.cols(),
+								   matrix.nnz(),
+								   csc_rows.data(),
+								   csc_cols.data(),
+								   csc_values.data());
 	}
 
 	void close()
@@ -109,21 +120,30 @@ private:
 
 	void write_header();
 
-	void write_array_flags_subelement(
-		internal::matfile::Class_types, bool is_complex, std::size_t nnz);
+	void write_array_flags_subelement(internal::matfile::Class_types,
+									  bool is_complex,
+									  std::size_t nnz);
 
 	void write_dimensions_subelement(std::size_t rows, std::size_t cols);
 
 	void write_array_name_subelement(const std::string& name);
 
 	template<typename T>
-	void write_array_element(const std::string& name, std::size_t rows, std::size_t cols,
-		const T* real_values, esu::Type_identity<const T*> complex_values = nullptr);
+	void write_array_element(const std::string& name,
+							 std::size_t rows,
+							 std::size_t cols,
+							 const T* real_values,
+							 esu::Type_identity<const T*> complex_values = nullptr);
 
 	template<typename T, typename Index>
-	void write_sparse_array_element(const std::string& name, std::size_t rows, std::size_t cols,
-		std::size_t nnz, const Index* ir, const Index* jc, const T* real_values,
-		esu::Type_identity<const T*> complex_values = nullptr);
+	void write_sparse_array_element(const std::string& name,
+									std::size_t rows,
+									std::size_t cols,
+									std::size_t nnz,
+									const Index* ir,
+									const Index* jc,
+									const T* real_values,
+									esu::Type_identity<const T*> complex_values = nullptr);
 
 private:
 	std::ofstream file_;
@@ -134,8 +154,11 @@ private:
 /************************************************************************/
 
 template<typename T>
-void Matfile_writer::write_array_element(const std::string& name, std::size_t rows,
-	std::size_t cols, const T* real_values, esu::Type_identity<const T*> complex_values)
+void Matfile_writer::write_array_element(const std::string& name,
+										 std::size_t rows,
+										 std::size_t cols,
+										 const T* real_values,
+										 esu::Type_identity<const T*> complex_values)
 {
 	assert(real_values);
 
@@ -173,9 +196,14 @@ void Matfile_writer::write_array_element(const std::string& name, std::size_t ro
 }
 
 template<typename T, typename Index>
-void Matfile_writer::write_sparse_array_element(const std::string& name, std::size_t rows,
-	std::size_t cols, std::size_t nnz, const Index* ir, const Index* jc, const T* real_values,
-	esu::Type_identity<const T*> complex_values)
+void Matfile_writer::write_sparse_array_element(const std::string& name,
+												std::size_t rows,
+												std::size_t cols,
+												std::size_t nnz,
+												const Index* ir,
+												const Index* jc,
+												const T* real_values,
+												esu::Type_identity<const T*> complex_values)
 {
 	static_assert(std::is_integral_v<Index>);
 	assert(real_values);

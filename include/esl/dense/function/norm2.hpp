@@ -31,8 +31,9 @@ public:
 };
 
 template<class Expr, typename Value>
-class Fn_norm2<Expr, Lvalue_block_tag<Value>,
-	std::enable_if_t<is_fd_or_cfd<Value> && is_dynamic<Expr>>>
+class Fn_norm2<Expr,
+			   Lvalue_block_tag<Value>,
+			   std::enable_if_t<is_fd_or_cfd<Value> && is_dynamic<Expr>>>
 {
 public:
 	auto operator()(const Expr& expr) const

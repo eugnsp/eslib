@@ -36,7 +36,9 @@ private:
 		file_ << value;
 	}
 
-	template<class Expr, class Value_category, typename = std::enable_if_t<esl::is_vector_expr<Expr>>>
+	template<class Expr,
+			 class Value_category,
+			 typename = std::enable_if_t<esl::is_vector_expr<Expr>>>
 	void do_write(const esl::Dense<Expr, Value_category>& expr)
 	{
 		file_ << expr[0];

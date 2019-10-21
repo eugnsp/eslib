@@ -6,7 +6,7 @@
 namespace esl
 {
 //////////////////////////////////////////////////////////////////////
-//* Dense expressions */
+/** Dense expressions */
 
 template<class Expr>
 class Expression;
@@ -54,7 +54,7 @@ class Scalar_mul_right_fn;
 } // namespace internal
 
 //////////////////////////////////////////////////////////////////////
-//* Type aliases */
+/** Type aliases */
 
 using Matrix_xd = Matrix<double, dynamic, dynamic>;
 using Matrix_2d = Matrix<double, 2, 2>;

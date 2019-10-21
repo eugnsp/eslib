@@ -17,8 +17,10 @@ public:
 	using Value = Value_type<Random_matrix>;
 
 public:
-	Random_matrix(const std::size_t rows, const std::size_t cols, Random_distribution distr,
-		Random_generator& gen) :
+	Random_matrix(const std::size_t rows,
+				  const std::size_t cols,
+				  Random_distribution distr,
+				  Random_generator& gen) :
 		rows_(rows),
 		cols_(cols), distr_(std::move(distr)), gen_(gen)
 	{}
@@ -62,8 +64,10 @@ Matrix_x<T> random_real_matrix(std::size_t size)
 }
 
 template<typename T = int>
-Matrix_x<T> random_int_matrix(
-	std::size_t rows, std::size_t cols, const T a = 0, const T b = std::numeric_limits<T>::max())
+Matrix_x<T> random_int_matrix(std::size_t rows,
+							  std::size_t cols,
+							  const T a = 0,
+							  const T b = std::numeric_limits<T>::max())
 {
 	std::random_device rd;
 	std::mt19937 gen{rd()};

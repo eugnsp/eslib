@@ -24,8 +24,10 @@ void for_each_element_impl(Fn fn, Expr&& expr, Exprs&&... exprs)
 }
 } // namespace internal
 
-template<class Fn, class Dense_expr, class... Dense_exprs,
-	typename = std::enable_if_t<(is_dense<Dense_expr> && ... && is_dense<Dense_exprs>)>>
+template<class Fn,
+		 class Dense_expr,
+		 class... Dense_exprs,
+		 typename = std::enable_if_t<(is_dense<Dense_expr> && ... && is_dense<Dense_exprs>)>>
 void for_each_element(Fn fn, Dense_expr&& expr, Dense_exprs&&... exprs)
 {
 	assert(((expr.rows() == exprs.rows()) && ...));

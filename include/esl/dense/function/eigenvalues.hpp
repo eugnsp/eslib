@@ -17,8 +17,11 @@ template<class Expr1, class Mkl_tag1, class Expr2, class Mkl_tag2, typename = vo
 struct Fn_eigenvalues;
 
 template<class Expr1, class Expr2, typename Value>
-struct Fn_eigenvalues<Expr1, Lvalue_block_tag<Value>, Expr2, Lvalue_block_tag<Value>,
-	std::enable_if_t<is_fd<Value> && is_vector<Expr2>>>
+struct Fn_eigenvalues<Expr1,
+					  Lvalue_block_tag<Value>,
+					  Expr2,
+					  Lvalue_block_tag<Value>,
+					  std::enable_if_t<is_fd<Value> && is_vector<Expr2>>>
 {
 	void operator()(Expr1& mat, Expr2& eigenvalues)
 	{
@@ -42,7 +45,9 @@ void eigenvalues(Dense<Expr1, Lvalue>& mat, Dense<Expr2, Lvalue>& eigenvalues)
 	assert(mat.rows() == mat.cols());
 	assert(mat.rows() == eigenvalues.size());
 
-	internal::Fn_eigenvalues<Expr1, internal::Mkl_expr_decay<Expr1>, Expr2,
-		internal::Mkl_expr_decay<Expr2>>{}(mat.self(), eigenvalues.self());
+	internal::Fn_eigenvalues<Expr1,
+							 internal::Mkl_expr_decay<Expr1>,
+							 Expr2,
+							 internal::Mkl_expr_decay<Expr2>>{}(mat.self(), eigenvalues.self());
 }
 } // namespace esl

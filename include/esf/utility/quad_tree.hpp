@@ -290,8 +290,10 @@ public:
 		}
 	}
 
-	static constexpr std::array<Neighbour_type, 4> neighbours = {
-		Neighbour_type::NORTH, Neighbour_type::SOUTH, Neighbour_type::WEST, Neighbour_type::EAST};
+	static constexpr std::array<Neighbour_type, 4> neighbours = {Neighbour_type::NORTH,
+																 Neighbour_type::SOUTH,
+																 Neighbour_type::WEST,
+																 Neighbour_type::EAST};
 
 private:
 	Neighbouring_cell neighbour_cell_in_root(const Cell& cell, Neighbour_type type)
@@ -417,9 +419,9 @@ private:
 	bool is_to_be_split(const Cell& cell) const
 	{
 		return !cell.is_leaf() && (is_to_be_split(cell, Neighbour_type::NORTH) ||
-									  is_to_be_split(cell, Neighbour_type::SOUTH) ||
-									  is_to_be_split(cell, Neighbour_type::WEST) ||
-									  is_to_be_split(cell, Neighbour_type::EAST));
+								   is_to_be_split(cell, Neighbour_type::SOUTH) ||
+								   is_to_be_split(cell, Neighbour_type::WEST) ||
+								   is_to_be_split(cell, Neighbour_type::EAST));
 	}
 
 private:

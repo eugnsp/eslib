@@ -2,8 +2,8 @@
 
 namespace esl
 {
-Csr_matrix_check_error_code::Csr_matrix_check_error_code(
-	::sparse_checker_error_values error_code, Check_result check_result) :
+Csr_matrix_check_error_code::Csr_matrix_check_error_code(::sparse_checker_error_values error_code,
+														 Check_result check_result) :
 	error_code_(error_code),
 	check_result_(check_result)
 {}

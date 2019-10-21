@@ -40,8 +40,10 @@ bool contains(const Rect& rect, const Point& point, Rect_tag, Point2_tag)
 template<class Linestring, class Point>
 bool contains(const Linestring& linestring, const Point& point, Linestring_tag, Point2_tag)
 {
-	return esu::any_of_pairs(linestring.begin_vertex(), linestring.end_vertex(),
-		[&point](auto& v1, auto& v2) { return is_point_on_line_segment(point, v1, v2); });
+	return esu::any_of_pairs(
+		linestring.begin_vertex(), linestring.end_vertex(), [&point](auto& v1, auto& v2) {
+			return is_point_on_line_segment(point, v1, v2);
+		});
 }
 
 template<class Polygon, class Point>
@@ -70,7 +72,9 @@ bool contains(const Polygon& poly, const Point& point, Polygon_tag, Point2_tag)
 template<class Geometry1, class Geometry2>
 bool contains(const Geometry1& geometry1, const Geometry2& geometry2)
 {
-	return internal::contains(geometry1, geometry2, typename Geometry1::Geometry_tag{},
-		typename Geometry2::Geometry_tag{});
+	return internal::contains(geometry1,
+							  geometry2,
+							  typename Geometry1::Geometry_tag{},
+							  typename Geometry2::Geometry_tag{});
 }
 } // namespace esf

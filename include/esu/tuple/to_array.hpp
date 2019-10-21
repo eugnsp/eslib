@@ -22,7 +22,7 @@ constexpr auto tuple_to_array(Tuple&& tuple, std::index_sequence<indices...>)
 template<class Tuple>
 constexpr auto tuple_to_array(Tuple&& tuple)
 {
-	return internal::tuple_to_array(
-		std::forward<Tuple>(tuple), internal::index_sequence_for_tuple<Tuple>);
+	return internal::tuple_to_array(std::forward<Tuple>(tuple),
+									internal::index_sequence_for_tuple<Tuple>);
 }
 } // namespace esu

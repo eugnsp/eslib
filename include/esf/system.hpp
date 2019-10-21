@@ -30,24 +30,8 @@ public:
 	using Mesh = esf::Mesh<dim>;
 	using Dof_mapper = Dof_mapper_<Var_list>;
 
-	template<std::size_t var>
-	using Var_t = typename Var_list::template Nth<var>;
-
-	template<std::size_t var>
-	using Var_dofs = typename Dof_mapper::template Var_dofs<var>;
-
-	using Vars_dofs = typename Dof_mapper::Vars_dofs;
-
-	using Dofs = std::conditional_t<n_vars == 1, Var_dofs<0>, Vars_dofs>;
-
-	template<std::size_t var>
-	using Var_vertex_dofs = typename Dof_mapper::template Var_vertex_dofs<var>;
-
-	template<std::size_t var>
-	using Var_edge_dofs = typename Dof_mapper::template Var_edge_dofs<var>;
-
-	template<std::size_t var>
-	using Var_cell_dofs = typename Dof_mapper::template Var_cell_dofs<var>;
+	template<std::size_t var_idx>
+	using Var = typename Var_list::template Nth<var_idx>;
 
 public:
 	System(const Mesh& mesh) : mesh_(mesh)
@@ -89,20 +73,20 @@ public:
 	// 	}
 
 	//////////////////////////////////////////////////////////////////////
-	//* Variables */
+	/** Variables */
 
-	template<std::size_t i = 0>
-	auto& variable(Var_index<i> = {})
+	template<std::size_t var_idx = 0>
+	auto& variable(Var_index<var_idx> = {})
 	{
-		static_assert(i < n_vars);
-		return std::get<i>(vars_);
+		static_assert(var_idx < n_vars);
+		return std::get<var_idx>(vars_);
 	}
 
-	template<std::size_t i = 0>
-	auto& variable(Var_index<i> = {}) const
+	template<std::size_t var_idx = 0>
+	auto& variable(Var_index<var_idx> = {}) const
 	{
-		static_assert(i < n_vars);
-		return std::get<i>(vars_);
+		static_assert(var_idx < n_vars);
+		return std::get<var_idx>(vars_);
 	}
 
 	auto& variables() const
@@ -132,15 +116,15 @@ public:
 	template<class Symmetry_tag, class... Args>
 	decltype(auto) sparsity_pattern(Args&&... args) const
 	{
-		return dof_mapper_.template sparsity_pattern<Symmetry_tag>(
-			*this, std::forward<Args>(args)...);
+		return dof_mapper_.template sparsity_pattern<Symmetry_tag>(*this,
+																   std::forward<Args>(args)...);
 	}
 
 	template<class Symmetry_tag, class... Args>
 	decltype(auto) sparsity_pattern2(Args&&... args) const
 	{
-		return dof_mapper_.template sparsity_pattern2<Symmetry_tag>(
-			*this, std::forward<Args>(args)...);
+		return dof_mapper_.template sparsity_pattern2<Symmetry_tag>(*this,
+																	std::forward<Args>(args)...);
 	}
 
 	virtual std::string name() const

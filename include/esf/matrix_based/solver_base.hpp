@@ -85,7 +85,7 @@ protected:
 	void set_bnd_values()
 	{
 		system_.for_each_variable([this]<std::size_t vi>(Var_index<vi> var_index, auto& variable) {
-			using Element = typename System::template Var_t<vi>::Element;
+			using Element = typename System::template Var<vi>::Element;
 
 			variable.for_each_strong_bnd_cond([this, var_index](const auto& bnd_cond) {
 				if constexpr (Element::has_vertex_dofs)

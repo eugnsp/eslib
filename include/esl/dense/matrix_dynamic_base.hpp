@@ -34,8 +34,9 @@ public:
 	//> Constructors
 
 	Matrix_dynamic_base() :
-		Matrix_dynamic_base(
-			Internal{}, extent_static_or_zero(ct_rows), extent_static_or_zero(ct_cols))
+		Matrix_dynamic_base(Internal{},
+							extent_static_or_zero(ct_rows),
+							extent_static_or_zero(ct_cols))
 	{}
 
 	Matrix_dynamic_base(const Matrix_dynamic_base& matrix) :
@@ -151,8 +152,10 @@ protected:
 		std::uninitialized_fill_n(data_.data(), size(), value);
 	}
 
-	Matrix_dynamic_base(
-		Internal, std::size_t rows, std::size_t cols, std::initializer_list<Value> values) :
+	Matrix_dynamic_base(Internal,
+						std::size_t rows,
+						std::size_t cols,
+						std::initializer_list<Value> values) :
 		Shape_base(rows, cols),
 		data_(rows * cols)
 	{

@@ -41,8 +41,9 @@ public:
 		std::vector<esf::Point1> grid(ticks_.back().n + 1);
 
 		grid.front().x() = ticks_.front().coord;
-		esu::for_each_pair(ticks_.begin(), ticks_.end(),
-			[&grid](auto& left, auto& right) { make_grid_on_interval(grid, left, right); });
+		esu::for_each_pair(ticks_.begin(), ticks_.end(), [&grid](auto& left, auto& right) {
+			make_grid_on_interval(grid, left, right);
+		});
 
 		return grid;
 	}
@@ -55,8 +56,9 @@ private:
 		const double bowing;
 	};
 
-	static void make_grid_on_interval(
-		std::vector<esf::Point1>& grid, const Tick& left, const Tick& right)
+	static void make_grid_on_interval(std::vector<esf::Point1>& grid,
+									  const Tick& left,
+									  const Tick& right)
 	{
 		if (right.bowing == 0)
 		{

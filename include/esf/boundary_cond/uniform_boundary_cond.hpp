@@ -19,8 +19,9 @@ public:
 	Uniform_boundary_cond(const Mesh<Element::dim>& mesh, double value) : Base(mesh), value_(value)
 	{}
 
-	Uniform_boundary_cond(
-		const Mesh<Element::dim>& mesh, const typename Base::Boundary& boundary, double value) :
+	Uniform_boundary_cond(const Mesh<Element::dim>& mesh,
+						  const typename Base::Boundary& boundary,
+						  double value) :
 		Base(mesh, boundary),
 		value_(value)
 	{}

@@ -39,8 +39,9 @@ private:
 	using Edge_list = std::vector<Index>;
 
 public:
-	Edge_chain_edge_iterator(
-		const Mesh2& mesh, Edge_list::const_iterator it, Edge_list::const_iterator itEnd) :
+	Edge_chain_edge_iterator(const Mesh2& mesh,
+							 Edge_list::const_iterator it,
+							 Edge_list::const_iterator itEnd) :
 		Iterator_base(mesh),
 		it_(it), itEnd_(itEnd)
 	{

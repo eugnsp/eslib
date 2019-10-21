@@ -45,7 +45,7 @@ public:
 	// }
 
 	//////////////////////////////////////////////////////////////////////
-	//* Extents */
+	/** Extents */
 
 	std::size_t rows() const
 	{
@@ -74,7 +74,7 @@ public:
 	}
 
 	//////////////////////////////////////////////////////////////////////
-	//* Element access */
+	/** Element access */
 
 	decltype(auto) operator()(std::size_t row, std::size_t col)
 	{

@@ -36,8 +36,10 @@ public:
 		assert(mat_a.rows() == mat_b.rows() && mat_a.cols() == mat_b.cols());
 	}
 
-	bool solve(Matrix_x<Value>& vectors, Vector_x<Real>& values,
-		std::pair<Real, Real> values_interval, bool user_init_guess = false)
+	bool solve(Matrix_x<Value>& vectors,
+			   Vector_x<Real>& values,
+			   std::pair<Real, Real> values_interval,
+			   bool user_init_guess = false)
 	{
 		assert(values_interval.first < values_interval.second);
 
@@ -68,9 +70,21 @@ public:
 		{
 			Complex ze;
 
-			const auto status = mkl_feast_rci(job, n, ze, work1.data(), work2.data(), work3.data(),
-				work4.data(), eps, n_loops, values_interval, m0, values.data(), vectors.data(),
-				n_eigen_values_, rel_errors.data());
+			const auto status = mkl_feast_rci(job,
+											  n,
+											  ze,
+											  work1.data(),
+											  work2.data(),
+											  work3.data(),
+											  work4.data(),
+											  eps,
+											  n_loops,
+											  values_interval,
+											  m0,
+											  values.data(),
+											  vectors.data(),
+											  n_eigen_values_,
+											  rel_errors.data());
 
 			if (job == Job::DONE)
 			{

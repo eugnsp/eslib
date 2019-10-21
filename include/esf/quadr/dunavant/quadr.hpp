@@ -7,9 +7,9 @@
 #include <esu/array.hpp>
 
 #include <cassert>
+#include <cstddef>
 #include <tuple>
 #include <utility>
-#include <cstddef>
 
 namespace esf
 {
@@ -59,7 +59,8 @@ private:
 };
 
 template<std::size_t order>
-using Dunavant_quadr_t = Dunavant_quadr<order,
+using Dunavant_quadr_t = Dunavant_quadr<
+	order,
 	std::make_index_sequence<std::tuple_size_v<decltype(Dunavant_data<order>::groups)>>>;
 } // namespace internal
 

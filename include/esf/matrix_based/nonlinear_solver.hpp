@@ -86,12 +86,15 @@ protected:
 	virtual void before_solve()
 	{}
 
-	virtual void after_step(unsigned int /* n_iter */, double /* residual_norm */,
-		double /* step_norm */, double /* solution_norm */)
+	virtual void after_step(unsigned int /* n_iter */,
+							double /* residual_norm */,
+							double /* step_norm */,
+							double /* solution_norm */)
 	{}
 
-	virtual void after_line_search_step(
-		unsigned int /* n_iter */, double /* residual_norm */, double /* reduction factor */)
+	virtual void after_line_search_step(unsigned int /* n_iter */,
+										double /* residual_norm */,
+										double /* reduction factor */)
 	{}
 
 protected:

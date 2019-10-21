@@ -13,7 +13,7 @@ namespace esf
 template<class System, std::size_t var, typename Value>
 void write_gnuplot(const std::string& file_name, Solution_view<System, var, Value> solution_view)
 {
-	using Var = typename System::template Var_t<var>;
+	using Var = typename System::template Var<var>;
 	using Element = typename Var::Element;
 
 	Gnuplot_writer2 writer(file_name, solution_view.mesh());

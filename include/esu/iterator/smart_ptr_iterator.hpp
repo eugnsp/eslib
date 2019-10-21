@@ -163,8 +163,8 @@ auto operator-(const Smart_ptr_iter<Iterator_l>& it_l, const Smart_ptr_iter<Iter
 }
 
 template<class Iterator>
-auto operator+(
-	typename Smart_ptr_iter<Iterator>::difference_type n, const Smart_ptr_iter<Iterator>& it)
+auto operator+(typename Smart_ptr_iter<Iterator>::difference_type n,
+			   const Smart_ptr_iter<Iterator>& it)
 {
 	return it + n;
 }

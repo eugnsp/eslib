@@ -17,7 +17,7 @@ private:
 
 public:
 	//////////////////////////////////////////////////////////////////////
-	//* Extents */
+	/** Extents */
 
 	using Base::cols;
 	using Base::rows;

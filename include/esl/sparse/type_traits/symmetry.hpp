@@ -13,7 +13,7 @@ inline constexpr bool is_symmetry_tag =
 	esu::is_one_of<T, Not_symmetric, Structural_symmetric, Symmetric_upper, Symmetric_lower>;
 
 //////////////////////////////////////////////////////////////////////
-//* Structural_symmetric  */
+/** Structural_symmetric  */
 
 template<class T, typename = void>
 struct Is_not_symmetric;
@@ -40,7 +40,7 @@ template<class T>
 inline constexpr bool is_not_symmetric = Is_not_symmetric<T>::value;
 
 //////////////////////////////////////////////////////////////////////
-//* Structural_symmetric  */
+/** Structural_symmetric  */
 
 template<class T, typename = void>
 struct Is_structural_symmetric;
@@ -69,7 +69,7 @@ template<class T>
 inline constexpr bool is_structural_symmetric = Is_structural_symmetric<T>::value;
 
 //////////////////////////////////////////////////////////////////////
-//* Symmetric_upper */
+/** Symmetric_upper */
 
 template<class T, typename = void>
 struct Is_symmetric_upper;
@@ -98,7 +98,7 @@ template<class T>
 inline constexpr bool is_symmetric_upper = Is_symmetric_upper<T>::value;
 
 //////////////////////////////////////////////////////////////////////
-//* Symmetric_upper */
+/** Symmetric_upper */
 
 template<class T, typename = void>
 struct Is_symmetric_lower;
@@ -127,7 +127,7 @@ template<class T>
 inline constexpr bool is_symmetric_lower = Is_symmetric_lower<T>::value;
 
 //////////////////////////////////////////////////////////////////////
-//* Symmetric = Symmetric_upper OR Symmetric_lower */
+/** Symmetric = Symmetric_upper OR Symmetric_lower */
 
 template<class T>
 struct Is_symmetric : std::disjunction<Is_symmetric_upper<T>, Is_symmetric_lower<T>>

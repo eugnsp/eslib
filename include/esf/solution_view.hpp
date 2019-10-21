@@ -22,7 +22,7 @@ public:
 	using Mesh = typename System::Mesh;
 
 private:
-	using Var = typename System::template Var_t<var_idx>;
+	using Var = typename System::template Var<var_idx>;
 	using Element = typename Var::Element;
 	static constexpr Var_index<var_idx> var_index{};
 
@@ -35,7 +35,8 @@ public:
 	/** Solution values access */
 
 	template<class Quadr>
-	auto at_quadr(const typename System::template Var_dofs<var_idx>& dofs) const
+	auto at_quadr(
+		const typename System::Dof_mapper::template Var_dofs<var_idx, Cell_tag>& dofs) const
 	{
 		esl::Vector<Value, Quadr::size> vals_at_quadr{};
 
@@ -57,11 +58,11 @@ public:
 	}
 
 	template<class Mesh_element_index,
-		class Mesh_tag = internal::Element_tag_by_index<Mesh_element_index>>
+			 class Mesh_element_tag = internal::Element_tag_by_index<Mesh_element_index>>
 	auto at(Mesh_element_index mesh_element_index) const
 	{
-		static_assert(Element::has_dofs(Mesh_tag{}));
-		constexpr auto n_element_dofs = Element::dofs(Mesh_tag{});
+		static_assert(Element::has_dofs(Mesh_element_tag{}));
+		constexpr auto n_element_dofs = Element::dofs(Mesh_element_tag{});
 
 		const auto& var = system_.variable(var_index);
 		const auto dofs = esf::dofs(system_, mesh_element_index, var_index);
@@ -81,7 +82,7 @@ public:
 	}
 
 	template<class Mesh_element_index>
-	auto& operator[](Mesh_element_index mesh_element_index) const
+	auto operator[](Mesh_element_index mesh_element_index) const
 	{
 		return at(mesh_element_index);
 	}
@@ -120,14 +121,14 @@ protected:
 
 template<class Quadr, class System, std::size_t var, typename Value>
 auto at_quadr(const Solution_view<System, var, Value>& solution,
-	const typename System::template Var_dofs<var>& dofs)
+			  const typename System::template Var_dofs<var>& dofs)
 {
 	return solution.template at_quadr<Quadr>(dofs);
 }
 
 template<class Quadr, class System, std::size_t var, typename Value>
-auto at_quadr(
-	const Solution_view<System, var, Value>& solution, const typename System::Mesh::Cell_view& cell)
+auto at_quadr(const Solution_view<System, var, Value>& solution,
+			  const typename System::Mesh::Cell_view& cell)
 {
 	return solution.template at_quadr<Quadr>(cell);
 }
