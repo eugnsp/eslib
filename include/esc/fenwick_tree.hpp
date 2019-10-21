@@ -268,6 +268,6 @@ private:
 
 template<class Input_iterator>
 Fenwick_tree(Input_iterator, Input_iterator)
-	-> Fenwick_tree<typename std::iterator_traits<Input_iterator>::value_type,
+	->Fenwick_tree<typename std::iterator_traits<Input_iterator>::value_type,
 		std::make_unsigned_t<typename std::iterator_traits<Input_iterator>::difference_type>>;
 } // namespace esc

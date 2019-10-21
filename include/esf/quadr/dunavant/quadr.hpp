@@ -1,4 +1,5 @@
 #pragma once
+#include <esf/forward.hpp>
 #include <esf/index.hpp>
 #include <esf/quadr/dunavant/data.hpp>
 
@@ -8,17 +9,18 @@
 #include <cassert>
 #include <tuple>
 #include <utility>
+#include <cstddef>
 
 namespace esf
 {
 namespace internal
 {
 // Dunavant quadrature integration
-template<Index order, class Group_index_sequence>
+template<std::size_t order, class Group_index_sequence>
 class Dunavant_quadr;
 
-template<Index order, Index... group_indices>
-class Dunavant_quadr<order, std::integer_sequence<Index, group_indices...>>
+template<std::size_t order, std::size_t... group_indices>
+class Dunavant_quadr<order, std::index_sequence<group_indices...>>
 {
 private:
 	static constexpr auto point_groups = Dunavant_data<order>::groups;
@@ -26,10 +28,10 @@ private:
 		esu::make_array(std::get<group_indices>(point_groups).size()...);
 
 public:
-	static constexpr Index dim = 2;
+	static constexpr std::size_t dim = 2;
 
 	// The total number of quadrature points
-	static constexpr Index size = esu::array_sum<Index>(group_sizes, 0);
+	static constexpr std::size_t size = esu::array_sum(group_sizes);
 
 public:
 	// Computes a weighted sum over quadrature points,
@@ -49,31 +51,31 @@ protected:
 
 private:
 	// Returns the index of the first point in the group with the given index
-	template<Index group_index>
-	static constexpr Index start_index()
+	template<std::size_t group_index>
+	static constexpr std::size_t start_index()
 	{
-		return esu::array_sum_n<group_index, Index>(group_sizes, 0);
+		return esu::array_sum_n<group_index>(group_sizes);
 	}
 };
 
-template<Index order>
+template<std::size_t order>
 using Dunavant_quadr_t = Dunavant_quadr<order,
-	std::make_integer_sequence<Index, std::tuple_size_v<decltype(Dunavant_data<order>::groups)>>>;
+	std::make_index_sequence<std::tuple_size_v<decltype(Dunavant_data<order>::groups)>>>;
 } // namespace internal
 
 // Quadrature integration
-template<Index order>
+template<std::size_t order>
 class Quadr<order, 2> : public internal::Dunavant_quadr_t<order>
 {
 private:
 	using Base = internal::Dunavant_quadr_t<order>;
 
 public:
-	static constexpr Index dim = 2;
+	static constexpr std::size_t dim = 2;
 
 public:
 	// Returns a quadrature point with the given index in the reference triangle
-	static constexpr esl::Vector_2d point(Index i)
+	static constexpr esl::Vector_2d point(std::size_t i)
 	{
 		constexpr auto points = Base::points();
 		assert(i < points.size());

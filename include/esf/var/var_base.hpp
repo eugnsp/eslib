@@ -72,29 +72,27 @@ public:
 	}
 
 	template<class Fn>
+	void for_each_bnd_cond(Fn fn) const
+	{
+		esu::tuple_for_each([&fn](auto& bnd_cond) { fn(*bnd_cond); }, bnd_conds_);
+	}
+
+	template<class Fn>
 	void for_each_strong_bnd_cond(Fn fn) const
 	{
-		const auto f = [&fn]<class Bnd_cond>(const Bnd_cond& bnd_cond)
-		{
-			assert(bnd_cond.has_value());
-			if constexpr (Bnd_cond::value_type::is_strong)
-				fn(*bnd_cond);
-		};
-
-		esu::tuple_for_each(f, bnd_conds_);
+		for_each_bnd_cond([&fn]<class Bnd_cond>(const Bnd_cond& bnd_cond) {
+			if constexpr (Bnd_cond::is_strong)
+				fn(bnd_cond);
+		});
 	}
 
 	template<class Fn>
 	void for_each_weak_bnd_cond(Fn fn) const
 	{
-		const auto f = [&fn]<class Bnd_cond>(const Bnd_cond& bnd_cond)
-		{
-			assert(bnd_cond.has_value());
-			if constexpr (!Bnd_cond::value_type::is_strong)
-				fn(*bnd_cond);
-		};
-
-		esu::tuple_for_each(f, bnd_conds_);
+		for_each_bnd_cond([&fn]<class Bnd_cond>(const Bnd_cond& bnd_cond) {
+			if constexpr (!Bnd_cond::is_strong)
+				fn(bnd_cond);
+		});
 	}
 
 private:

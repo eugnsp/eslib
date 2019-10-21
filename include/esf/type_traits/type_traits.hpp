@@ -1,7 +1,7 @@
 #pragma once
 #include <esf/forward.hpp>
-#include <esf/mesh/tags.hpp>
 #include <esf/mesh/index.hpp>
+#include <esf/mesh/tags.hpp>
 
 #include <esu/type_traits.hpp>
 

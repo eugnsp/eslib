@@ -61,7 +61,8 @@ public:
 		assert(rhs.rows() == solution.rows() && rhs.cols() == solution.cols());
 
 		const auto n_rhs = is_col_major<Dense_matrix1> ? rhs.cols() : rhs.rows();
-		call_pardiso(Phase::ANALYZE_FACTORIZE_SOLVE, rhs.self().data(), solution.self().data(), n_rhs);
+		call_pardiso(
+			Phase::ANALYZE_FACTORIZE_SOLVE, rhs.self().data(), solution.self().data(), n_rhs);
 	}
 
 	void factorize()

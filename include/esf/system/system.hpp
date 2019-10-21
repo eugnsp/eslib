@@ -1,7 +1,7 @@
 #pragma once
 #include <esf/dof/dof_mapper.hpp>
-#include <esf/type_traits.hpp>
 #include <esf/index.hpp>
+#include <esf/type_traits.hpp>
 #include <esf/var.hpp>
 
 #include <esl/dense.hpp>
@@ -113,8 +113,7 @@ public:
 	template<class Fn>
 	void for_each_variable(Fn fn) const
 	{
-		Var_list::for_each([this, &fn](auto var_index)
-		{
+		Var_list::for_each([this, &fn](auto var_index) {
 			auto& var = variable(var_index);
 			if constexpr (std::is_invocable_v<Fn, decltype(var)>)
 				fn(var);

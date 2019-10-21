@@ -27,16 +27,19 @@ private:
 	using Dof_index_vector = esl::Vector<Dof_index, size>;
 
 	template<class Var>
-	using Vars_dofs_fn = Dof_index_vector<Var::Element::n_total_cell_dofs>;
+	using Vars_dofs_fn = Dof_index_vector<Var::Element::total_cell_dofs>;
 
 	template<class Var>
-	using Vars_vertex_dofs_fn = Dof_index_vector<Var::Element::n_vertex_dofs>;
+	using Vars_vertex_dofs_fn = Dof_index_vector<Var::Element::vertex_dofs>;
 
 	template<class Var>
-	using Vars_edge_dofs_fn = Dof_index_vector<Var::Element::n_edge_dofs>;
+	using Vars_edge_dofs_fn = Dof_index_vector<Var::Element::edge_dofs>;
 
 	template<class Var>
-	using Vars_cell_dofs_fn = Dof_index_vector<Var::Element::n_cell_dofs>;
+	using Vars_face_dofs_fn = Dof_index_vector<Var::Element::face_dofs>;
+
+	template<class Var>
+	using Vars_cell_dofs_fn = Dof_index_vector<Var::Element::cell_dofs>;
 
 protected:
 	template<std::size_t vi>
@@ -51,13 +54,16 @@ public:
 	using Vars_dofs = typename Var_list::template Tuple_map<Vars_dofs_fn>;
 
 	template<std::size_t vi>
-	using Var_vertex_dofs = Dof_index_vector<Var<vi>::Element::n_vertex_dofs>;
+	using Var_vertex_dofs = Dof_index_vector<Var<vi>::Element::vertex_dofs>;
 
 	template<std::size_t vi>
-	using Var_edge_dofs = Dof_index_vector<Var<vi>::Element::n_edge_dofs>;
+	using Var_edge_dofs = Dof_index_vector<Var<vi>::Element::edge_dofs>;
 
 	template<std::size_t vi>
-	using Var_cell_dofs = Dof_index_vector<Var<vi>::Element::n_cell_dofs>;
+	using Var_face_dofs = Dof_index_vector<Var<vi>::Element::face_dofs>;
+
+	template<std::size_t vi>
+	using Var_cell_dofs = Dof_index_vector<Var<vi>::Element::cell_dofs>;
 
 public:
 	template<class System>

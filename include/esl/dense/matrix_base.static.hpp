@@ -122,6 +122,12 @@ public:
 		data_.swap(other.data_);
 	}
 
+	static void resize(const std::size_t rows, const std::size_t cols)
+	{
+		assert(rows == ct_rows);
+		assert(cols == ct_cols);
+	}
+
 protected:
 	Static_storage<Value, ct_rows * ct_cols> data_;
 };

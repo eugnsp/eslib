@@ -1,6 +1,6 @@
 #pragma once
-#include <esf/quadr/quadr.hpp>
 #include <esf/index.hpp>
+#include <esf/quadr/quadr.hpp>
 
 #include <esl/dense.hpp>
 
@@ -21,16 +21,16 @@ auto gradients(Grads& grads, const Inv_tr_jacobian& j)
 template<class Element, class Quadr>
 auto gradients(double inv_j)
 {
-	esl::Matrix<double, Quadr::size, Element::n_total_edge_dofs> grads;
-	esf::internal::gradients<Element, Quadr>(grads, inv_j);
+	esl::Matrix<double, Quadr::size, Element::total_edge_dofs> grads;
+	internal::gradients<Element, Quadr>(grads, inv_j);
 	return grads;
 }
 
 template<class Element, class Quadr>
 auto gradients(const esl::Matrix_2d& inv_tr_j)
 {
-	esl::Matrix<esl::Vector_2d, Quadr::size, Element::n_total_face_dofs> grads;
-	esf::internal::gradients<Element, Quadr>(grads, inv_tr_j);
+	esl::Matrix<esl::Vector_2d, Quadr::size, Element::total_face_dofs> grads;
+	internal::gradients<Element, Quadr>(grads, inv_tr_j);
 	return grads;
 }
 } // namespace esf

@@ -9,4 +9,4 @@ struct Quadr_point_index
 	using Quadr = Quadr_;
 	Index index;
 };
-}
+} // namespace esf

@@ -1,7 +1,7 @@
 #pragma once
+#include <esf/index.hpp>
 #include <esf/io/text_file_writer.hpp>
 #include <esf/mesh/mesh2.hpp>
-#include <esf/index.hpp>
 
 #include <cassert>
 #include <fstream>

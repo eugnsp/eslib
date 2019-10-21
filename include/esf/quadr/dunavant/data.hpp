@@ -1,6 +1,6 @@
 #pragma once
-#include <esf/quadr/dunavant/points_group.hpp>
 #include <esf/index.hpp>
+#include <esf/quadr/dunavant/points_group.hpp>
 
 namespace esf::internal
 {

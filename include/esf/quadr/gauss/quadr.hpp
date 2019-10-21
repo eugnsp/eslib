@@ -1,13 +1,14 @@
 #pragma once
 #include <esf/geometry/point1.hpp>
-#include <esf/quadr/gauss/data.hpp>
 #include <esf/index.hpp>
+#include <esf/quadr/gauss/data.hpp>
 
 #include <cassert>
+#include <cstddef>
 
 namespace esf
 {
-template<Local_index order>
+template<std::size_t order>
 class Quadr<order, 1>
 {
 private:

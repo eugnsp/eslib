@@ -1,4 +1,5 @@
 #pragma once
+#include <esf/system/dofs.hpp>
 #include <esf/function.hpp>
 #include <esf/geometry.hpp>
 #include <esf/index.hpp>
@@ -12,7 +13,7 @@
 
 namespace esf
 {
-template<class System_, std::size_t var, typename Value>
+template<class System_, std::size_t var_idx, typename Value>
 class Solution_view
 {
 public:
@@ -20,7 +21,9 @@ public:
 	using Mesh = typename System::Mesh;
 
 private:
-	using Element = typename System::template Var_t<var>::Element;
+	using Var = typename System::template Var_t<var_idx>;
+	using Element = typename Var::Element;
+	static constexpr Var_index<var_idx> var_index{};
 
 public:
 	Solution_view(const System& system, const esl::Vector_x<Value>& solution) :
@@ -31,7 +34,7 @@ public:
 	/** Solution values access */
 
 	template<class Quadr>
-	auto at_quadr(const typename System::template Var_dofs<var>& dofs) const
+	auto at_quadr(const typename System::template Var_dofs<var_idx>& dofs) const
 	{
 		esl::Vector<Value, Quadr::size> vals_at_quadr{};
 
@@ -48,26 +51,36 @@ public:
 	template<class Quadr>
 	auto at_quadr(const typename System::Mesh::Cell_view& cell) const
 	{
-		const auto dofs = system_.dof_mapper().template dofs<var>(cell);
+		const auto dofs = system_.dof_mapper().template dofs<var_idx>(cell);
 		return at_quadr<Quadr>(dofs);
 	}
 
 	auto& at(Vertex_index vertex) const
 	{
-		typename System::template Var_vertex_dofs<var> dofs;
-		system_.dof_mapper().template vertex_dofs<var>(vertex, dofs);
+		typename System::template Var_vertex_dofs<var_idx> dofs;
+		system_.dof_mapper().template vertex_dofs<var_idx>(vertex, dofs);
 
 		// TODO : return a vector if we have several DoFs
 		return solution_[dofs[0].index];
 	}
 
-	auto& at(Face_index face) const
+	auto at(Face_index face) const
 	{
-		typename System::template Var_cell_dofs<var> dofs;
-		system_.dof_mapper().template cell_dofs<var>(face, dofs);
+		const auto& var = system_.variable(var_index);
+		const auto dofs = esf::dofs(system_, var_index, face);
 
-		// TODO : return a vector if we have several DoFs
-		return solution_[dofs[0].index];
+		if constexpr (Var::ct_dim == 1 && Element::face_dofs == 1)
+			return solution_[dofs[0]];
+		else
+		{
+			esl::Matrix<Value, Var::ct_dim, Element::face_dofs> values;
+			values.resize(var.dim(), Element::face_dofs);
+			for (std::size_t dim = 0; dim < var.dim(); ++dim)
+				for (std::size_t dof = 0; dof < Element::face_dofs; ++dof)
+					values(dim, dof) = solution_[dofs[0].index + dim + dof * var.dim()];
+
+			return values;
+		}
 	}
 
 	auto& operator[](Vertex_index vertex) const
@@ -80,7 +93,7 @@ public:
 		static_assert(Mesh::dim == 2);
 
 		const auto pt_ref = point_to_ref_triangle(pt, cell);
-		const auto dofs = system_.dof_mapper().template dofs<var>(cell);
+		const auto dofs = system_.dof_mapper().template dofs<var_idx>(cell);
 		Value value{};
 		for (Local_index id = 0; id < dofs.size(); ++id)
 			value += Element::basis(id, pt_ref) * solution_[dofs[id].index];

@@ -1,6 +1,6 @@
 #pragma once
-#include <esf/type_traits.hpp>
 #include <esf/mesh/tags.hpp>
+#include <esf/type_traits.hpp>
 
 #include <cstddef>
 #include <type_traits>
@@ -49,6 +49,7 @@ void for_each_variable_and_element(Fn fn)
 		internal::for_each_variable_and_element_impl2<Var_list, 0, Vertex_tag, Edge_tag>(fn);
 
 	if constexpr (space_dim == 2)
-		internal::for_each_variable_and_element_impl2<Var_list, 0, Vertex_tag, Edge_tag, Face_tag>(fn);
+		internal::for_each_variable_and_element_impl2<Var_list, 0, Vertex_tag, Edge_tag, Face_tag>(
+			fn);
 }
 } // namespace esf

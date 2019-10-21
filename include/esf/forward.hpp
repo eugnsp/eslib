@@ -1,6 +1,8 @@
 #pragma once
 #include <esf/index.hpp>
 
+#include <cstddef>
+
 namespace esf
 {
 //////////////////////////////////////////////////////////////////////////
@@ -29,21 +31,21 @@ template<class Element_tag, class Mesh>
 class Element_view;
 
 //////////////////////////////////////////////////////////////////////////
-template<class Element, Local_index dim, class... Bnd_conds>
+template<class Element, std::size_t dim, class... Bnd_conds>
 class Var;
 
 //////////////////////////////////////////////////////////////////////////
 /** Finite elements */
 
-template<Local_index order, Local_index dim = 2>
+template<std::size_t order, std::size_t dim = 2>
 class Lagrange;
 
-template<Local_index order, Local_index dim = 2>
+template<std::size_t order, std::size_t dim = 2>
 class Discontinuous_lagrange;
 
 //////////////////////////////////////////////////////////////////////////
 
-template<Local_index, Local_index dim>
+template<std::size_t, std::size_t dim>
 class Quadr;
 
 template<class Element, class Quadr>

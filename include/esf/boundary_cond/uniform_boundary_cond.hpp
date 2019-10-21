@@ -21,7 +21,8 @@ public:
 
 	Uniform_boundary_cond(
 		const Mesh<Element::dim>& mesh, const typename Base::Boundary& boundary, double value) :
-		Base(mesh, boundary), value_(value)
+		Base(mesh, boundary),
+		value_(value)
 	{}
 
 	template<class Element_index>

@@ -5,6 +5,7 @@
 #include <esl/dense/type_traits/is_expression.hpp>
 #include <esl/dense/type_traits/is_lvalue.hpp>
 #include <esl/dense/type_traits/is_lvalue_block.hpp>
+#include <esl/dense/type_traits/is_vector_expr.hpp>
 #include <esl/dense/type_traits/is_view.hpp>
 #include <esl/dense/type_traits/layout.hpp>
 #include <esl/dense/type_traits/mkl_decay.hpp>

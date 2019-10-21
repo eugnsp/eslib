@@ -1,10 +1,11 @@
 #pragma once
+#include <esf/forward.hpp>
 #include <esf/function/gradients.hpp>
 #include <esf/function/jacobian.hpp>
+#include <esf/index.hpp>
+#include <esf/mesh/mesh2.hpp>
 #include <esf/quadr/quadr.hpp>
 #include <esf/quadr/quadr_point_index.hpp>
-#include <esf/mesh/mesh2.hpp>
-#include <esf/index.hpp>
 
 #include <esl/dense.hpp>
 #include <esu/type_traits.hpp>
@@ -51,7 +52,7 @@ namespace esf
 template<class Element, class Quadr = esf::Quadr<2 * Element::order, Element::dim>, class Fn>
 auto mass_matrix(Fn fn, double scale)
 {
-	constexpr auto n_dofs = Element::n_total_cell_dofs;
+	constexpr auto n_dofs = Element::total_cell_dofs;
 
 	esl::Matrix_d<n_dofs, n_dofs> m;
 	for (Local_index s = 0; s < n_dofs; ++s)
@@ -68,16 +69,14 @@ auto mass_matrix(Fn fn, double scale)
 template<class Element, class Quadr = esf::Quadr<2 * Element::order, Element::dim>>
 constexpr auto mass_matrix(double scale)
 {
-	const auto mat_fn = [scale](std::size_t i, std::size_t j)
-	{
-		return scale * Quadr::sum([i, j](std::size_t iq)
-		{
+	const auto mat_fn = [scale](std::size_t i, std::size_t j) {
+		return scale * Quadr::sum([i, j](std::size_t iq) {
 			auto constexpr basis = Element_quadr<Element, Quadr>::basis();
 			return basis(iq, i) * basis(iq, j);
 		});
 	};
 
-	constexpr auto n_dofs = Element::n_total_cell_dofs;
+	constexpr auto n_dofs = Element::total_cell_dofs;
 	return esl::make_matrix<n_dofs, n_dofs>(mat_fn);
 }
 
@@ -85,13 +84,13 @@ constexpr auto mass_matrix(double scale)
 
 template<class Element, class Quadr>
 using Grad = esl::Matrix<std::conditional_t<Element::dim == 1, double, esl::Vector_2d>, Quadr::size,
-	Element::n_total_cell_dofs>;
+	Element::total_cell_dofs>;
 
 // Returns a local stiffness matrix
 template<class Element, class Quadr, class Func>
 auto stiffness_matrix(const Grad<Element, Quadr>& grads, Func func, double scale)
 {
-	constexpr auto n_dofs = Element::n_total_cell_dofs;
+	constexpr auto n_dofs = Element::total_cell_dofs;
 
 	esl::Matrix_d<n_dofs, n_dofs> m;
 	for (Local_index i = 0; i < n_dofs; ++i)
@@ -111,11 +110,12 @@ auto stiffness_matrix(const Grad<Element, Quadr>& grads, double scale)
 }
 
 // Returns a local stiffness matrix
-template<class Element, class Quadr = esf::Quadr<2 * (Element::order - 1), Element::dim>, class Func>
+template<class Element, class Quadr = esf::Quadr<2 * (Element::order - 1), Element::dim>,
+	class Func>
 auto stiffness_matrix(
 	const Grad<Element, Quadr>& grads, Func func, esl::Matrix_2d eps, double scale)
 {
-	constexpr auto n_dofs = Element::n_total_cell_dofs;
+	constexpr auto n_dofs = Element::total_cell_dofs;
 
 	esl::Matrix_d<n_dofs, n_dofs> m;
 	for (Local_index i = 0; i < n_dofs; ++i)
@@ -134,7 +134,8 @@ auto stiffness_matrix(const Grad<Element, Quadr>& grads, esl::Matrix_2d eps, dou
 	return stiffness_matrix<Element, Quadr>(grads, math::One{}, eps, scale);
 }
 
-template<class Element, class Quadr = esf::Quadr<2 * (Element::order - 1), Element::dim>, class Func>
+template<class Element, class Quadr = esf::Quadr<2 * (Element::order - 1), Element::dim>,
+	class Func>
 auto stiffness_matrix(const Mesh2::Face_view& face, Func func, double scale)
 {
 	const auto grads = gradients<Element, Quadr>(inv_transp_jacobian(face));
@@ -154,7 +155,7 @@ auto stiffness_matrix(const Mesh2::Cell_view& cell, double scale)
 template<class Element, class Quadr = esf::Quadr<Element::order, Element::dim>, class Fn>
 auto load_vector(Fn fn, double scale)
 {
-	constexpr auto n_dofs = Element::n_total_cell_dofs;
+	constexpr auto n_dofs = Element::total_cell_dofs;
 
 	return esl::make_vector<n_dofs>([&fn, scale](auto i) {
 		return scale * Quadr::sum([i, &fn](Index iq) {
@@ -168,7 +169,7 @@ auto load_vector(Fn fn, double scale)
 template<class Element, class Quadr = esf::Quadr<Element::order, Element::dim>>
 auto load_vector(double scale)
 {
-	constexpr auto n_dofs = Element::n_total_cell_dofs;
+	constexpr auto n_dofs = Element::total_cell_dofs;
 
 	return esl::make_vector<n_dofs>([scale](auto i) {
 		return scale * Quadr::sum([i](Local_index q) {

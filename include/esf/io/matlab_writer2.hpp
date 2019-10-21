@@ -1,7 +1,6 @@
 #pragma once
 #include <cassert>
 #include <esf/mesh/mesh2.hpp>
-#include <esf/types.hpp>
 #include <esl/io/matfile_writer.hpp>
 #include <string>
 

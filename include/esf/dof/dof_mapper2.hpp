@@ -44,6 +44,9 @@ public:
 	using Var_edge_dofs = typename Base::template Var_edge_dofs<vi>;
 
 	template<std::size_t vi>
+	using Var_face_dofs = typename Base::template Var_face_dofs<vi>;
+
+	template<std::size_t vi>
 	using Var_cell_dofs = typename Base::template Var_cell_dofs<vi>;
 
 public:
@@ -91,9 +94,9 @@ public:
 	}
 
 	template<std::size_t var = 0>
-	void cell_dofs(Face_index face, Var_cell_dofs<var>& dofs_list) const
+	void face_dofs(Face_index face, Var_face_dofs<var>& dofs_list) const
 	{
-		var_cell_dofs<var>(face, dofs_list);
+		var_face_dofs<var>(face, dofs_list);
 	}
 
 private:
@@ -143,9 +146,9 @@ private:
 	}
 
 	template<std::size_t var, class Dofs>
-	void var_cell_dofs(Face_index face, Dofs& dofs) const
+	void var_face_dofs(Face_index face, Dofs& dofs) const
 	{
-		static_assert(Base::template Var<var>::Element::has_cell_dofs);
+		static_assert(Base::template Var<var>::Element::has_face_dofs);
 
 		const Dof_index& first_dof = this->indices_.at(face, Var_index<var>{});
 		for (std::size_t i = 0; i < dofs.size(); ++i)
@@ -193,7 +196,7 @@ private:
 		using Element = typename Base::template Var<var>::Element;
 
 		const esf::Dof_index& first_dof = this->indices_.at(element, esf::Var_index<var>{});
-		constexpr auto n = Element::n_dofs(esf::internal::Element_tag_by_index<Element_index>{});
+		constexpr auto n = Element::dofs(esf::internal::Element_tag_by_index<Element_index>{});
 
 		for (esf::Local_index k = 0; k < n; ++k)
 			dofs[i++] = first_dof + (reversed ? n - k - 1 : k);

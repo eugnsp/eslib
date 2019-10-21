@@ -1,7 +1,6 @@
 #pragma once
 #include <cassert>
 #include <esf/mesh/mesh2.hpp>
-#include <esf/types.hpp>
 #include <esu/time.hpp>
 #include <fstream>
 #include <stdexcept>

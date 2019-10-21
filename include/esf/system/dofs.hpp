@@ -29,7 +29,8 @@ Vertex_dofs<System, var_index> dofs(const System& system, Vertex_index vertex)
 
 // TODO
 template<std::size_t var_index, class System>
-Edge_dofs<System, var_index> dofs(const System& system, Var_index<var_index>, Halfedge_index halfedge)
+Edge_dofs<System, var_index> dofs(
+	const System& system, Var_index<var_index>, Halfedge_index halfedge)
 {
 	Edge_dofs<System, var_index> dofs;
 	system.dof_mapper().template edge_dofs<var_index>(edge(halfedge), dofs);
@@ -65,6 +66,25 @@ Edge_dofs<System, var_index> dofs(const System& system, Edge_index edge)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+/** Face DoFs */
+
+template<std::size_t var_index, class System>
+Face_dofs<System, var_index> dofs(const System& system, Var_index<var_index>, Face_index face)
+{
+	Face_dofs<System, var_index> dofs;
+	system.dof_mapper().template face_dofs<var_index>(face, dofs);
+	return dofs;
+}
+
+template<std::size_t var_index = 0, class System>
+Face_dofs<System, var_index> dofs(const System& system, Face_index face)
+{
+	Face_dofs<System, var_index> dofs;
+	system.dof_mapper().template face_dofs<var_index>(face, dofs);
+	return dofs;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 /** Cell DoFs */
 
 template<std::size_t var_index, class System>
@@ -78,4 +98,4 @@ auto dofs(const System& system, const typename System::Mesh::Cell_view& cell)
 {
 	return system.dof_mapper().template dofs<var_index>(cell);
 }
-}
+} // namespace esf

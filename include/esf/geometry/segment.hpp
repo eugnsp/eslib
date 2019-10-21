@@ -36,4 +36,4 @@ public:
 private:
 	Point2 points_[2];
 };
-} // namespace fe
+} // namespace esf
