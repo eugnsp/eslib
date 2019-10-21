@@ -9,13 +9,13 @@
 namespace esf
 {
 template<std::size_t order>
-class Quadr<order, 1>
+class Quadr<order, Dim1>
 {
 private:
 	static constexpr auto points = internal::Gauss_data<order>::points;
 
 public:
-	static constexpr Local_index dim = 1;
+	using Space_dim = Dim1;
 
 	// The total number of quadrature points
 	static constexpr Local_index size = points.size();

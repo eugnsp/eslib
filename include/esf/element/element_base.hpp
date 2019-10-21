@@ -1,21 +1,21 @@
 #pragma once
 #include <esf/tags.hpp>
+#include <esf/type_traits.hpp>
 
 #include <cstddef>
 
 namespace esf::internal
 {
-template<std::size_t dim_,
+template<class Space_dim_,
 		 std::size_t vertex_dofs_,
 		 std::size_t edge_dofs_,
 		 std::size_t face_dofs_ = 0>
 class Element_base
 {
-	static_assert(dim_ == 1 || dim_ == 2);
-	static_assert(dim_ == 2 || face_dofs_ == 0);
+	static_assert(is_dim2<Space_dim_> || face_dofs_ == 0);
 
 public:
-	static constexpr std::size_t dim = dim_;
+	using Space_dim = Space_dim_;
 
 	// The number of vertex dofs
 	static constexpr std::size_t vertex_dofs = vertex_dofs_;
@@ -30,7 +30,7 @@ public:
 	static constexpr bool has_face_dofs = face_dofs > 0;
 
 	// The number of cell dofs
-	static constexpr std::size_t cell_dofs = (dim == 1) ? edge_dofs : face_dofs;
+	static constexpr std::size_t cell_dofs = is_dim1<Space_dim> ? edge_dofs : face_dofs;
 	static constexpr bool has_cell_dofs = cell_dofs > 0;
 
 	// The total number of edge dofs (vertex + edge dofs)
@@ -38,11 +38,11 @@ public:
 
 	// The total number of face dofs (vertex + edge + face dofs)
 	static constexpr std::size_t total_face_dofs =
-		(dim == 1) ? 0 : 3 * vertex_dofs + 3 * edge_dofs + face_dofs;
+		is_dim1<Space_dim> ? 0 : 3 * vertex_dofs + 3 * edge_dofs + face_dofs;
 
 	// The total number of cell dofs
 	static constexpr std::size_t total_cell_dofs =
-		(dim == 1) ? total_edge_dofs : total_face_dofs;
+		is_dim1<Space_dim> ? total_edge_dofs : total_face_dofs;
 
 	// Returns the number of vertex dofs
 	static constexpr std::size_t dofs(Vertex_tag)

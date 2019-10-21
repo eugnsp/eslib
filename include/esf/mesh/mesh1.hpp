@@ -19,10 +19,10 @@
 namespace esf
 {
 template<>
-class Mesh<1>
+class Mesh<Dim1>
 {
 public:
-	static constexpr std::size_t dim = 1;
+	using Space_dim = Dim1;
 
 public:
 	using Cell_index = Edge_index;
@@ -132,7 +132,7 @@ public:
 	// 	//Index add_vertex(double);
 	//
 private:
-	std::vector<esf::Point1> vertices_;
+	std::vector<Point1> vertices_;
 	double output_scale_ = 1;
 };
 //

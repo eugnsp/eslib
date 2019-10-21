@@ -89,7 +89,7 @@ public:
 
 	Value at(const Point2& pt, const typename Mesh::Cell_view& cell) const
 	{
-		static_assert(Mesh::dim == 2);
+		static_assert(internal::is_dim2<Mesh>);
 
 		const auto pt_ref = point_to_ref_triangle(pt, cell);
 		const auto dofs = system_.dof_mapper().template dofs<var_idx>(cell);

@@ -10,9 +10,9 @@
 namespace esf::internal
 {
 template<class Element>
-class Boundary_cond_base<2, Element>
+class Boundary_cond_base<Dim2, Element>
 {
-	static_assert(Element::dim == 2);
+	static_assert(is_dim2<Element>);
 	static_assert(Element::has_vertex_dofs || Element::has_edge_dofs);
 
 public:
@@ -22,7 +22,7 @@ public:
 	using Boundary = Linestring;
 
 public:
-	Boundary_cond_base(const Mesh<2>& mesh)
+	Boundary_cond_base(const Mesh<Dim2>& mesh)
 	{
 		if constexpr (Element::has_vertex_dofs)
 		{
@@ -43,7 +43,7 @@ public:
 		}
 	}
 
-	Boundary_cond_base(const Mesh<2>& mesh, const Boundary& boundary)
+	Boundary_cond_base(const Mesh<Dim2>& mesh, const Boundary& boundary)
 	{
 		if constexpr (Element::has_vertex_dofs && Element::has_edge_dofs)
 			elements_in_linestring(mesh, boundary, vertices_, halfedges_);

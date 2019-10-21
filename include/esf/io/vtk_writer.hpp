@@ -21,7 +21,7 @@ private:
 	};
 
 public:
-	Vtk_writer(const std::string& file_name, const Mesh<2>& mesh, double mesh_scale = 1) :
+	Vtk_writer(const std::string& file_name, const Mesh<Dim2>& mesh, double mesh_scale = 1) :
 		file_(file_name), mesh_(mesh)
 	{
 		if (!file_)
@@ -201,7 +201,7 @@ private:
 
 private:
 	std::ofstream file_;
-	const Mesh<2>& mesh_;
+	const Mesh<Dim2>& mesh_;
 	Data_section last_section_ = Data_section::UNDEF;
 };
 } // namespace esf

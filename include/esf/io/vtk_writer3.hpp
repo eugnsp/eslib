@@ -13,7 +13,7 @@ class Vtk_writer_3d
 {
 public:
 	Vtk_writer_3d(const std::string& file_name,
-				  const Mesh<2>& mesh,
+				  const Mesh<Dim2>& mesh,
 				  const std::vector<double>& grid_z,
 				  double mesh_scale = 1) :
 		file_(file_name),
@@ -162,7 +162,7 @@ private:
 
 private:
 	std::ofstream file_;
-	const Mesh<2>& mesh_;
+	const Mesh<Dim2>& mesh_;
 	const std::vector<double>& grid_z_;
 };
 } // namespace esf

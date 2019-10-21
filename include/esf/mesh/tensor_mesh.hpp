@@ -11,7 +11,7 @@
 namespace esf
 {
 // A triangular tensor mesh
-class Tri_tensor_mesh : public Mesh<2>
+class Tri_tensor_mesh : public Mesh<Dim2>
 {
 public:
 	using Grid = std::vector<double>;

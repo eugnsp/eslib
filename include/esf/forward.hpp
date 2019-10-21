@@ -1,5 +1,6 @@
 #pragma once
 #include <esf/index.hpp>
+#include <esf/tags.hpp>
 
 #include <cstddef>
 
@@ -8,11 +9,11 @@ namespace esf
 //////////////////////////////////////////////////////////////////////////
 /** Mesh-related forward declarations */
 
-template<Local_index>
+template<class Space_dim>
 class Mesh;
 
-using Mesh1 = Mesh<1>;
-using Mesh2 = Mesh<2>;
+using Mesh1 = Mesh<Dim1>;
+using Mesh2 = Mesh<Dim2>;
 
 template<class Element_tag, class Circ_tag>
 class End_circular_iterator
@@ -37,15 +38,15 @@ class Var;
 //////////////////////////////////////////////////////////////////////////
 /** Finite elements */
 
-template<std::size_t order, std::size_t dim = 2>
+template<std::size_t order, class Space_dim = Dim2>
 class Lagrange;
 
-template<std::size_t order, std::size_t dim = 2>
+template<std::size_t order, class Space_dim = Dim2>
 class Discontinuous_lagrange;
 
 //////////////////////////////////////////////////////////////////////////
 
-template<std::size_t, std::size_t dim>
+template<std::size_t, class Space_dim>
 class Quadr;
 
 template<class Element, class Quadr>
@@ -56,13 +57,13 @@ class Dof_tools;
 
 namespace internal
 {
-template<esf::Local_index dim, class Element>
+template<class Space_dim, class Element>
 class Boundary_cond_base;
 
-template<esf::Local_index, class Var_list>
+template<class Space_dim, class Var_list>
 class Dof_mapper;
 } // namespace internal
 
 template<class Var_list>
-using Dof_mapper = internal::Dof_mapper<Var_list::space_dim, Var_list>;
+using Dof_mapper = internal::Dof_mapper<typename Var_list::Space_dim, Var_list>;
 } // namespace esf

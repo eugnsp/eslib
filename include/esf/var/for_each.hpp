@@ -6,9 +6,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace esf
-{
-namespace internal
+namespace esf::internal
 {
 template<std::size_t... is, class Fn>
 void for_each_variable_impl(std::index_sequence<is...>, Fn fn)
@@ -31,25 +29,20 @@ void for_each_variable_and_element_impl2(Fn fn)
 	if constexpr (i + 1 < Var_list::size)
 		for_each_variable_and_element_impl2<Var_list, i + 1, Element_tags...>(fn);
 }
-} // namespace internal
 
 template<class Var_list, class Fn>
 void for_each_variable(Fn fn)
 {
-	internal::for_each_variable_impl(std::make_index_sequence<Var_list::size>{}, fn);
+	for_each_variable_impl(std::make_index_sequence<Var_list::size>{}, fn);
 }
 
 template<class Var_list, class Fn>
 void for_each_variable_and_element(Fn fn)
 {
-	constexpr auto space_dim = Var_list::space_dim;
-	static_assert(space_dim == 1 || space_dim == 2);
+	if constexpr (is_dim1<Var_list>)
+		for_each_variable_and_element_impl2<Var_list, 0, Vertex_tag, Edge_tag>(fn);
 
-	if constexpr (space_dim == 1)
-		internal::for_each_variable_and_element_impl2<Var_list, 0, Vertex_tag, Edge_tag>(fn);
-
-	if constexpr (space_dim == 2)
-		internal::for_each_variable_and_element_impl2<Var_list, 0, Vertex_tag, Edge_tag, Face_tag>(
-			fn);
+	if constexpr (is_dim2<Var_list>)
+		for_each_variable_and_element_impl2<Var_list, 0, Vertex_tag, Edge_tag, Face_tag>(fn);
 }
-} // namespace esf
+} // namespace esf::internal

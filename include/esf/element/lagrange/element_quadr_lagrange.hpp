@@ -1,7 +1,10 @@
 #pragma once
 #include <esf/index.hpp>
+#include <esf/type_traits.hpp>
 
 #include <esl/dense.hpp>
+
+#include <cstddef>
 
 namespace esf
 {
@@ -14,7 +17,7 @@ private:
 	static constexpr std::size_t n_points = Quadr::size;
 	static constexpr std::size_t n_dofs = Element::total_cell_dofs;
 
-	static_assert(Element::dim == Quadr::dim);
+	static_assert(internal::is_dim1<Element> == internal::is_dim1<Quadr>);
 
 public:
 	// Returns the values of basis functions at the quadrature points
@@ -37,17 +40,17 @@ public:
 };
 
 template<std::size_t order,
-         std::size_t dim,
+         class Space_dim,
 		 class Quadr>
-class Element_quadr<Lagrange<order, dim>, Quadr> :
-	public Element_quadr_lagrange<Lagrange<order, dim>, Quadr>
+class Element_quadr<Lagrange<order, Space_dim>, Quadr> :
+	public Element_quadr_lagrange<Lagrange<order, Space_dim>, Quadr>
 {};
 
 template<std::size_t order,
-         std::size_t dim,
+         class Space_dim,
 		 class Quadr>
-class Element_quadr<Discontinuous_lagrange<order, dim>, Quadr> :
-	public Element_quadr_lagrange<Discontinuous_lagrange<order, dim>, Quadr>
+class Element_quadr<Discontinuous_lagrange<order, Space_dim>, Quadr> :
+	public Element_quadr_lagrange<Discontinuous_lagrange<order, Space_dim>, Quadr>
 {};
 
 } // namespace esf

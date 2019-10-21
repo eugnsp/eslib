@@ -99,7 +99,7 @@ protected:
 						}
 					}
 
-				if constexpr (System::dim == 2 && Element::has_edge_dofs)
+				if constexpr (internal::is_dim2<System> && Element::has_edge_dofs)
 					for (auto& halfedge : bnd_cond.halfedges())
 					{
 						const auto halfedge_dofs = dofs(system(), halfedge, var_index);

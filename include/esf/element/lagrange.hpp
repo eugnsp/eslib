@@ -9,30 +9,30 @@
 namespace esf
 {
 template<std::size_t order>
-class Lagrange<order, 1> :
-	public internal::Element_base<1, 1, order - 1>,
+class Lagrange<order, Dim1> :
+	public internal::Element_base<Dim1, 1, order - 1>,
 	public internal::Lagrange_base_1<order>
 {
 	static_assert(order > 0);
 };
 
 template<std::size_t order>
-class Lagrange<order, 2> :
-	public internal::Element_base<2, 1, order - 1, (order - 1) * (order - 2) / 2>,
+class Lagrange<order, Dim2> :
+	public internal::Element_base<Dim2, 1, order - 1, (order - 1) * (order - 2) / 2>,
 	public internal::Lagrange_base_2<order>
 {
 	static_assert(order > 0);
 };
 
 template<std::size_t order>
-class Discontinuous_lagrange<order, 1> :
-	public internal::Element_base<1, 0, order + 1>,
+class Discontinuous_lagrange<order, Dim1> :
+	public internal::Element_base<Dim1, 0, order + 1>,
 	public internal::Lagrange_base_1<order>
 {};
 
 template<std::size_t order>
-class Discontinuous_lagrange<order, 2> :
-	public internal::Element_base<2, 0, 0, (order + 1) * (order + 2) / 2>,
+class Discontinuous_lagrange<order, Dim2> :
+	public internal::Element_base<Dim2, 0, 0, (order + 1) * (order + 2) / 2>,
 	public internal::Lagrange_base_2<order>
 {};
 } // namespace esf

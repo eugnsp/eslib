@@ -7,7 +7,7 @@
 namespace esf::internal
 {
 template<class Var_list>
-class Dof_mapper<1, Var_list> : public Dof_mapper_base<Var_list>
+class Dof_mapper<Dim1, Var_list> : public Dof_mapper_base<Var_list>
 {
 private:
 	using Base = Dof_mapper_base<Var_list>;

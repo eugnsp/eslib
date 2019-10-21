@@ -12,13 +12,10 @@ namespace esf
 template<class... Variables>
 struct Var_list
 {
-	static_assert(esu::all_same<Variables::space_dim...>);
+	static_assert(esu::are_same<typename Variables::Space_dim...>);
 
-	// Returns the number of variables in the list
+	using Space_dim = typename esu::Head<Variables...>::Space_dim;
 	static constexpr std::size_t size = sizeof...(Variables);
-
-	// Returns the space dimension of variables
-	static constexpr auto space_dim = esu::Head<Variables...>::space_dim;
 
 	// Returns the type of a variable in the list with the given index
 	template<std::size_t i>

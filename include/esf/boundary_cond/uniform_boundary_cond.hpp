@@ -7,6 +7,7 @@ template<class Element, typename T = double, bool is_strong_ = true>
 class Uniform_boundary_cond : public Boundary_cond<Element>
 {
 public:
+	using Space_dim = typename Element::Space_dim;
 	static constexpr bool is_strong = is_strong_;
 	static constexpr bool is_uniform = true;
 
@@ -16,11 +17,12 @@ private:
 public:
 	using Base::Base;
 
-	Uniform_boundary_cond(const Mesh<Element::dim>& mesh, double value) : Base(mesh), value_(value)
+	Uniform_boundary_cond(const Mesh<Space_dim>& mesh, double value) :
+		Base(mesh), value_(value)
 	{}
 
-	Uniform_boundary_cond(const Mesh<Element::dim>& mesh,
-						  const typename Base::Boundary& boundary,
+	Uniform_boundary_cond(const Mesh<Space_dim>& mesh,
+		                  const typename Base::Boundary& boundary,
 						  double value) :
 		Base(mesh, boundary),
 		value_(value)

@@ -27,7 +27,7 @@ protected:
 	template<std::size_t var_idx>
 	using Var = typename Var_list::template Nth<var_idx>;
 
-	using Mesh = esf::Mesh<Var_list::space_dim>;
+	using Mesh = esf::Mesh<typename Var_list::Space_dim>;
 
 public:
 	template<std::size_t var_idx, class Mesh_element_tag>
@@ -109,7 +109,7 @@ private:
 						dof.is_free = false;
 					}
 
-				if constexpr (Var_list::space_dim == 2 && Element::has_edge_dofs)
+				if constexpr (is_dim2<Var_list> && Element::has_edge_dofs)
 					for (Halfedge_index halfedge : bc.halfedges())
 					{
 						Dof_index& dof = indices_.at(edge(halfedge), var);

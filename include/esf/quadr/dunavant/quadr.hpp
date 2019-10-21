@@ -2,6 +2,7 @@
 #include <esf/forward.hpp>
 #include <esf/index.hpp>
 #include <esf/quadr/dunavant/data.hpp>
+#include <esf/tags.hpp>
 
 #include <esl/dense.hpp>
 #include <esu/array.hpp>
@@ -28,8 +29,6 @@ private:
 		esu::make_array(std::get<group_indices>(point_groups).size()...);
 
 public:
-	static constexpr std::size_t dim = 2;
-
 	// The total number of quadrature points
 	static constexpr std::size_t size = esu::array_sum(group_sizes);
 
@@ -59,20 +58,19 @@ private:
 };
 
 template<std::size_t order>
-using Dunavant_quadr_t = Dunavant_quadr<
-	order,
+using Dunavant_quadr_t = Dunavant_quadr<order,
 	std::make_index_sequence<std::tuple_size_v<decltype(Dunavant_data<order>::groups)>>>;
 } // namespace internal
 
 // Quadrature integration
 template<std::size_t order>
-class Quadr<order, 2> : public internal::Dunavant_quadr_t<order>
+class Quadr<order, Dim2> : public internal::Dunavant_quadr_t<order>
 {
 private:
 	using Base = internal::Dunavant_quadr_t<order>;
 
 public:
-	static constexpr std::size_t dim = 2;
+	using Space_dim = Dim2;
 
 public:
 	// Returns a quadrature point with the given index in the reference triangle

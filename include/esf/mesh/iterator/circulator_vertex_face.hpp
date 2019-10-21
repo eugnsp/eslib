@@ -9,15 +9,15 @@
 namespace esf
 {
 template<class Element_tag, class Circ_tag>
-class Circulator_vertex_face : public internal::Iterator_base<Element_tag, Mesh<2>>
+class Circulator_vertex_face : public internal::Iterator_base<Element_tag, Mesh<Dim2>>
 {
 private:
 	static_assert(std::is_same_v<Element_tag, Vertex_tag> || std::is_same_v<Element_tag, Face_tag>);
 
-	using Base = internal::Iterator_base<Element_tag, Mesh<2>>;
+	using Base = internal::Iterator_base<Element_tag, Mesh<Dim2>>;
 
 public:
-	Circulator_vertex_face(const Mesh<2>& mesh, Halfedge_index halfedge) :
+	Circulator_vertex_face(const Mesh<Dim2>& mesh, Halfedge_index halfedge) :
 		Base(mesh), halfedge_(halfedge)
 	{
 		assert(is_valid(halfedge));

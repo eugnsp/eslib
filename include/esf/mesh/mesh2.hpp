@@ -33,10 +33,10 @@
 namespace esf
 {
 template<>
-class Mesh<2> : public internal::Halfedge_structure
+class Mesh<Dim2> : public internal::Halfedge_structure
 {
 public:
-	static constexpr std::size_t dim = 2;
+	using Space_dim = Dim2;
 
 public:
 	using Vertex_view = Element_view<Vertex_tag, Mesh>;
@@ -207,7 +207,7 @@ private:
 };
 
 // Outputs human readable information about the mesh
-inline std::ostream& operator<<(std::ostream& os, const Mesh<2>& mesh)
+inline std::ostream& operator<<(std::ostream& os, const Mesh<Dim2>& mesh)
 {
 	mesh.print(os);
 	return os;

@@ -23,11 +23,11 @@ template<class Var_list_, template<class> class Dof_mapper_ = Dof_mapper>
 class System
 {
 public:
-	static constexpr std::size_t dim = Var_list_::space_dim;
+	using Space_dim = typename Var_list_::Space_dim;
 	static constexpr std::size_t n_vars = Var_list_::size;
 
 	using Var_list = Var_list_;
-	using Mesh = esf::Mesh<dim>;
+	using Mesh = esf::Mesh<Space_dim>;
 	using Dof_mapper = Dof_mapper_<Var_list>;
 
 	template<std::size_t var_idx>

@@ -86,12 +86,12 @@ template<class Mesh, class Var_list, typename T>
 class Mesh_var_map;
 
 template<class Var_list, typename T>
-class Mesh_var_map<Mesh<1>, Var_list, T> :
+class Mesh_var_map<Mesh<Dim1>, Var_list, T> :
 	public Mesh_var_map_impl<T, Var_list, Vertex_index, Edge_index>
 {};
 
 template<class Var_list, typename T>
-class Mesh_var_map<Mesh<2>, Var_list, T> :
+class Mesh_var_map<Mesh<Dim2>, Var_list, T> :
 	public Mesh_var_map_impl<T, Var_list, Vertex_index, Edge_index, Face_index>
 {};
 } // namespace esf::internal

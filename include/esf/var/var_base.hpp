@@ -28,9 +28,9 @@ class Var_base
 {
 public:
 	using Element = Element_;
+	using Space_dim = typename Element::Space_dim;
 	static constexpr auto n_bnd_conds = sizeof...(Bnd_conds);
 	static constexpr bool has_bnd_cond = n_bnd_conds > 0;
-	static constexpr Local_index space_dim = Element::dim;
 
 	// TODO : remove
 	static constexpr Local_index n_total_dofs = Element::n_total_face_dofs;

@@ -5,5 +5,5 @@
 namespace esf
 {
 template<class Element>
-using Boundary_cond = internal::Boundary_cond_base<Element::dim, Element>;
+using Boundary_cond = internal::Boundary_cond_base<typename Element::Space_dim, Element>;
 } // namespace esf

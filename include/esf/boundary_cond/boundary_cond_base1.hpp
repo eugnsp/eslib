@@ -1,6 +1,7 @@
 #pragma once
 #include <esf/geometry/point1.hpp>
 #include <esf/index.hpp>
+#include <esf/type_traits.hpp>
 #include <esf/mesh/mesh1.hpp>
 
 #include <esu/iterator.hpp>
@@ -10,9 +11,9 @@
 namespace esf::internal
 {
 template<class Element>
-class Boundary_cond_base<1, Element>
+class Boundary_cond_base<Dim1, Element>
 {
-	static_assert(Element::dim == 1);
+	static_assert(is_dim1<Element>);
 	static_assert(Element::has_vertex_dofs);
 
 public:
@@ -22,7 +23,7 @@ public:
 	using Boundary = Point1;
 
 public:
-	Boundary_cond_base(const Mesh<1>& mesh, const Boundary& point) :
+	Boundary_cond_base(const Mesh<Dim1>& mesh, const Boundary& point) :
 		vertex_(mesh.find_vertex(point))
 	{}
 
