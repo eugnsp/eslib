@@ -16,14 +16,16 @@ public:
 	Par_cell_assembler(const esf::Mesh_face_colour_map& colour_map) : colour_map_(colour_map)
 	{}
 
-	template<class System, class Fn>
-	void assemble(const System& system, Fn&& fn)
+	template<class System,
+			 class Fn>
+	void assemble(const System& system,
+				  Fn&& 			fn)
 	{
 		using Colour = esf::Mesh_face_colour_map::Colour;
 
 		const Colour n_colours = colour_map_.n_colours();
 		Colour colour = 0;
-		auto range = colour_map_.cells_with_colour(colour);
+		auto range    = colour_map_.cells_with_colour(colour);
 
 		const auto n_workers = n_threads();
 		esu::Barrier barrier(n_workers, [&, this] {
@@ -62,8 +64,10 @@ public:
 private:
 	static std::size_t n_threads()
 	{
-		const auto n = std::thread::hardware_concurrency();
-		return (n > 0) ? n : 1;
+		if (const auto n = std::thread::hardware_concurrency(); n > 0)
+			return n;
+		else
+			return 1;
 	}
 
 private:

@@ -19,7 +19,11 @@
 
 namespace esl::internal
 {
-template<std::size_t ct_rows, std::size_t ct_cols, class Expr, class Layout>
+template<
+	std::size_t ct_rows,
+	std::size_t ct_cols,
+	class 		Expr,
+	class 		Layout>
 class Matrix_dynamic_base : public Dense<Expr, Lvalue>, public Shape<ct_rows, ct_cols, Layout>
 {
 private:
@@ -31,28 +35,29 @@ public:
 
 public:
 	//////////////////////////////////////////////////////////////////////
-	//> Constructors
+	/** Constructors */
 
-	Matrix_dynamic_base() :
-		Matrix_dynamic_base(Internal{},
-							extent_static_or_zero(ct_rows),
-							extent_static_or_zero(ct_cols))
+	Matrix_dynamic_base()
+	:	Matrix_dynamic_base(
+			Internal{},	extent_static_or_zero(ct_rows), extent_static_or_zero(ct_cols))
 	{}
 
-	Matrix_dynamic_base(const Matrix_dynamic_base& matrix) :
-		Shape_base(matrix.rows(), matrix.cols()), data_(matrix.size())
+	Matrix_dynamic_base(const Matrix_dynamic_base& matrix)
+	:	Shape_base(matrix.rows(), matrix.cols()),
+		data_(matrix.size())
 	{
 		std::uninitialized_copy_n(matrix.data_.data(), matrix.size(), data_.data());
 	}
 
-	Matrix_dynamic_base(Matrix_dynamic_base&& matrix) noexcept : Matrix_dynamic_base()
+	Matrix_dynamic_base(Matrix_dynamic_base&& matrix) noexcept
+	:	Matrix_dynamic_base()
 	{
 		swap(matrix);
 	}
 
 	template<class Expr2>
-	Matrix_dynamic_base(const Expression<Expr2>& expr) :
-		Matrix_dynamic_base(Internal{}, expr.rows(), expr.cols())
+	Matrix_dynamic_base(const Expression<Expr2>& expr)
+	:	Matrix_dynamic_base(Internal{}, expr.rows(), expr.cols())
 	{
 		this->assign_expr(expr);
 	}
@@ -64,7 +69,7 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////
-	//> Assignments
+	/** Assignments */
 
 	using Dense_base::operator=;
 
@@ -101,7 +106,7 @@ public:
 	}
 
 	//////////////////////////////////////////////////////////////////////
-	//> Extents
+	/** Extents */
 
 	using Dense_base::size;
 	using Shape_base::cols;
@@ -113,22 +118,24 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////
-	//> Element access
+	/** Element access */
 
-	// Returns the matrix element located in the row \p row and column \p col
-	Value& operator()(std::size_t row, std::size_t col)
+	Value& operator()(
+		std::size_t row,
+		std::size_t col)
 	{
 		return data_[linear_index(row, col)];
 	}
 
-	// Returns the matrix element located in the row \p row and column \p col
-	const Value& operator()(std::size_t row, std::size_t col) const
+	const Value& operator()(
+		std::size_t row,
+		std::size_t col) const
 	{
 		return data_[linear_index(row, col)];
 	}
 
 	///////////////////////////////////////////////////////////////////////
-	//> Modifiers
+	/** Modifiers */
 
 	void swap(Matrix_dynamic_base& other) noexcept
 	{
@@ -138,25 +145,35 @@ public:
 
 protected:
 	//////////////////////////////////////////////////////////////////////
-	//> Constructor
+	/** Constructor */
 
-	Matrix_dynamic_base(Internal, std::size_t rows, std::size_t cols) :
-		Shape_base(rows, cols), data_(rows * cols)
+	Matrix_dynamic_base(
+		Internal,
+		std::size_t rows,
+		std::size_t cols)
+	:	Shape_base(rows, cols),
+		data_(rows * cols)
 	{
 		std::uninitialized_default_construct_n(data_.data(), size());
 	}
 
-	Matrix_dynamic_base(Internal, std::size_t rows, std::size_t cols, const Value& value) :
-		Shape_base(rows, cols), data_(rows * cols)
+	Matrix_dynamic_base(
+		Internal,
+		std::size_t  rows,
+		std::size_t  cols,
+		const Value& value)
+	:	Shape_base(rows, cols),
+		data_(rows * cols)
 	{
 		std::uninitialized_fill_n(data_.data(), size(), value);
 	}
 
-	Matrix_dynamic_base(Internal,
-						std::size_t rows,
-						std::size_t cols,
-						std::initializer_list<Value> values) :
-		Shape_base(rows, cols),
+	Matrix_dynamic_base(
+		Internal,
+		std::size_t 				 rows,
+		std::size_t 				 cols,
+		std::initializer_list<Value> values)
+	:	Shape_base(rows, cols),
 		data_(rows * cols)
 	{
 		assert(values.size() == this->size());
@@ -164,9 +181,12 @@ protected:
 	}
 
 	///////////////////////////////////////////////////////////////////////
-	//> Modifiers
+	/** Modifiers */
 
-	void resize(std::size_t n_rows, std::size_t n_cols, bool preserve_data = false)
+	void resize(
+		std::size_t n_rows,
+		std::size_t n_cols,
+		bool 		preserve_data = false)
 	{
 		// TODO
 		assert(!preserve_data);

@@ -8,7 +8,8 @@
 
 namespace esf
 {
-template<class System, typename Value_>
+template<class    System,
+		 typename Value_>
 class Eigen_solution_view
 {
 public:
@@ -27,7 +28,8 @@ public:
 						const Vector& eigen_values,
 						const Matrix& eigen_vectors) :
 		eigen_values_(eigen_values),
-		eigen_vectors_(eigen_vectors), system_(system)
+		eigen_vectors_(eigen_vectors),
+		system_(system)
 	{}
 
 	std::size_t size() const

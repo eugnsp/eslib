@@ -9,13 +9,19 @@
 
 namespace esl
 {
-template<class Expr, class Rows, class Cols, class Category>
+template<
+	class Expr,
+	class Rows,
+	class Cols,
+	class Category>
 class View : public Dense<View<Expr, Rows, Cols, Category>, Category>
 {
 public:
 	template<class Expr_f>
-	View(Expr_f&& expr, Rows rows, Cols cols) :
-		expr_(std::forward<Expr_f>(expr)), rows_(std::move(rows)), cols_(std::move(cols))
+	View(Expr_f&& expr, Rows rows, Cols cols)
+	:	expr_(std::forward<Expr_f>(expr)),
+		rows_(std::move(rows)),
+		cols_(std::move(cols))
 	{
 		// static_assert(is_ct_extent_dynamic_or_less_equal(ct_size_value<Rows>, ct_rows_value<Expr>), "Incompatible extents");
 		// static_assert(is_ct_extent_dynamic_or_less_equal(ct_size_value<Cols>, ct_cols_value<Expr>), "Incompatible extents");
@@ -25,7 +31,7 @@ public:
 	}
 
 	View(const View&) = default;
-	View(View&&) = default;
+	View(View&&)      = default;
 
 	View& operator=(const View& other)
 	{
@@ -76,12 +82,16 @@ public:
 	//////////////////////////////////////////////////////////////////////
 	/** Element access */
 
-	decltype(auto) operator()(std::size_t row, std::size_t col)
+	decltype(auto) operator()(
+		const std::size_t row,
+		const std::size_t col)
 	{
 		return expr_(rows_[row], cols_[col]);
 	}
 
-	decltype(auto) operator()(std::size_t row, std::size_t col) const
+	decltype(auto) operator()(
+		const std::size_t row,
+		const std::size_t col) const
 	{
 		if constexpr (std::is_same_v<Category, Lvalue>)
 			return std::as_const(expr_(rows_[row], cols_[col]));
@@ -115,12 +125,16 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////
-//> Type traits
+/** Type traits */
 
-template<class Expr, class Rows, class Cols, class Category>
+template<
+	class Expr,
+	class Rows,
+	class Cols,
+	class Category>
 struct Traits<View<Expr, Rows, Cols, Category>>
 {
-	using Value = Value_type<Expr>;
+	using Value  = Value_type<Expr>;
 	using Layout = Layout_tag<Expr>;
 
 	static constexpr std::size_t rows = ct_size_value<Rows>;

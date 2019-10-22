@@ -10,19 +10,25 @@
 
 namespace esl
 {
-template<class Random_distribution, class Random_generator>
+template<
+	class Random_distribution,
+	class Random_generator>
 class Random_matrix : public Dense<Random_matrix<Random_distribution, Random_generator>, Rvalue>
 {
 public:
 	using Value = Value_type<Random_matrix>;
 
 public:
-	Random_matrix(const std::size_t rows,
-				  const std::size_t cols,
-				  Random_distribution distr,
-				  Random_generator& gen) :
+	Random_matrix(
+		const std::size_t   rows,
+		const std::size_t   cols,
+		Random_distribution distr,
+		Random_generator&   gen)
+	:
 		rows_(rows),
-		cols_(cols), distr_(std::move(distr)), gen_(gen)
+		cols_(cols),
+		distr_(std::move(distr)),
+		gen_(gen)
 	{}
 
 	std::size_t rows() const
@@ -35,7 +41,9 @@ public:
 		return cols_;
 	}
 
-	Value operator()(const std::size_t, const std::size_t) const
+	Value operator()(
+		const std::size_t,
+		const std::size_t) const
 	{
 		return distr_(gen_);
 	}
@@ -45,11 +53,15 @@ private:
 	const std::size_t cols_;
 
 	mutable Random_distribution distr_;
-	Random_generator& gen_;
+	Random_generator& 		    gen_;
 };
 
 template<typename T = double>
-Matrix_x<T> random_real_matrix(std::size_t rows, std::size_t cols, const T a = 0, const T b = 1)
+Matrix_x<T> random_real_matrix(
+	const std::size_t rows,
+	const std::size_t cols,
+	const T 		  a = 0,
+	const T 		  b = 1)
 {
 	std::random_device rd;
 	std::mt19937 gen{rd()};
@@ -64,10 +76,11 @@ Matrix_x<T> random_real_matrix(std::size_t size)
 }
 
 template<typename T = int>
-Matrix_x<T> random_int_matrix(std::size_t rows,
-							  std::size_t cols,
-							  const T a = 0,
-							  const T b = std::numeric_limits<T>::max())
+Matrix_x<T> random_int_matrix(
+	const std::size_t rows,
+	const std::size_t cols,
+	const T  		  a = 0,
+	const T  		  b = std::numeric_limits<T>::max())
 {
 	std::random_device rd;
 	std::mt19937 gen{rd()};
@@ -81,12 +94,14 @@ Matrix_x<T> random_int_matrix(std::size_t size)
 	return random_int_matrix<T>(size, size);
 }
 ///////////////////////////////////////////////////////////////////////
-//> Type traits
+/** Type traits */
 
-template<class Random_distribution, class Random_generator>
+template<
+	class Random_distribution,
+	class Random_generator>
 struct Traits<Random_matrix<Random_distribution, Random_generator>>
 {
-	using Value = typename Random_distribution::result_type;
+	using Value  = typename Random_distribution::result_type;
 	using Layout = No_layout;
 
 	static constexpr std::size_t rows = dynamic;

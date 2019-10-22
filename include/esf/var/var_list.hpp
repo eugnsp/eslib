@@ -26,16 +26,6 @@ struct Var_list
 
 	// Returns the list of variables as an `std::tuple`
 	using Tuple = Tuple_map<esu::Type_identity>;
-
-	template<class Fn>
-	static void for_each(Fn fn)
-	{
-		[&fn]<std::size_t... is>(std::index_sequence<is...>)
-		{
-			(static_cast<void>(fn(Var_index<is>{})), ...);
-		}
-		(std::make_index_sequence<size>{});
-	}
 };
 
 namespace internal

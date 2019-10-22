@@ -9,7 +9,9 @@
 namespace esl::internal
 {
 // Dynamic storage class
-template<typename Value, std::size_t alignment = get_alignment<Value>()>
+template<
+	typename Value,
+	std::size_t alignment = get_alignment<Value>()>
 class Dynamic_storage
 {
 private:
@@ -17,11 +19,13 @@ private:
 
 public:
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//> Constructors and destructors
+	/** Constructors and destructors */
 
 	Dynamic_storage() = default;
 
-	explicit Dynamic_storage(const std::size_t size) : size_(size)
+	explicit Dynamic_storage(const std::size_t size)
+	:
+		size_(size)
 	{
 		data_ = Alloc::allocate(size);
 	}
@@ -32,7 +36,7 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//> Extents
+	/** Extents */
 
 	// Returns the size of the storage
 	std::size_t size() const
@@ -51,7 +55,7 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//> Element access
+	/** Element access */
 
 	Value& operator[](const std::size_t index)
 	{
@@ -63,18 +67,20 @@ public:
 		return data_[index];
 	}
 
-	[[gnu::assume_aligned(alignment)]] Value* data() noexcept
+	[[gnu::assume_aligned(alignment)]]
+	Value* data() noexcept
 	{
 		return data_;
 	}
 
-	[[gnu::assume_aligned(alignment)]] const Value* data() const noexcept
+	[[gnu::assume_aligned(alignment)]]
+	const Value* data() const noexcept
 	{
 		return data_;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//> Modifiers
+	/** Modifiers */
 
 	void swap(Dynamic_storage& other) noexcept
 	{

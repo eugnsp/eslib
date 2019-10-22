@@ -13,7 +13,11 @@
 
 namespace esl::internal
 {
-template<std::size_t ct_rows, std::size_t ct_cols, class Expr, class Layout>
+template<
+	std::size_t ct_rows,
+	std::size_t ct_cols,
+	class 		Expr,
+	class 		Layout>
 class Matrix_base : public Dense<Expr, Lvalue>, public Shape<ct_rows, ct_cols, Layout>
 {
 private:
@@ -25,7 +29,7 @@ public:
 
 public:
 	//////////////////////////////////////////////////////////////////////
-	//> Constructors
+	/** Constructors */
 
 	Matrix_base() = default;
 	Matrix_base(const Matrix_base&) = default;
@@ -36,10 +40,13 @@ public:
 		Dense_base::assign_scalar(value);
 	}
 
-	template<typename... Values,
-			 typename = std::enable_if_t<sizeof...(Values) == ct_rows * ct_cols &&
-										 (std::is_convertible_v<Values, Value> && ...)>>
-	explicit constexpr Matrix_base(Values&&... values) : data_{std::forward<Values>(values)...}
+	template<
+		typename... Values,
+		typename = std::enable_if_t<
+			sizeof...(Values) == ct_rows * ct_cols &&
+			(std::is_convertible_v<Values, Value> && ...)>>
+	explicit constexpr Matrix_base(Values&&... values)
+	:	data_{std::forward<Values>(values)...}
 	{}
 
 	template<class Expr2>
@@ -49,15 +56,15 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////
-	//> Assignments
+	/** Assignments */
 
 	using Dense_base::operator=;
 
 	Matrix_base& operator=(const Matrix_base&) = default;
-	Matrix_base& operator=(Matrix_base&&) = default;
+	Matrix_base& operator=(Matrix_base&&) 	   = default;
 
 	////////////////////////////////////////////////////////////////////////
-	//> Extents
+	/** Extents */
 
 	using Shape_base::cols;
 	using Shape_base::rows;
@@ -78,51 +85,57 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////
-	//> Element access
+	/** Element access */
 
 	// Returns the matrix element
-	constexpr Value& operator()(std::size_t row, std::size_t col)
+	constexpr Value& operator()(
+		const std::size_t row,
+		const std::size_t col)
 	{
 		return data_[this->linear_index(row, col)];
 	}
 
 	// Returns the matrix element
-	constexpr const Value& operator()(std::size_t row, std::size_t col) const
+	constexpr const Value& operator()(
+		const std::size_t row,
+		const std::size_t col) const
 	{
 		return data_[this->linear_index(row, col)];
 	}
 
-	constexpr Value& operator[](std::size_t index)
+	constexpr Value& operator[](const std::size_t index)
 	{
 		static_assert(internal::is_vector<Expr>, "Expression should be a vector");
 		return (*this)(index, 0);
 	}
 
-	constexpr const Value& operator[](std::size_t index) const
+	constexpr const Value& operator[](const std::size_t index) const
 	{
 		static_assert(internal::is_vector<Expr>, "Expression should be a vector");
 		return (*this)(index, 0);
 	}
 
-	constexpr Value& operator()(std::size_t index)
+	constexpr Value& operator()(const std::size_t index)
 	{
 		return (*this)[index];
 	}
 
-	constexpr const Value& operator()(std::size_t index) const
+	constexpr const Value& operator()(const std::size_t index) const
 	{
 		return (*this)[index];
 	}
 
 	///////////////////////////////////////////////////////////////////////
-	//> Modifiers
+	/** Modifiers */
 
 	void swap(Matrix_base& other) noexcept(std::is_nothrow_swappable_v<Value>)
 	{
 		data_.swap(other.data_);
 	}
 
-	static void resize(const std::size_t rows, const std::size_t cols)
+	static void resize(
+		const std::size_t rows,
+		const std::size_t cols)
 	{
 		assert(rows == ct_rows);
 		assert(cols == ct_cols);

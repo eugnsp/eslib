@@ -4,3 +4,4 @@
 #include <esf/type_traits/is_dim.hpp>
 #include <esf/type_traits/is_mesh_element_index.hpp>
 #include <esf/type_traits/type_traits.hpp>
+#include <esf/type_traits/var_index.hpp>

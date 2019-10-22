@@ -8,7 +8,9 @@
 namespace esl
 {
 // Returns the Frank matrix
-template<typename T, class Layout = Col_major>
+template<
+	typename     T,
+	class Layout = Col_major>
 constexpr auto frank_matrix(const std::size_t size)
 {
 	return make_matrix<Layout>(
@@ -16,7 +18,10 @@ constexpr auto frank_matrix(const std::size_t size)
 }
 
 // Returns the Frank matrix
-template<typename T, std::size_t size, class Layout = Col_major>
+template<
+	typename     T,
+	std::size_t  size,
+	class Layout = Col_major>
 constexpr auto frank_matrix()
 {
 	return make_matrix<size, size, Layout>(

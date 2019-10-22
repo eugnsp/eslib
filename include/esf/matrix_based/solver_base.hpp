@@ -2,6 +2,7 @@
 #include <esf/solution_view.hpp>
 #include <esf/system.hpp>
 #include <esf/type_traits.hpp>
+#include <esf/utility/system_for_each.hpp>
 
 #include <esl/dense.hpp>
 
@@ -12,17 +13,20 @@ namespace esf
 template<class System_, class Linear_solver>
 class Matrix_based_solver_base
 {
+private:
+	using Value  = typename Linear_solver::Sparse_matrix::Value;
+
 public:
 	using System = System_;
-	using Mesh = typename System::Mesh;
-
-	using Value = typename Linear_solver::Sparse_matrix::Value;
+	using Mesh   = typename System::Mesh;
 
 	template<std::size_t var>
 	using Solution_view = esf::Solution_view<System, var, Value>;
 
 public:
-	Matrix_based_solver_base(const Mesh& mesh) : linear_solver_(matrix_), system_(mesh)
+	Matrix_based_solver_base(const Mesh& mesh)
+	:	linear_solver_(matrix_),
+		system_(mesh)
 	{}
 
 	System& system()
@@ -64,7 +68,9 @@ public:
 
 	std::size_t memory_size() const
 	{
-		return solution_.memory_size() + rhs_.memory_size() + matrix_.memory_size() +
+		return solution_.memory_size() +
+			   rhs_.memory_size() +
+			   matrix_.memory_size() +
 			   system_.memory_size();
 	}
 
@@ -74,7 +80,7 @@ protected:
 	{
 		system_.init(std::forward<Args>(args)...);
 
-		const auto n = system_.n_dofs();
+		const auto n  = system_.n_dofs();
 		const auto nf = system_.n_free_dofs();
 
 		matrix_.resize(nf, nf);
@@ -84,10 +90,13 @@ protected:
 
 	void set_bnd_values()
 	{
-		system_.for_each_variable([this]<std::size_t vi>(Var_index<vi> var_index, auto& variable) {
-			using Element = typename System::template Var<vi>::Element;
+		esf::for_each_variable(system_,
+			[this]<std::size_t vi, class Var>(Var_index<vi> var_index, const Var& var)
+		{
+			using Element = typename Var::Element;
 
-			variable.for_each_strong_bnd_cond([this, var_index](const auto& bnd_cond) {
+			var.for_each_strong_bnd_cond([this, var_index](const auto& bnd_cond)
+			{
 				if constexpr (Element::has_vertex_dofs)
 					for (auto& vertex : bnd_cond.vertices())
 					{

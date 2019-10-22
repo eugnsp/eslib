@@ -9,17 +9,11 @@
 
 namespace esf::internal
 {
-template<class T>
-inline constexpr bool is_circulation_tag =
-	std::is_same_v<T, Vertex_in_circ_tag> || std::is_same_v<T, Vertex_out_circ_tag> ||
-	std::is_same_v<T, Face_circ_tag>;
-
 //////////////////////////////////////////////////////////////////////////
-// Element tag type by index type, and vice versa
+/** Element tag type by index type, and vice versa */
 
 template<class Element_tag>
-struct Element_index_by_tag_impl
-{};
+struct Element_index_by_tag_impl {};
 
 template<>
 struct Element_index_by_tag_impl<Vertex_tag>
@@ -81,26 +75,6 @@ using Element_tag_by_index = typename Element_tag_by_index_impl<Element_tag>::Ty
 
 //////////////////////////////////////////////////////////////////////////
 } // namespace esf::internal
-
-namespace esf
-{
-template<std::size_t var>
-using Var_index = esu::Index<var>;
-
-template<class Var_list, class Var_index>
-struct Var_by_var_index_impl;
-
-template<class Var_list, std::size_t index>
-struct Var_by_var_index_impl<Var_list, Var_index<index>>
-{
-	using Type = typename Var_list::template Nth<index>;
-};
-
-template<class Var_list, class Var_index>
-using Var_by_var_index =
-	typename Var_by_var_index_impl<Var_list, esu::Remove_cv_ref<Var_index>>::Type;
-
-} // namespace esf
 
 namespace esf::internal
 {
@@ -197,5 +171,4 @@ namespace esf
 {
 template<class Element_tag, class Circ_tag>
 using Circulator = typename internal::Circulator_type_selector<Element_tag, Circ_tag>::Type;
-
 }

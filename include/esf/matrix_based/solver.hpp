@@ -8,7 +8,8 @@
 
 namespace esf
 {
-template<class System_, class Linear_solver_>
+template<class System_,
+		 class Linear_solver_>
 class Matrix_based_solver : public Matrix_based_solver_base<System_, Linear_solver_>
 {
 private:

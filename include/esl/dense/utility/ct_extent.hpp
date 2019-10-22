@@ -5,39 +5,52 @@
 
 namespace esl::internal
 {
-constexpr bool is_extent_dynamic_or_eq(std::size_t ext1, std::size_t ext2)
+inline constexpr bool is_extent_dynamic_or_eq(
+	const std::size_t ext1,
+	const std::size_t ext2)
 {
 	return ext1 == dynamic || ext2 == dynamic || ext1 == ext2;
 }
 
-constexpr bool is_extent_dynamic_or_less(std::size_t ext1, std::size_t ext2)
+inline constexpr bool is_extent_dynamic_or_less(
+	const std::size_t ext1,
+	const std::size_t ext2)
 {
 	return ext1 == dynamic || ext2 == dynamic || ext1 < ext2;
 }
 
-constexpr bool is_extent_dynamic_or_less_equal(std::size_t ext1, std::size_t ext2)
+inline constexpr bool is_extent_dynamic_or_less_equal(
+	const std::size_t ext1,
+	const std::size_t ext2)
 {
 	return ext1 == dynamic || ext2 == dynamic || ext1 <= ext2;
 }
 
-constexpr bool is_extent_static_and_eq(std::size_t ext1, std::size_t ext2)
+inline constexpr bool is_extent_static_and_eq(
+	const std::size_t ext1,
+	const std::size_t ext2)
 {
 	return ext1 != dynamic && ext2 != dynamic && ext1 == ext2;
 }
 
 ///////////////////////////////////////////////////////////////////////
 
-constexpr std::size_t extent_static_or_zero(std::size_t ext)
+inline constexpr std::size_t extent_static_or_zero(
+	const std::size_t ext)
 {
 	return (ext == dynamic) ? 0 : ext;
 }
 
-constexpr auto extent_static(std::size_t ext1, std::size_t ext2)
+inline constexpr std::size_t extent_static(
+	const std::size_t ext1,
+	const std::size_t ext2)
 {
 	return (ext1 == dynamic) ? ext2 : ext1;
 }
 
-constexpr auto extent_mul(std::size_t ext1, std::size_t ext2)
+inline constexpr std::size_t extent_mul(
+	const std::size_t ext1,
+	const std::size_t ext2)
 {
 	return (ext1 == dynamic || ext2 == dynamic) ? dynamic : ext1 * ext2;
 }

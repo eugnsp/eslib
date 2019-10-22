@@ -8,23 +8,39 @@
 
 namespace esl
 {
-template<class Expr, typename Scalar, typename = std::enable_if_t<!is_expression<Scalar>>>
-Scalar_expr<Expr, Scalar, internal::Scalar_mul_left_fn> operator*(const Scalar& scalar,
-																  const Expression<Expr>& expr)
+template<
+	class 	 Expr,
+	typename Scalar,
+	typename = std::enable_if_t<!is_expression<Scalar>>>
+auto operator*(
+	const Scalar&           scalar,
+	const Expression<Expr>& expr)
+-> Scalar_expr<Expr, Scalar, internal::Scalar_mul_left_fn>
 {
 	return {expr.self(), scalar};
 }
 
-template<class Expr, typename Scalar, typename = std::enable_if_t<!is_expression<Scalar>>>
-Scalar_expr<Expr, Scalar, internal::Scalar_mul_right_fn> operator*(const Expression<Expr>& expr,
-																   const Scalar& scalar)
+template<
+	class 	 Expr,
+	typename Scalar,
+	typename = std::enable_if_t<!is_expression<Scalar>>>
+auto operator*(
+	const Expression<Expr>& expr,
+	const Scalar&           scalar)
+-> Scalar_expr<Expr, Scalar, internal::Scalar_mul_right_fn>
 {
 	return {expr.self(), scalar};
 }
 
-template<class Expr, typename Scalar, typename = std::enable_if_t<!is_expression<Scalar>>>
-auto operator/(const Expression<Expr>& expr, const Scalar& scalar)
+template<
+	class 	 Expr,
+	typename Scalar,
+	typename = std::enable_if_t<!is_expression<Scalar>>>
+auto operator/(
+	const Expression<Expr>& expr,
+	const Scalar& 	        scalar)
+-> Scalar_expr<Expr, Scalar, internal::Scalar_div_fn>
 {
-	return Scalar_expr<Expr, Scalar, internal::Scalar_div_fn>{expr.self(), scalar};
+	return {expr.self(), scalar};
 }
 } // namespace esl

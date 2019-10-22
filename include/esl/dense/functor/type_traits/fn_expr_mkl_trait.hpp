@@ -16,7 +16,9 @@ namespace esl::internal
 /** = */
 
 // X = Y
-template<class Expr1, class Expr2, typename Value>
+template<class Expr1,
+		 class Expr2,
+		 typename Value>
 struct Fn_expr_assign_trait<
 	Expr1,
 	Expr2,
@@ -28,7 +30,10 @@ struct Fn_expr_assign_trait<
 };
 
 // X = a * Y
-template<class Expr1, class Expr2, typename Value, typename Scalar>
+template<class Expr1,
+		 class Expr2,
+		 typename Value,
+		 typename Scalar>
 struct Fn_expr_assign_trait<
 	Expr1,
 	Expr2,
@@ -41,7 +46,9 @@ struct Fn_expr_assign_trait<
 };
 
 // X = Y * Z
-template<class Expr1, class Expr2, typename Value>
+template<class Expr1,
+		 class Expr2,
+		 typename Value>
 struct Fn_expr_assign_trait<
 	Expr1,
 	Expr2,
@@ -56,7 +63,9 @@ struct Fn_expr_assign_trait<
 /** += */
 
 // X += Y
-template<class Expr1, class Expr2, typename Value>
+template<class Expr1,
+		 class Expr2,
+		 typename Value>
 struct Fn_expr_add_assign_trait<
 	Expr1,
 	Expr2,
@@ -69,7 +78,9 @@ struct Fn_expr_add_assign_trait<
 };
 
 // X += Y * Z
-template<class Expr1, class Expr2, typename Value>
+template<class Expr1,
+		 class Expr2,
+		 typename Value>
 struct Fn_expr_add_assign_trait<
 	Expr1,
 	Expr2,

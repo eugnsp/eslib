@@ -12,8 +12,10 @@ namespace esf
 class Gnuplot_writer2
 {
 public:
-	Gnuplot_writer2(const std::string& file_name, const Mesh2& mesh) :
-		writer_(file_name), mesh_(mesh)
+	Gnuplot_writer2(const std::string& file_name,
+					const Mesh2& mesh) :
+		writer_(file_name),
+		mesh_(mesh)
 	{}
 
 	template<class Vector>
@@ -66,7 +68,8 @@ public:
 
 private:
 	template<typename T>
-	void write(Point2 pt, T value)
+	void write(Point2 pt,
+			   const T value)
 	{
 		pt *= mesh_.output_scale();
 		writer_.write_ln(pt.x(), '\t', pt.y(), '\t', value);
@@ -74,6 +77,6 @@ private:
 
 private:
 	internal::Text_file_writer writer_;
-	const Mesh2& mesh_;
+	const Mesh2& 			   mesh_;
 };
 } // namespace esf

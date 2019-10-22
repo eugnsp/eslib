@@ -6,7 +6,7 @@
 
 namespace esf::internal
 {
-template<class Space_dim_,
+template<class 		 Space_dim_,
 		 std::size_t vertex_dofs_,
 		 std::size_t edge_dofs_,
 		 std::size_t face_dofs_ = 0>
@@ -19,19 +19,19 @@ public:
 
 	// The number of vertex dofs
 	static constexpr std::size_t vertex_dofs = vertex_dofs_;
-	static constexpr bool has_vertex_dofs = vertex_dofs > 0;
+	static constexpr bool has_vertex_dofs    = vertex_dofs > 0;
 
 	// The number of edge dofs
-	static constexpr std::size_t edge_dofs = edge_dofs_;
-	static constexpr bool has_edge_dofs = edge_dofs > 0;
+	static constexpr std::size_t edge_dofs 	 = edge_dofs_;
+	static constexpr bool has_edge_dofs 	 = edge_dofs > 0;
 
 	// The number of face dofs
-	static constexpr std::size_t face_dofs = face_dofs_;
-	static constexpr bool has_face_dofs = face_dofs > 0;
+	static constexpr std::size_t face_dofs 	 = face_dofs_;
+	static constexpr bool has_face_dofs 	 = face_dofs > 0;
 
 	// The number of cell dofs
-	static constexpr std::size_t cell_dofs = is_dim1<Space_dim> ? edge_dofs : face_dofs;
-	static constexpr bool has_cell_dofs = cell_dofs > 0;
+	static constexpr std::size_t cell_dofs 	 = is_dim1<Space_dim> ? edge_dofs : face_dofs;
+	static constexpr bool has_cell_dofs 	 = cell_dofs > 0;
 
 	// The total number of edge dofs (vertex + edge dofs)
 	static constexpr std::size_t total_edge_dofs = 2 * vertex_dofs + edge_dofs;

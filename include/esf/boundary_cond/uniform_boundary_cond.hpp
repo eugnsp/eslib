@@ -1,30 +1,39 @@
 #pragma once
 #include <esf/boundary_cond/boundary_cond.hpp>
 
+#include <cstddef>
+
 namespace esf
 {
-template<class Element, typename T = double, bool is_strong_ = true>
+template<
+	class 	 Element,
+	typename T 		    = double,
+	bool 	 is_strong_ = true>
 class Uniform_boundary_cond : public Boundary_cond<Element>
 {
-public:
-	using Space_dim = typename Element::Space_dim;
-	static constexpr bool is_strong = is_strong_;
-	static constexpr bool is_uniform = true;
-
 private:
 	using Base = Boundary_cond<Element>;
 
 public:
+	using Space_dim = typename Base::Space_dim;
+	static constexpr bool is_strong  = is_strong_;
+	static constexpr bool is_uniform = true;
+
+public:
 	using Base::Base;
 
-	Uniform_boundary_cond(const Mesh<Space_dim>& mesh, double value) :
-		Base(mesh), value_(value)
+	Uniform_boundary_cond(
+		const Mesh<Space_dim>& mesh,
+		const double 		   value)
+	:	Base(mesh),
+		value_(value)
 	{}
 
-	Uniform_boundary_cond(const Mesh<Space_dim>& mesh,
-		                  const typename Base::Boundary& boundary,
-						  double value) :
-		Base(mesh, boundary),
+	Uniform_boundary_cond(
+		const Mesh<Space_dim>&         mesh,
+		const typename Base::Boundary& boundary,
+		const double 				   value)
+	:	Base(mesh, boundary),
 		value_(value)
 	{}
 

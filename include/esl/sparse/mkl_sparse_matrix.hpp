@@ -139,7 +139,7 @@ protected:
 };
 
 //////////////////////////////////////////////////////////////////////
-//> Type traits
+/** Type traits */
 
 template<typename Matrix>
 struct Traits<Mkl_sparse_matrix<Matrix>>

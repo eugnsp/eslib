@@ -19,19 +19,20 @@
 
 namespace esf
 {
-template<class Var_list_, template<class> class Dof_mapper_ = Dof_mapper>
+template<class 				   Var_list_,
+		 template<class> class Dof_mapper_ = Dof_mapper>
 class System
 {
 public:
-	using Space_dim = typename Var_list_::Space_dim;
-	static constexpr std::size_t n_vars = Var_list_::size;
-
-	using Var_list = Var_list_;
-	using Mesh = esf::Mesh<Space_dim>;
+	using Var_list   = Var_list_;
+	using Space_dim  = typename Var_list::Space_dim;
+	using Mesh 		 = esf::Mesh<Space_dim>;
 	using Dof_mapper = Dof_mapper_<Var_list>;
 
 	template<std::size_t var_idx>
 	using Var = typename Var_list::template Nth<var_idx>;
+
+	static constexpr std::size_t n_vars = Var_list::size;
 
 public:
 	System(const Mesh& mesh) : mesh_(mesh)
@@ -94,18 +95,6 @@ public:
 		return vars_;
 	}
 
-	template<class Fn>
-	void for_each_variable(Fn fn) const
-	{
-		Var_list::for_each([this, &fn](auto var_index) {
-			auto& var = variable(var_index);
-			if constexpr (std::is_invocable_v<Fn, decltype(var)>)
-				fn(var);
-			else
-				fn(var_index, var);
-		});
-	}
-
 	///////////////////////////////////////////////////////////////////////
 
 	const auto& mesh() const
@@ -116,15 +105,15 @@ public:
 	template<class Symmetry_tag, class... Args>
 	decltype(auto) sparsity_pattern(Args&&... args) const
 	{
-		return dof_mapper_.template sparsity_pattern<Symmetry_tag>(*this,
-																   std::forward<Args>(args)...);
+		return dof_mapper_.template sparsity_pattern<Symmetry_tag>(
+			*this, std::forward<Args>(args)...);
 	}
 
 	template<class Symmetry_tag, class... Args>
 	decltype(auto) sparsity_pattern2(Args&&... args) const
 	{
-		return dof_mapper_.template sparsity_pattern2<Symmetry_tag>(*this,
-																	std::forward<Args>(args)...);
+		return dof_mapper_.template sparsity_pattern2<Symmetry_tag>(
+			*this, std::forward<Args>(args)...);
 	}
 
 	virtual std::string name() const
@@ -208,14 +197,17 @@ private:
 	const Mesh& mesh_;
 };
 
-template<class Var_list, template<class> class Dof_mapper>
-std::ostream& operator<<(std::ostream& out, const System<Var_list, Dof_mapper>& system)
+template<class 				   Var_list,
+		 template<class> class Dof_mapper>
+std::ostream& operator<<(std::ostream& 						 out,
+						 const System<Var_list, Dof_mapper>& system)
 {
 	out << system.name() << '\n'
-		<< "Number of variables: " << system.n_vars << '\n'
-		<< "DoFs (free/constrained/total): " << system.n_free_dofs() << '/' << system.n_const_dofs()
-		<< '/' << system.n_dofs() << '\n'
-		<< "Memory: " << esu::size_string(system.memory_size()) << '\n';
+		<< "Number of variables: " 			 << system.n_vars << '\n'
+		<< "DoFs (free/constrained/total): " << system.n_free_dofs()
+		<< '/' 								 << system.n_const_dofs()
+		<< '/' 								 << system.n_dofs() << '\n'
+		<< "Memory: " 						 << esu::size_string(system.memory_size()) << '\n';
 
 	return out;
 }

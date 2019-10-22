@@ -10,7 +10,10 @@ namespace esl::internal
 template<class Expr>
 inline constexpr bool is_view_impl = false;
 
-template<class Expr, class Rows, class Cols, class Category>
+template<class Expr,
+		 class Rows,
+		 class Cols,
+		 class Category>
 inline constexpr bool is_view_impl<View<Expr, Rows, Cols, Category>> = true;
 
 template<class Expr>

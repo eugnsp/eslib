@@ -14,15 +14,17 @@
 
 namespace esf
 {
-template<class System_, std::size_t var_idx, typename Value>
+template<class 		 System_,
+		 std::size_t var_idx,
+		 typename 	 Value>
 class Solution_view
 {
 public:
 	using System = System_;
-	using Mesh = typename System::Mesh;
+	using Mesh   = typename System::Mesh;
 
 private:
-	using Var = typename System::template Var<var_idx>;
+	using Var 	  = typename System::template Var<var_idx>;
 	using Element = typename Var::Element;
 	static constexpr Var_index<var_idx> var_index{};
 
@@ -87,7 +89,8 @@ public:
 		return at(mesh_element_index);
 	}
 
-	Value at(const Point2& pt, const typename Mesh::Cell_view& cell) const
+	Value at(const Point2& pt,
+			 const typename Mesh::Cell_view& cell) const
 	{
 		static_assert(internal::is_dim2<Mesh>);
 
@@ -99,7 +102,8 @@ public:
 		return value;
 	}
 
-	Value operator()(const Point2& pt, const typename Mesh::Cell_view& cell) const
+	Value operator()(const Point2& pt,
+				   	 const typename Mesh::Cell_view& cell) const
 	{
 		return at(pt, cell);
 	}
@@ -119,16 +123,22 @@ protected:
 	const esl::Vector_x<Value>& solution_;
 };
 
-template<class Quadr, class System, std::size_t var, typename Value>
-auto at_quadr(const Solution_view<System, var, Value>& solution,
+template<class 		 Quadr,
+		 class 		 System,
+		 std::size_t var,
+		 typename 	 Value>
+auto at_quadr(const Solution_view<System, var, Value>&       solution,
 			  const typename System::template Var_dofs<var>& dofs)
 {
 	return solution.template at_quadr<Quadr>(dofs);
 }
 
-template<class Quadr, class System, std::size_t var, typename Value>
+template<class 		 Quadr,
+		 class 		 System,
+		 std::size_t var,
+		 typename  	 Value>
 auto at_quadr(const Solution_view<System, var, Value>& solution,
-			  const typename System::Mesh::Cell_view& cell)
+			  const typename System::Mesh::Cell_view&  cell)
 {
 	return solution.template at_quadr<Quadr>(cell);
 }

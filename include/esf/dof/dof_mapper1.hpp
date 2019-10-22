@@ -124,7 +124,7 @@ private:
 
 		const esf::Dof_index& first_dof = this->indices_.at(element, esf::Var_index<var>{});
 
-		constexpr auto n = Element::n_dofs(esf::internal::Element_tag_by_index<Element_index>{});
+		constexpr auto n = Element::dofs(esf::internal::Element_tag_by_index<Element_index>{});
 		for (esf::Local_index k = 0; k < n; ++k)
 			dofs[i++] = first_dof + k;
 	}

@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-namespace esc
+namespace esk
 {
 template<typename Value_, typename Size_ = std::size_t>
 class Fenwick_tree

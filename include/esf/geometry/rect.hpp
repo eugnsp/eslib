@@ -15,14 +15,21 @@ public:
 public:
 	Rect() = default;
 
-	Rect(esf::Point2 bottom_left, double width, double height) :
-		bottom_left_(bottom_left), width_(width), height_(height)
+	Rect(
+		const Point2 bottom_left,
+		const double width,
+		const double height)
+	:	bottom_left_(bottom_left),
+		width_(width),
+		height_(height)
 	{
 		assert(width_ >= 0 && height_ >= 0);
 	}
 
-	Rect(esf::Point2 bottom_left, esf::Point2 top_right) :
-		Rect(bottom_left, top_right.x() - bottom_left.x(), top_right.y() - bottom_left.y())
+	Rect(
+		const Point2 bottom_left,
+		const Point2 top_right)
+	:	Rect(bottom_left, top_right.x() - bottom_left.x(), top_right.y() - bottom_left.y())
 	{}
 
 	double top() const
@@ -121,7 +128,7 @@ public:
 	// 	}
 
 private:
-	const esf::Point2 bottom_left_;
+	const Point2 bottom_left_;
 	const double width_ = 0;
 	const double height_ = 0;
 };

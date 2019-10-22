@@ -3,6 +3,7 @@
 #include <esf/tags.hpp>
 
 #include <cassert>
+#include <cstddef>
 
 namespace esf
 {
@@ -14,20 +15,23 @@ public:
 public:
 	Segment() = default;
 
-	Segment(const Point2& p1, const Point2& p2) : points_{p1, p2}
+	Segment(
+		const Point2& p1,
+		const Point2& p2)
+	: 	points_{p1, p2}
 	{
 		// TODO
 		assert(p1 != p2);
 	}
 
-	template<Index index>
+	template<std::size_t index>
 	const Point2& vertex() const
 	{
-		static_assert(index < 2, "Index out of bounds");
+		static_assert(index < 2);
 		return points_[index];
 	}
 
-	const Point2& vertex(Index index) const
+	const Point2& vertex(std::size_t index) const
 	{
 		assert(index < 2);
 		return points_[index];

@@ -15,10 +15,13 @@ Point2 point(Quadr_point_index<Quadr> i)
 }
 
 // Returns the coordinates of the quadrature point in the triangle
-template<class Quadr,
-		 class Triangle,
-		 typename = std::enable_if_t<std::is_same_v<typename Triangle::Geometry_tag, Triangle_tag>>>
-Point2 point(Quadr_point_index<Quadr> i, const Triangle& triangle)
+template<
+	class    Quadr,
+	class    Triangle,
+	typename = std::enable_if_t<std::is_same_v<typename Triangle::Geometry_tag, Triangle_tag>>>
+Point2 point(
+	Quadr_point_index<Quadr> i,
+	const Triangle& 		 triangle)
 {
 	auto v = triangle.vertex_circ();
 	auto&& a = v->vertex();

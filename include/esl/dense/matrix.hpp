@@ -11,7 +11,11 @@
 
 namespace esl
 {
-template<typename Value, std::size_t ct_rows, std::size_t ct_cols, class Layout>
+template<
+	typename 	Value,
+	std::size_t ct_rows,
+	std::size_t ct_cols,
+	class 		Layout>
 class Matrix :
 	public internal::Matrix_base<ct_rows, ct_cols, Matrix<Value, ct_rows, ct_cols, Layout>, Layout>
 {
@@ -23,7 +27,7 @@ private:
 		internal::Matrix_base<ct_rows, ct_cols, Matrix<Value, ct_rows, ct_cols, Layout>, Layout>;
 
 public:
-	//> Constructors
+	/** Constructors */
 
 	using Base::Base;
 
@@ -38,7 +42,7 @@ public:
 	// }
 
 	///////////////////////////////////////////////////////////////////////
-	//> Assignments
+	/** Assignments */
 
 	using Base::operator=;
 
@@ -46,7 +50,7 @@ public:
 	Matrix& operator=(Matrix&&) = default;
 
 	////////////////////////////////////////////////////////////////////////
-	//> Extents
+	/** Extents */
 
 	using Base::cols;
 	using Base::rows;
@@ -77,7 +81,7 @@ public:
 	}
 
 	//////////////////////////////////////////////////////////////////////
-	//> Element access
+	/** Element access */
 
 	// Returns the pointer to the underlying array of matrix element storage
 	Value* data() noexcept
@@ -96,15 +100,20 @@ private:
 };
 
 template<class Expr>
-Matrix(const Expression<Expr>&)->Matrix<Value_type<Expr>, ct_rows_value<Expr>, ct_cols_value<Expr>>;
+Matrix(const Expression<Expr>&)
+	-> Matrix<Value_type<Expr>, ct_rows_value<Expr>, ct_cols_value<Expr>>;
 
 ///////////////////////////////////////////////////////////////////////
-//> Type traits
+/** Type traits */
 
-template<typename Value_, std::size_t rows_, std::size_t cols_, class Layout_>
+template<
+	typename 	Value_,
+	std::size_t rows_,
+	std::size_t cols_,
+	class 		Layout_>
 struct Traits<Matrix<Value_, rows_, cols_, Layout_>>
 {
-	using Value = Value_;
+	using Value  = Value_;
 	using Layout = Layout_;
 
 	static constexpr std::size_t rows = rows_;
@@ -112,6 +121,6 @@ struct Traits<Matrix<Value_, rows_, cols_, Layout_>>
 
 	static constexpr std::size_t row_stride = is_col_major<Layout> ? 1 : cols;
 	static constexpr std::size_t col_stride = is_row_major<Layout> ? 1 : rows;
-	static constexpr std::size_t lead_dim = is_col_major<Layout> ? rows : cols;
+	static constexpr std::size_t lead_dim 	= is_col_major<Layout> ? rows : cols;
 };
 } // namespace esl

@@ -1,6 +1,7 @@
 #pragma once
 #include <esf/dof/function.hpp>
 #include <esf/index.hpp>
+#include <esf/utility/system_for_each.hpp>
 #include <esf/var.hpp>
 
 #include <esl/sparse/sparsity_pattern.hpp>
@@ -18,7 +19,9 @@ namespace esf
 {
 namespace internal
 {
-template<class Symmetry_tag, class System>
+template<
+	class Symmetry_tag,
+	class System>
 esl::Sparsity_pattern<Symmetry_tag> sparsity_pattern(const System& system)
 {
 	esl::Sparsity_pattern<Symmetry_tag> pattern(system.dof_mapper().n_free_dofs());
@@ -27,14 +30,14 @@ esl::Sparsity_pattern<Symmetry_tag> sparsity_pattern(const System& system)
 	for (auto& cell : system.mesh().cells())
 	{
 		indices.clear();
-		System::Var_list::for_each([&](auto var_index) {
+		esf::for_each_variable(system,
+			[&]<std::size_t var_idx, class Var>(Var_index<var_idx> var_index, const Var& var)
+		{
 			const auto dofs = esf::dofs(system, cell, var_index);
-			const auto n_dofs = static_cast<esf::Local_index>(dofs.size());
-
-			for (esf::Local_index i = 0; i < n_dofs; ++i)
+			for (std::size_t i = 0; i < dofs.size(); ++i)
 				if (dofs[i].is_free)
-					for (esf::Index d = 0; d < system.variable(var_index).dim(); ++d)
-						indices.push_back(dofs[i].index + d);
+					for (Index d = 0; d < var.dim(); ++d)
+						indices.push_back(dofs[i].index + d * dofs.size());
 		});
 
 		for (std::size_t i = 0; i < indices.size(); ++i)
@@ -70,8 +73,12 @@ esl::Sparsity_pattern<Symmetry_tag> sparsity_pattern(const System& system)
 }
 } // namespace internal
 
-template<class Sparse_matrix, class System>
-void compute_and_set_sparsity_pattern(const System& system, Sparse_matrix& matrix)
+template<
+	class Sparse_matrix,
+	class System>
+void compute_and_set_sparsity_pattern(
+	const System&  system,
+	Sparse_matrix& matrix)
 {
 	using Symmetry = typename Sparse_matrix::Symmetry_tag;
 
@@ -79,10 +86,14 @@ void compute_and_set_sparsity_pattern(const System& system, Sparse_matrix& matri
 	matrix.set_sparsity_pattern(std::move(pattern));
 }
 
-template<class Sparse_matrix, class System, class Coupling_fn>
-void compute_and_set_sparsity_pattern(const System& system,
-									  Coupling_fn&& coupling_fn,
-									  Sparse_matrix& matrix)
+template<
+	class Sparse_matrix,
+	class System,
+	class Coupling_fn>
+void compute_and_set_sparsity_pattern(
+	const System&  system,
+	Coupling_fn&&  coupling_fn,
+	Sparse_matrix& matrix)
 {
 	using Symmetry = typename Sparse_matrix::Symmetry_tag;
 
@@ -91,10 +102,14 @@ void compute_and_set_sparsity_pattern(const System& system,
 	matrix.set_sparsity_pattern(std::move(pattern));
 }
 
-template<class Sparse_matrix, class System, class Coupling_fn>
-void compute_and_set_sparsity_pattern2(const System& system,
-									   Coupling_fn&& coupling_fn,
-									   Sparse_matrix& matrix)
+template<
+	class Sparse_matrix,
+	class System,
+	class Coupling_fn>
+void compute_and_set_sparsity_pattern2(
+	const System&  system,
+	Coupling_fn&&  coupling_fn,
+	Sparse_matrix& matrix)
 {
 	using Symmetry = typename Sparse_matrix::Symmetry_tag;
 

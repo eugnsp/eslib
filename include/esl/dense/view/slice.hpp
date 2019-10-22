@@ -14,7 +14,8 @@ template<std::size_t ct_size>
 class Slice
 {
 public:
-	explicit Slice(Vector<std::size_t, ct_size> indices) : indices_(std::move(indices))
+	explicit Slice(Vector<std::size_t, ct_size> indices) :
+		indices_(std::move(indices))
 	{
 		assert(!indices_.is_empty());
 	}
@@ -24,12 +25,12 @@ public:
 		return indices_.size();
 	}
 
-	std::size_t operator[](std::size_t index) const
+	std::size_t operator[](const std::size_t index) const
 	{
 		return indices_[index];
 	}
 
-	bool are_all_less(std::size_t max) const
+	bool are_all_less(const std::size_t max) const
 	{
 		for (std::size_t i = 0; i < indices_.size(); ++i)
 			if (indices_[i] >= max)
@@ -43,7 +44,7 @@ private:
 } // namespace internal
 
 ///////////////////////////////////////////////////////////////////////
-//> Type traits
+/** Type traits */
 
 template<std::size_t size_>
 struct Traits<internal::Slice<size_>>

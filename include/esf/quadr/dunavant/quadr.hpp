@@ -17,15 +17,17 @@ namespace esf
 namespace internal
 {
 // Dunavant quadrature integration
-template<std::size_t order, class Group_index_sequence>
+template<std::size_t order,
+		 class 		 Group_index_sequence>
 class Dunavant_quadr;
 
-template<std::size_t order, std::size_t... group_indices>
+template<std::size_t 	order,
+		 std::size_t... group_indices>
 class Dunavant_quadr<order, std::index_sequence<group_indices...>>
 {
 private:
 	static constexpr auto point_groups = Dunavant_data<order>::groups;
-	static constexpr auto group_sizes =
+	static constexpr auto group_sizes  =
 		esu::make_array(std::get<group_indices>(point_groups).size()...);
 
 public:

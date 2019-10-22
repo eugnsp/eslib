@@ -7,7 +7,7 @@
 namespace esl::internal
 {
 //////////////////////////////////////////////////////////////////////
-//> Matrix memory layouts
+/** Matrix memory layouts */
 
 inline constexpr ::CBLAS_LAYOUT layout_as_mkl_enum(Col_major)
 {
@@ -40,7 +40,7 @@ inline constexpr int layout_as_mkl_lapack(Row_major)
 }
 
 ///////////////////////////////////////////////////////////////////////
-//> Matrix operations
+/** Matrix operations */
 
 inline constexpr ::CBLAS_TRANSPOSE transp_op_as_mkl_enum(No_transpose)
 {
@@ -73,7 +73,7 @@ inline constexpr char transp_op_as_mkl_char(Conj_transpose)
 }
 
 ///////////////////////////////////////////////////////////////////////
-//> Matrix symmetry
+/** Matrix symmetry */
 
 inline constexpr char symmetry_as_mkl_char(Symmetric_upper)
 {

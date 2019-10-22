@@ -1,4 +1,5 @@
 #pragma once
+#include <esf/boundary_cond/boundary_cond_base1.hpp>
 #include <esf/geometry/linestring.hpp>
 #include <esf/mesh/algorithm/linestring.hpp>
 #include <esf/mesh/mesh2.hpp>
@@ -16,15 +17,12 @@ class Boundary_cond_base<Dim2, Element>
 	static_assert(Element::has_vertex_dofs || Element::has_edge_dofs);
 
 public:
-	static constexpr bool is_strong = true;
-	static constexpr bool is_uniform = false;
-
-	using Boundary = Linestring;
+	using Boundary  = Linestring;
 
 public:
-	Boundary_cond_base(const Mesh<Dim2>& mesh)
+	Boundary_cond_base(const Mesh2& mesh)
 	{
-		if constexpr (Element::has_vertex_dofs)
+		if constexpr (Element::vertex_dofs > 0)
 		{
 			auto circ = mesh.boundary_vertex_circ();
 			const auto first = circ;
@@ -33,7 +31,7 @@ public:
 			while (++circ != first);
 		}
 
-		if constexpr (Element::has_edge_dofs)
+		if constexpr (Element::edge_dofs > 0)
 		{
 			auto circ = mesh.boundary_halfedge_circ();
 			const auto first = circ;
@@ -43,7 +41,8 @@ public:
 		}
 	}
 
-	Boundary_cond_base(const Mesh<Dim2>& mesh, const Boundary& boundary)
+	Boundary_cond_base(const Mesh2&    mesh,
+					   const Boundary& boundary)
 	{
 		if constexpr (Element::has_vertex_dofs && Element::has_edge_dofs)
 			elements_in_linestring(mesh, boundary, vertices_, halfedges_);
@@ -68,7 +67,7 @@ public:
 	}
 
 protected:
-	std::vector<Vertex_index> vertices_;
+	std::vector<Vertex_index>   vertices_;
 	std::vector<Halfedge_index> halfedges_;
 };
 } // namespace esf::internal

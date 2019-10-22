@@ -30,7 +30,8 @@ public:
 	}
 
 private:
-	template<typename T, typename = std::enable_if_t<std::is_scalar_v<T>>>
+	template<typename T,
+			 typename = std::enable_if_t<std::is_scalar_v<T>>>
 	void do_write(T value)
 	{
 		file_ << value;

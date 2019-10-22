@@ -15,7 +15,7 @@
 namespace esl::internal
 {
 //////////////////////////////////////////////////////////////////////
-//> BLAS level 1
+/** BLAS level 1 */
 
 #define ESL_IMPL_MKL_BLAS_AXPY_R(fn, T)                                                            \
 	void mkl_axpy(const std::size_t n,                                                             \
@@ -87,7 +87,7 @@ ESL_IMPL_MKL_BLAS_NRM2(cblas_scnrm2, std::complex<float>)
 ESL_IMPL_MKL_BLAS_NRM2(cblas_dznrm2, std::complex<double>)
 
 //////////////////////////////////////////////////////////////////////
-//> BLAS levels 2 and 3
+/** BLAS levels 2 and 3 */
 
 #define ESL_IMPL_MKL_GEMV_R(fn, T)                                                                 \
 	void mkl_gemv(const CBLAS_LAYOUT layout,                                                       \
@@ -222,7 +222,7 @@ ESL_IMPL_MKL_GEMM_C(cblas_cgemm3m, std::complex<float>)
 ESL_IMPL_MKL_GEMM_C(cblas_zgemm3m, std::complex<double>)
 
 ///////////////////////////////////////////////////////////////////////
-//> BLAS-like extensions
+/** BLAS-like extensions */
 
 #define ESL_IMPL_MKL_OMATCOPY(fn, T)                                                               \
 	void mkl_omatcopy(const char layout,                                                           \
@@ -254,7 +254,7 @@ ESL_IMPL_MKL_OMATCOPY(mkl_comatcopy, std::complex<float>)
 ESL_IMPL_MKL_OMATCOPY(mkl_zomatcopy, std::complex<double>)
 
 //////////////////////////////////////////////////////////////////////
-//> LAPACK
+/** LAPACK */
 
 #define ESL_IMPL_MKL_LAPACK_SYTRD(fn, T)                                                           \
 	void mkl_lapack_sytrd(const int layout,                                                        \

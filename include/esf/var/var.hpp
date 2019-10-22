@@ -1,28 +1,21 @@
 #pragma once
-#include <esf/index.hpp>
 #include <esf/var/var_base.hpp>
 
 #include <esl/dense/tags.hpp>
-#include <esu/tuple.hpp>
-#include <esu/type_traits.hpp>
 
-#include <cassert>
 #include <cstddef>
-#include <memory>
-#include <string>
-#include <tuple>
-#include <type_traits>
-#include <utility>
-#include <vector>
 
 namespace esf
 {
-template<class Element, std::size_t ct_dim_ = 1, class... Bnd_conds>
+template<class 		 Element,
+		 std::size_t ct_dim_ = 1,
+		 class... 	 Bnd_conds>
 class Var : public internal::Var_base<Element, Bnd_conds...>
 {
+	static_assert(ct_dim_ > 0);
+
 public:
 	static constexpr std::size_t ct_dim = ct_dim_;
-	static_assert(ct_dim > 0);
 
 private:
 	using Base = internal::Var_base<Element, Bnd_conds...>;
@@ -33,25 +26,22 @@ public:
 		return ct_dim;
 	}
 
-	template<class Tag>
-	static constexpr std::size_t n_dofs(Tag tag)
+	template<class Mesh_element_tag>
+	static constexpr std::size_t dofs(Mesh_element_tag tag)
 	{
 		return ct_dim * Element::dofs(tag);
 	}
 
-	template<class Tag>
-	static constexpr std::size_t n_total_dofs(Tag tag)
+	template<class Mesh_element_tag>
+	static constexpr std::size_t total_dofs(Mesh_element_tag tag)
 	{
 		return ct_dim * Element::total_dofs(tag);
 	}
 };
 
 // Class of a variable with dynamic dimension
-//
-// Template parameters:
-//		Element 		- finite element type,
-//		Bnd_conds... 	- zero of more boundary condition types.
-template<class Element, class... Bnd_conds>
+template<class    Element,
+		 class... Bnd_conds>
 class Var_x : public internal::Var_base<Element, Bnd_conds...>
 {
 public:
@@ -68,14 +58,14 @@ public:
 		dim_ = dim;
 	}
 
-	template<typename Tag>
-	std::size_t n_dofs(Tag tag) const
+	template<typename Mesh_element_tag>
+	std::size_t dofs(Mesh_element_tag tag) const
 	{
 		return dim_ * Element::dofs(tag);
 	}
 
-	template<typename Tag>
-	std::size_t n_total_dofs(Tag tag) const
+	template<typename Mesh_element_tag>
+	std::size_t total_dofs(Mesh_element_tag tag) const
 	{
 		return dim_ * Element::total_dofs(tag);
 	}

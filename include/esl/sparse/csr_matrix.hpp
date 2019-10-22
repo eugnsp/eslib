@@ -210,7 +210,7 @@ private:
 };
 
 //////////////////////////////////////////////////////////////////////
-//> Type traits
+/** Type traits */
 
 template<typename Value_, class Symmetry_, typename Index_>
 struct Traits<Csr_matrix<Value_, Symmetry_, Index_>>

@@ -32,10 +32,6 @@ template<class Element_tag, class Mesh>
 class Element_view;
 
 //////////////////////////////////////////////////////////////////////////
-template<class Element, std::size_t dim, class... Bnd_conds>
-class Var;
-
-//////////////////////////////////////////////////////////////////////////
 /** Finite elements */
 
 template<std::size_t order, class Space_dim = Dim2>
@@ -52,14 +48,8 @@ class Quadr;
 template<class Element, class Quadr>
 class Element_quadr;
 
-template<class System>
-class Dof_tools;
-
 namespace internal
 {
-template<class Space_dim, class Element>
-class Boundary_cond_base;
-
 template<class Space_dim, class Var_list>
 class Dof_mapper;
 } // namespace internal

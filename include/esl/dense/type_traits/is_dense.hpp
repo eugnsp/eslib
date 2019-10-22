@@ -8,7 +8,8 @@ namespace esl
 {
 namespace internal
 {
-template<class Expr, class Category>
+template<class Expr,
+		 class Category>
 void dense_match(const Dense<Expr, Category>&);
 
 int dense_match(...);

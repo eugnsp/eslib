@@ -27,12 +27,14 @@ constexpr std::size_t get_alignment()
 		return alignof(T);
 }
 
-template<typename T, std::size_t alignment>
+template<
+	typename    T,
+	std::size_t alignment>
 class Allocator
 {
 public:
-	[[nodiscard, gnu::malloc, gnu::assume_aligned(alignment)]] static T* allocate(
-		const std::size_t size)
+	[[nodiscard, gnu::malloc, gnu::assume_aligned(alignment)]]
+	static T* allocate(const std::size_t size)
 	{
 		if (size == 0)
 			return nullptr;
@@ -45,8 +47,10 @@ public:
 		throw std::bad_alloc{};
 	}
 
-	[[nodiscard, gnu::assume_aligned(alignment)]] static T* reallocate(T* const old_ptr,
-																	   std::size_t new_size)
+	[[nodiscard, gnu::assume_aligned(alignment)]]
+	static T* reallocate(
+		T* const          old_ptr,
+		const std::size_t new_size)
 	{
 		static_assert(esu::is_trivially_relocatable<T>);
 
@@ -61,7 +65,8 @@ public:
 		if (new_size > max_size)
 			throw std::bad_array_new_length();
 
-		if (const auto ptr = ::mkl_realloc(old_ptr, new_size * sizeof(T)); ptr != nullptr)
+		if (const auto ptr = ::mkl_realloc(old_ptr, new_size * sizeof(T));
+			ptr != nullptr)
 		{
 			// mkl_realloc() in MKL 2011.3.1 and later should preserve buffer alignment
 			assert(reinterpret_cast<std::uintptr_t>(ptr) % alignment == 0);

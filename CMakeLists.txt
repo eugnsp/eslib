@@ -9,7 +9,7 @@ file(GLOB_RECURSE CPP_FILES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 add_library(eslib "${CPP_FILES}")
 target_include_directories(eslib PUBLIC "include")
 target_compile_features(eslib PUBLIC cxx_std_20)
-target_compile_options(eslib PRIVATE -Wall -Wpedantic -Wextra -Werror=return-type -m64 -march=native 
+target_compile_options(eslib PRIVATE -Wall -Wpedantic -Wextra -Werror=return-type -Wno-psabi -m64 -march=native 
 					   $<$<CONFIG:DEBUG>:-O0 -ggdb> $<$<CONFIG:RELEASE>:-Wno-unused-parameter -Wno-deprecated-declarations -O3 -DNDEBUG>)
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")

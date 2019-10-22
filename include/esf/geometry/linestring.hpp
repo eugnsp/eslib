@@ -3,6 +3,8 @@
 #include <esf/geometry/points2.hpp>
 #include <esf/tags.hpp>
 
+#include <esl/dense/tags.hpp>
+
 #include <cassert>
 #include <initializer_list>
 #include <utility>
@@ -11,7 +13,7 @@
 namespace esf
 {
 // A linestring (a sequence of points and line segments connecting them)
-class Linestring : public Points2<invalid_local_index>
+class Linestring : public Points2<esl::dynamic>
 {
 public:
 	using Geometry_tag = Linestring_tag;

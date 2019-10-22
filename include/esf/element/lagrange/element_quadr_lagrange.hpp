@@ -13,9 +13,9 @@ class Element_quadr_lagrange
 {
 private:
 	using Element = Element_;
-	using Quadr = Quadr_;
+	using Quadr   = Quadr_;
 	static constexpr std::size_t n_points = Quadr::size;
-	static constexpr std::size_t n_dofs = Element::total_cell_dofs;
+	static constexpr std::size_t n_dofs   = Element::total_cell_dofs;
 
 	static_assert(internal::is_dim1<Element> == internal::is_dim1<Quadr>);
 
@@ -40,15 +40,15 @@ public:
 };
 
 template<std::size_t order,
-         class Space_dim,
-		 class Quadr>
+         class 		 Space_dim,
+		 class 		 Quadr>
 class Element_quadr<Lagrange<order, Space_dim>, Quadr> :
 	public Element_quadr_lagrange<Lagrange<order, Space_dim>, Quadr>
 {};
 
 template<std::size_t order,
-         class Space_dim,
-		 class Quadr>
+         class 		 Space_dim,
+		 class 		 Quadr>
 class Element_quadr<Discontinuous_lagrange<order, Space_dim>, Quadr> :
 	public Element_quadr_lagrange<Discontinuous_lagrange<order, Space_dim>, Quadr>
 {};

@@ -2,7 +2,6 @@
 #include <esf/dof/dof_index.hpp>
 #include <esf/dof/dof_mapper_base.hpp>
 #include <esf/type_traits.hpp>
-#include <esf/types.hpp>
 #include <esf/util/mesh_vars_map.hpp>
 #include <esf/var.hpp>
 
@@ -125,12 +124,12 @@ public:
 		this->n_dofs_ = 0;
 		for_each_var<Var_list>(
 			[this, &system, active_vertex_dofs, active_edge_dofs, active_face_dofs](auto var) {
-				this->n_dofs_ += static_cast<Index>(system.variable(var).n_dofs(Vertex_tag{}) *
+				this->n_dofs_ += static_cast<Index>(system.variable(var).dofs(Vertex_tag{}) *
 													active_vertex_dofs);
 				this->n_dofs_ +=
-					static_cast<Index>(system.variable(var).n_dofs(Edge_tag{}) * active_edge_dofs);
+					static_cast<Index>(system.variable(var).dofs(Edge_tag{}) * active_edge_dofs);
 				this->n_dofs_ +=
-					static_cast<Index>(system.variable(var).n_dofs(Face_tag{}) * active_face_dofs);
+					static_cast<Index>(system.variable(var).dofs(Face_tag{}) * active_face_dofs);
 			});
 
 		// Assign indices
@@ -155,7 +154,7 @@ public:
 								Dof_index& dof = this->indices_.at(layer, vertex, var);
 								assert(dof.is_free);
 
-								this->n_free_dofs_ -= v.n_dofs(Vertex_tag{});
+								this->n_free_dofs_ -= v.dofs(Vertex_tag{});
 								dof.is_free = false;
 							}
 
@@ -169,7 +168,7 @@ public:
 								Dof_index& dof = this->indices_.at(layer, edge(halfedge), var);
 								assert(dof.is_free);
 
-								this->n_free_dofs_ -= v.n_dofs(Edge_tag{});
+								this->n_free_dofs_ -= v.dofs(Edge_tag{});
 								dof.is_free = false;
 							}
 				});
@@ -370,7 +369,8 @@ private:
 		dofs_impl(cell, layer, dofs, std::make_index_sequence<Var_list::size>{});
 	}
 
-	template<class Dofs, std::size_t... vars>
+	template<class Dofs,
+			 std::size_t... vars>
 	void dofs_impl(const typename Mesh::Cell_view& cell,
 				   Index layer,
 				   Dofs& dofs,
@@ -383,7 +383,8 @@ private:
 		(var_dofs_impl<vars>(vertices, edges, *cell, layer, std::get<vars>(dofs)), ...);
 	}
 
-	template<std::size_t var, class Dofs>
+	template<std::size_t var,
+			 class Dofs>
 	void var_dofs_impl(const typename Cell_view::Vertex_indices& vertices,
 					   const typename Cell_view::Edge_with_dir_indices& edges,
 					   Face_index cell,

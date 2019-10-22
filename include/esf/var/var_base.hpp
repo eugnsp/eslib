@@ -14,26 +14,15 @@
 
 namespace esf::internal
 {
-template<class Element, class... Bnd_conds>
-class Var_base;
-
-template<class Fn, class Element, class... Bnd_conds>
-void for_each_strong_boundary_cond(const Var_base<Element, Bnd_conds...>&, Fn);
-
-template<class Fn, class Element, class... Bnd_conds>
-void for_each_weak_boundary_cond(const Var_base<Element, Bnd_conds...>&, Fn);
-
-template<class Element_, class... Bnd_conds>
+template<class    Element_,
+		 class... Bnd_conds>
 class Var_base
 {
 public:
-	using Element = Element_;
+	using Element   = Element_;
 	using Space_dim = typename Element::Space_dim;
-	static constexpr auto n_bnd_conds = sizeof...(Bnd_conds);
+	static constexpr auto n_bnd_conds  = sizeof...(Bnd_conds);
 	static constexpr bool has_bnd_cond = n_bnd_conds > 0;
-
-	// TODO : remove
-	static constexpr Local_index n_total_dofs = Element::n_total_face_dofs;
 
 private:
 	using Bnd_conds_tuple = std::tuple<std::optional<Bnd_conds>...>;
@@ -55,7 +44,8 @@ public:
 		return *bnd_cond;
 	}
 
-	template<std::size_t i = 0, typename... Args>
+	template<std::size_t i = 0,
+			 typename... Args>
 	void set_bnd_cond(Args&&... args)
 	{
 		std::get<i>(bnd_conds_).emplace(std::forward<Args>(args)...);

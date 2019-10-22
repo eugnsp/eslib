@@ -8,8 +8,10 @@ public:
 	void init()
 	{}
 
-	template<class System, class Fn>
-	void assemble(const System& system, Fn&& fn)
+	template<class System,
+			 class Fn>
+	void assemble(const System& system,
+				  Fn&&			fn)
 	{
 		for (const auto& cell : system.mesh().cells())
 			fn(cell);
