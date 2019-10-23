@@ -17,7 +17,8 @@ public:
 	using Internal_index = Decay_element_index_in_view<Element_index, Mesh>;
 
 public:
-	Element_view_base(const Mesh& mesh, Internal_index index) : index_(index), mesh_(mesh)
+	Element_view_base(const Mesh& mesh, Internal_index index)
+		: index_(index), mesh_(mesh)
 	{}
 
 	Element_view_base& operator=(const Element_view_base& view)

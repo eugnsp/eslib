@@ -1,10 +1,9 @@
 #pragma once
-#include <esf/io/gnuplot_writer2.hpp>
+#include <esf/io/gnuplot_writer.hpp>
 #include <esf/io/matlab_writer.cpp>
 #include <esf/io/matlab_writer1.hpp>
 #include <esf/io/matlab_writer2.hpp>
 #include <esf/io/vtk_writer.hpp>
 #include <esf/io/vtk_writer3.hpp>
-#include <esf/io/write_gnuplot.hpp>
 #include <esf/io/write_interp.hpp>
 #include <esf/io/write_scattered.hpp>

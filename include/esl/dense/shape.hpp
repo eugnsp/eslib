@@ -9,10 +9,7 @@
 
 namespace esl::internal
 {
-template<
-	std::size_t ct_rows,
-	std::size_t ct_cols,
-	class 		Layout>
+template<std::size_t ct_rows, std::size_t ct_cols, class Layout>
 class Shape : public Shape_base<ct_rows, ct_cols>
 {
 private:
@@ -36,9 +33,7 @@ public:
 protected:
 	using Base::Base;
 
-	constexpr std::size_t linear_index(
-		std::size_t row,
-		std::size_t col) const
+	constexpr std::size_t linear_index(std::size_t row, std::size_t col) const
 	{
 		assert(row < rows());
 		assert(col < cols());

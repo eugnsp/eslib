@@ -48,6 +48,9 @@ class Quadr;
 template<class Element, class Quadr>
 class Element_quadr;
 
+template<class... Variables>
+struct Var_list;
+
 namespace internal
 {
 template<class Space_dim, class Var_list>
@@ -56,4 +59,8 @@ class Dof_mapper;
 
 template<class Var_list>
 using Dof_mapper = internal::Dof_mapper<typename Var_list::Space_dim, Var_list>;
+
+template<class Var_list,
+		 template<class> class Dof_mapper = Dof_mapper>
+class System;
 } // namespace esf

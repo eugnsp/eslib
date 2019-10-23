@@ -1,6 +1,6 @@
 BasedOnStyle: LLVM
 AccessModifierOffset: -4
-AlignAfterOpenBracket: Never
+AlignAfterOpenBracket: Align
 AllowAllParametersOfDeclarationOnNextLine: true
 AllowShortBlocksOnASingleLine: Never
 AllowShortFunctionsOnASingleLine: None

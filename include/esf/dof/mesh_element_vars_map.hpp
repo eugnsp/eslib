@@ -15,9 +15,7 @@ namespace esf::internal
 // A class that maps a mesh element index and a variable index
 // into an element of given type:
 // (Element_index) x (Var_index) -> (T)
-template<class    T,
-		 class 	  Element_index,
-		 class... Vars>
+template<class T, class Element_index, class... Vars>
 class Mesh_element_var_map_impl
 {
 private:
@@ -25,28 +23,20 @@ private:
 
 public:
 	template<class Mesh>
-	void init_storage(const Mesh& mesh,
-	                  Index 	  n_layers,
-	                  const T& 	  value)
+	void init_storage(const Mesh& mesh, Index n_layers, const T& value)
 	{
 		values_.assign(n_layers * block_size() * *mesh.n_elements(Element_tag{}), value);
 	}
 
 	template<std::size_t var_idx>
-	auto at(Element_index element,
-			Var_index<var_idx>,
-			Index 		  layer = 0,
-			Index 		  n_layers = 1)
+	auto at(Element_index element, Var_index<var_idx>, Index layer = 0, Index n_layers = 1)
 		-> typename std::vector<T>::reference
 	{
 		return values_[layer + n_layers * pos<var_idx>(element)];
 	}
 
 	template<std::size_t var_idx>
-	auto at(Element_index element,
-			Var_index<var_idx>,
-			Index 		  layer = 0,
-			Index 		  n_layers = 1) const
+	auto at(Element_index element, Var_index<var_idx>, Index layer = 0, Index n_layers = 1) const
 		-> typename std::vector<T>::const_reference
 	{
 		return values_[layer + n_layers * pos<var_idx>(element)];
@@ -85,15 +75,10 @@ private:
 	std::vector<T> values_;
 };
 
-template<typename T,
-		 class 	  Element_index,
-		 class 	  Var_list>
+template<typename T, class Element_index, class Var_list>
 class Mesh_element_var_map;
 
-template<typename T,
-		 class 	  Element_index,
-		 class... Vars>
+template<typename T, class Element_index, class... Vars>
 class Mesh_element_var_map<T, Element_index, Var_list<Vars...>> :
-	public Mesh_element_var_map_impl<T, Element_index, Vars...>
-{};
+	public Mesh_element_var_map_impl<T, Element_index, Vars...> {};
 } // namespace esf::internal

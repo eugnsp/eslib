@@ -17,7 +17,8 @@ private:
 	using Base = internal::Iterator_base<Element_tag, Mesh<Dim2>>;
 
 public:
-	Circulator_halfedge_edge(const Mesh<Dim2>& mesh, Halfedge_index halfedge) : Base(mesh, halfedge)
+	Circulator_halfedge_edge(const Mesh<Dim2>& mesh, Halfedge_index halfedge)
+		: Base(mesh, halfedge)
 	{
 		assert(is_valid(halfedge));
 	}

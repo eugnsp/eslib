@@ -88,8 +88,7 @@ private:
 	}
 
 	template<std::size_t... vars>
-	void dofs_impl3(const typename Mesh::Edge_view& edge,
-					Vars_dofs& dofs,
+	void dofs_impl3(const typename Mesh::Edge_view& edge, Vars_dofs& dofs,
 					std::index_sequence<vars...>) const
 	{
 		Vertex_indices vertices;
@@ -100,8 +99,7 @@ private:
 
 	template<std::size_t var>
 	void var_dofs_impl([[maybe_unused]] const Vertex_indices& vertices,
-					   [[maybe_unused]] esf::Edge_index edge,
-					   Var_dofs<var>& dofs) const
+					   [[maybe_unused]] esf::Edge_index edge, Var_dofs<var>& dofs) const
 	{
 		using Element = typename Base::template Var<var>::Element;
 

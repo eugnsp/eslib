@@ -10,17 +10,13 @@ namespace internal
 // Returns the Jacobian of the transformation
 // from a given segment to the reference one
 template<typename Segment>
-double jacobian(
-	const Segment& segment,
-	Segment1_tag)
+double jacobian(const Segment& segment, Segment1_tag)
 {
 	return segment.vertex(1).x() - segment.vertex(0).x();
 }
 
 template<typename Segment>
-double inv_jacobian(
-	const Segment& segment,
-	Segment1_tag 	 tag)
+double inv_jacobian(const Segment& segment, Segment1_tag tag)
 {
 	return 1 / jacobian(segment, tag);
 }
@@ -28,9 +24,7 @@ double inv_jacobian(
 // Returns the Jacobian of the transformation
 // from a given triangle to the reference one
 template<typename Triangle>
-esl::Matrix_2d jacobian(
-	const Triangle& triangle,
-	Triangle_tag)
+esl::Matrix_2d jacobian(const Triangle& triangle, Triangle_tag)
 {
 	auto v = triangle.vertex_circ();
 	auto&& a = v->vertex();
@@ -47,9 +41,7 @@ esl::Matrix_2d jacobian(
 // Returns the inverted Jacobian of the transformation
 // from a given triangle to the reference one
 template<typename Triangle>
-esl::Matrix_2d inv_jacobian(
-	const Triangle& triangle,
-	Triangle_tag    tag)
+esl::Matrix_2d inv_jacobian(const Triangle& triangle, Triangle_tag tag)
 {
 	auto j = jacobian(triangle, tag);
 	invert(j);
@@ -59,9 +51,7 @@ esl::Matrix_2d inv_jacobian(
 // Returns the inverted transposed Jacobian of the transformation
 // from a given triangle to the reference one
 template<typename Triangle>
-esl::Matrix_2d inv_transp_jacobian(
-	const Triangle& triangle,
-	Triangle_tag)
+esl::Matrix_2d inv_transp_jacobian(const Triangle& triangle, Triangle_tag)
 {
 	auto j = jacobian(triangle);
 	invert_transpose(j);

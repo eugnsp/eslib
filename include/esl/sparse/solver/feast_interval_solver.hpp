@@ -15,7 +15,10 @@ namespace esl
 template<class Sparse_matrix>
 class Feast_interval_solver;
 
-template<typename Value, class Symmetry_tag, typename Index>
+template<
+	typename Value,
+	class    Symmetry_tag,
+	typename Index>
 class Feast_interval_solver<Csr_matrix<Value, Symmetry_tag, Index>> :
 	private internal::Feast_interval_solver_base
 {
@@ -25,21 +28,25 @@ public:
 	using Sparse_matrix = Csr_matrix<Value, Symmetry_tag, Index>;
 
 private:
-	using Real = internal::Remove_complex<Value>;
+	using Real    = internal::Remove_complex<Value>;
 	using Complex = internal::Add_complex<Value>;
 
 public:
-	Feast_interval_solver(const Sparse_matrix& mat_a, const Sparse_matrix& mat_b) :
-		mat_a_(mat_a), mat_b_(mat_b)
+	Feast_interval_solver(
+		const Sparse_matrix& mat_a,
+		const Sparse_matrix& mat_b)
+	:	mat_a_(mat_a),
+		mat_b_(mat_b)
 	{
 		assert(mat_a.rows() == mat_a.cols());
 		assert(mat_a.rows() == mat_b.rows() && mat_a.cols() == mat_b.cols());
 	}
 
-	bool solve(Matrix_x<Value>& vectors,
-			   Vector_x<Real>& values,
-			   std::pair<Real, Real> values_interval,
-			   bool user_init_guess = false)
+	bool solve(
+		Matrix_x<Value>& 		vectors,
+		Vector_x<Real>& 		values,
+		std::pair<Real, Real> 	values_interval,
+		bool  					user_init_guess = false)
 	{
 		assert(values_interval.first < values_interval.second);
 
@@ -70,21 +77,9 @@ public:
 		{
 			Complex ze;
 
-			const auto status = mkl_feast_rci(job,
-											  n,
-											  ze,
-											  work1.data(),
-											  work2.data(),
-											  work3.data(),
-											  work4.data(),
-											  eps,
-											  n_loops,
-											  values_interval,
-											  m0,
-											  values.data(),
-											  vectors.data(),
-											  n_eigen_values_,
-											  rel_errors.data());
+			const auto status = mkl_feast_rci(job, n, ze, work1.data(), work2.data(),
+				work3.data(), work4.data(), eps, n_loops, values_interval, m0,
+				values.data(), vectors.data(), n_eigen_values_, rel_errors.data());
 
 			if (job == Job::DONE)
 			{

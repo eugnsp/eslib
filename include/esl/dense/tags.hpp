@@ -16,18 +16,11 @@ struct Lvalue_block_tag {};
 
 struct Fn_mul_tag {};
 
-template<
-	class 	 Expr,
-	typename Scalar,
-	class 	 Fn>
+template<class Expr, typename Scalar, class Fn>
 struct Scalar_expr_tag {};
 
-template<
-	class Expr1,
-	class Expr2,
-	class Fn>
-struct Binary_expr_tag
-{};
+template<class Expr1, class Expr2, class Fn>
+struct Binary_expr_tag {};
 } // namespace internal
 
 // The constant used to denote dynamic extents of expressions.
@@ -42,10 +35,10 @@ struct Lvalue {};
 //////////////////////////////////////////////////////////////////////
 /** Expressions symmetry tags */
 
-struct Not_symmetric {};
+struct Not_symmetric        {};
 struct Structural_symmetric {};
-struct Symmetric_upper {};
-struct Symmetric_lower {};
+struct Symmetric_upper      {};
+struct Symmetric_lower      {};
 
 // struct Hermitian
 // {};
@@ -65,7 +58,7 @@ struct No_layout {};
 ///////////////////////////////////////////////////////////////////////
 /** Matrix transposition operations */
 
-struct No_transpose {};
-struct Transpose {};
+struct No_transpose   {};
+struct Transpose      {};
 struct Conj_transpose {};
 } // namespace esl

@@ -14,8 +14,8 @@ template<std::size_t ct_size>
 class Slice
 {
 public:
-	explicit Slice(Vector<std::size_t, ct_size> indices) :
-		indices_(std::move(indices))
+	explicit Slice(Vector<std::size_t, ct_size> indices)
+		: indices_(std::move(indices))
 	{
 		assert(!indices_.is_empty());
 	}

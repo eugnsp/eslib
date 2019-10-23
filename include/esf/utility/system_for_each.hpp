@@ -7,9 +7,7 @@
 
 namespace esf
 {
-template<
-	class System,
-    class Fn>
+template<class System, class Fn>
 void for_each_variable(const System& system, Fn fn)
 {
 	esf::for_each_variable<typename System::Var_list>(

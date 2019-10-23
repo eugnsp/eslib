@@ -11,13 +11,9 @@
 
 namespace esl
 {
-template<
-	typename 	Value,
-	std::size_t ct_rows,
-	std::size_t ct_cols,
-	class 		Layout>
-class Matrix :
-	public internal::Matrix_base<ct_rows, ct_cols, Matrix<Value, ct_rows, ct_cols, Layout>, Layout>
+template<typename Value, std::size_t ct_rows, std::size_t ct_cols, class Layout>
+class Matrix
+	: public internal::Matrix_base<ct_rows, ct_cols, Matrix<Value, ct_rows, ct_cols, Layout>, Layout>
 {
 	static_assert(!std::is_const_v<Value>);
 	static_assert(!std::is_reference_v<Value>);
@@ -100,20 +96,15 @@ private:
 };
 
 template<class Expr>
-Matrix(const Expression<Expr>&)
-	-> Matrix<Value_type<Expr>, ct_rows_value<Expr>, ct_cols_value<Expr>>;
+Matrix(const Expression<Expr>&)->Matrix<Value_type<Expr>, ct_rows_value<Expr>, ct_cols_value<Expr>>;
 
 ///////////////////////////////////////////////////////////////////////
 /** Type traits */
 
-template<
-	typename 	Value_,
-	std::size_t rows_,
-	std::size_t cols_,
-	class 		Layout_>
+template<typename Value_, std::size_t rows_, std::size_t cols_, class Layout_>
 struct Traits<Matrix<Value_, rows_, cols_, Layout_>>
 {
-	using Value  = Value_;
+	using Value = Value_;
 	using Layout = Layout_;
 
 	static constexpr std::size_t rows = rows_;
@@ -121,6 +112,6 @@ struct Traits<Matrix<Value_, rows_, cols_, Layout_>>
 
 	static constexpr std::size_t row_stride = is_col_major<Layout> ? 1 : cols;
 	static constexpr std::size_t col_stride = is_row_major<Layout> ? 1 : rows;
-	static constexpr std::size_t lead_dim 	= is_col_major<Layout> ? rows : cols;
+	static constexpr std::size_t lead_dim = is_col_major<Layout> ? rows : cols;
 };
 } // namespace esl

@@ -13,56 +13,43 @@ namespace esf::internal
 // A class that maps a mesh element index, its type (vertex/edge/face)
 // and a variable index into an element of given type:
 // (Element_index) x (Var_index) -> (T)
-template<class    T,
-		 class    Var_list,
-		 class... Element_indices>
+template<class T, class Var_list, class... Element_indices>
 class Mesh_var_map_impl
 {
 public:
 	// TODO : unused value
 	template<class Mesh>
-	void init_storage(const Mesh& mesh,
-					  const T&    value = T{},
-					  Index 	  n_layers = 1)
+	void init_storage(const Mesh& mesh, const T& value = T{}, Index n_layers = 1)
 	{
 		n_layers_ = n_layers;
-		esu::tuple_for_each(
-			[&mesh, &value, n_layers](auto& list) { list.init_storage(mesh, n_layers, value); },
-			maps_);
+		esu::tuple_for_each([&mesh, &value, n_layers](auto& list)
+		{
+			list.init_storage(mesh, n_layers, value);
+		}, maps_);
 	}
 
-	template<class Element_index,
-			 std::size_t var_idx>
-	decltype(auto) at(Element_index 	 element,
-					  Var_index<var_idx> var_index)
+	template<class Element_index, std::size_t var_idx>
+	decltype(auto) at(Element_index element, Var_index<var_idx> var_index)
 	{
 		assert(n_layers_ == 1);
 		return std::get<Map_t<Element_index>>(maps_).at(element, var_index);
 	}
 
-	template<class Element_index,
-			 std::size_t var_idx>
-	decltype(auto) at(Element_index element,
-					  Var_index<var_idx> var_index) const
+	template<class Element_index, std::size_t var_idx>
+	decltype(auto) at(Element_index element, Var_index<var_idx> var_index) const
 	{
 		assert(n_layers_ == 1);
 		return std::get<Map_t<Element_index>>(maps_).at(element, var_index);
 	}
 
-	template<class Element_index,
-			 std::size_t var_idx>
-	decltype(auto) at(Index layer,
-					  Element_index element,
-					  Var_index<var_idx> var_index)
+	template<class Element_index, std::size_t var_idx>
+	decltype(auto) at(Index layer, Element_index element, Var_index<var_idx> var_index)
 	{
 		return std::get<Map_t<Element_index>>(maps_).at(element, var_index, layer, n_layers_);
 	}
 
-	template<class Element_index,
-			 std::size_t var_idx>
-	decltype(auto) at(Index layer,
-					  Element_index element,
-					  Var_index<var_idx> var_index) const
+	template<class Element_index, std::size_t var_idx>
+	decltype(auto) at(Index layer, Element_index element, Var_index<var_idx> var_index) const
 	{
 		return std::get<Map_t<Element_index>>(maps_).at(element, var_index, layer, n_layers_);
 	}
@@ -96,20 +83,14 @@ private:
 	Index n_layers_;
 };
 
-template<class Mesh,
-		 class Var_list,
-		 typename T>
+template<class Mesh, class Var_list, typename T>
 class Mesh_var_map;
 
-template<class Var_list,
-		 typename T>
+template<class Var_list, typename T>
 class Mesh_var_map<Mesh<Dim1>, Var_list, T> :
-	public Mesh_var_map_impl<T, Var_list, Vertex_index, Edge_index>
-{};
+	public Mesh_var_map_impl<T, Var_list, Vertex_index, Edge_index> {};
 
-template<class Var_list,
-		 typename T>
+template<class Var_list, typename T>
 class Mesh_var_map<Mesh<Dim2>, Var_list, T> :
-	public Mesh_var_map_impl<T, Var_list, Vertex_index, Edge_index, Face_index>
-{};
+	public Mesh_var_map_impl<T, Var_list, Vertex_index, Edge_index, Face_index> {};
 } // namespace esf::internal

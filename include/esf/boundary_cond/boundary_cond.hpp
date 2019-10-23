@@ -18,6 +18,5 @@ public:
 
 public:
 	using Base::Base;
-
 };
 } // namespace esf

@@ -9,9 +9,7 @@ namespace esl
 {
 namespace internal
 {
-template<
-	std::size_t ct_start,
-	std::size_t ct_size>
+template<std::size_t ct_start, std::size_t ct_size>
 class Range
 {
 	static_assert(ct_size > 0);
@@ -19,9 +17,7 @@ class Range
 public:
 	Range() = default;
 
-	Range(
-		const std::size_t start,
-		const std::size_t size) noexcept
+	Range(const std::size_t start, const std::size_t size) noexcept
 	{
 		assert(start == ct_start && size == ct_size);
 	}
@@ -53,15 +49,13 @@ class Range<ct_start, dynamic>
 {
 public:
 	explicit Range(const std::size_t size) noexcept
-	:	size_(size)
+		: size_(size)
 	{
 		assert(size_ > 0);
 	}
 
-	Range(
-		const std::size_t start,
-		const std::size_t size) noexcept
-	:	Range(size)
+	Range(const std::size_t start, const std::size_t size) noexcept
+		: Range(size)
 	{
 		assert(start == ct_start);
 	}
@@ -98,11 +92,11 @@ class Range<dynamic, ct_size>
 
 public:
 	explicit Range(std::size_t start) noexcept
-	:	start_(start)
+		: start_(start)
 	{}
 
 	Range(std::size_t start, std::size_t size) noexcept
-	:	Range(start)
+		: Range(start)
 	{
 		assert(size == ct_size);
 	}
@@ -136,11 +130,8 @@ template<>
 class Range<dynamic, dynamic>
 {
 public:
-	Range(
-		const std::size_t start,
-		const std::size_t size) noexcept
-	:	start_(start),
-		size_(size)
+	Range(const std::size_t start, const std::size_t size) noexcept
+		: start_(start), size_(size)
 	{
 		assert(size_ > 0);
 	}
@@ -174,9 +165,7 @@ private:
 ///////////////////////////////////////////////////////////////////////
 /** Type traits */
 
-template<
-	std::size_t begin,
-	std::size_t size_>
+template<std::size_t begin, std::size_t size_>
 struct Traits<internal::Range<begin, size_>>
 {
 	static constexpr std::size_t size = size_;

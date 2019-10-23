@@ -1,10 +1,10 @@
 #include "gmsh_file_reader.hpp"
 
-#include <esf/mesh/exception.hpp>
 #include <esf/mesh/mesh2.hpp>
 
 #include <fstream>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -13,7 +13,7 @@ namespace esf::internal
 Gmsh_file_reader::Gmsh_file_reader(const std::string& file_name) : file_(file_name)
 {
 	if (!file_)
-		throw Mesh_io_error("Mesh file '" + file_name + "' cannot be opened for reading");
+		throw std::runtime_error("Mesh file '" + file_name + "' cannot be opened for reading");
 }
 
 Mesh2 Gmsh_file_reader::read_mesh(double scale)
@@ -64,10 +64,10 @@ void Gmsh_file_reader::read_mesh_format_section()
 	read(version, file_type, data_size);
 
 	if (version != "2.2")
-		throw Mesh_io_error("Unsupported Gmsh mesh file version " + version);
+		throw std::runtime_error("Unsupported Gmsh mesh file version " + version);
 
 	if (file_type != 0 || data_size != 8)
-		throw Mesh_io_error("Unsupported Gmsh mesh file format");
+		throw std::runtime_error("Unsupported Gmsh mesh file format");
 
 	read_and_check_section_footer("$EndMeshFormat");
 }
@@ -87,7 +87,7 @@ void Gmsh_file_reader::read_nodes_section(Mesh2& mesh, double scale)
 		read(index, x, y, z);
 
 		if (z != 0)
-			throw Mesh_io_error("Not 2D Gmsh mesh file");
+			throw std::runtime_error("Not 2D Gmsh mesh file");
 
 		const auto vertex_index = mesh.add_vertex({x * scale, y * scale});
 		node_indices_map_.insert({index, vertex_index});
@@ -156,7 +156,7 @@ void Gmsh_file_reader::read_elements_section(std::vector<unsigned int>& tags,
 		read(n_tags);
 
 		if (tag_index >= n_tags)
-			throw Mesh_io_error("Bad tag index");
+			throw std::runtime_error("Bad tag index");
 
 		unsigned int tag;
 		for (unsigned int t = 0; t < tag_index; ++t)
@@ -176,6 +176,6 @@ void Gmsh_file_reader::read_and_check_section_footer(const std::string& footer)
 	read(section_footer);
 
 	if (section_footer != footer)
-		throw Mesh_io_error("Bad Gmsh mesh file");
+		throw std::runtime_error("Bad Gmsh mesh file");
 }
 } // namespace esf::internal

@@ -34,52 +34,53 @@ protected:
 
 	enum class Status : MKL_INT
 	{
-		ERR_SYSTEM_SIZE = 202,
-		ERR_INIT_SUBSPACE = 201,
-		ERR_E_MIN_MAX = 200,
-		SUCCESS_SUBSPACE = 4,
+		ERR_SYSTEM_SIZE 		= 202,
+		ERR_INIT_SUBSPACE 		= 201,
+		ERR_E_MIN_MAX 			= 200,
+		SUCCESS_SUBSPACE 		= 4,
 		WARN_SUBSPACE_TOO_SMALL = 3,
-		WARN_NO_CONVERGENCE = 2,
-		WARN_NO_EIGENVALUES = 1,
-		SUCCESS = 0,
-		ERR_ALLOC = -1,
-		ERR_LINEAR_SOLVER = -2,
-		ERR_EIGENVALUE_SOLVER = -3,
-		ERR_B_NOT_POS_DEFINIT = -4
+		WARN_NO_CONVERGENCE 	= 2,
+		WARN_NO_EIGENVALUES 	= 1,
+		SUCCESS 				= 0,
+		ERR_ALLOC 				= -1,
+		ERR_LINEAR_SOLVER 		= -2,
+		ERR_EIGENVALUE_SOLVER 	= -3,
+		ERR_B_NOT_POS_DEFINIT 	= -4
 	};
 
 	enum class Job : MKL_INT
 	{
-		DONE = 0,
-		INIT = -1,
-		FACTORIZE_Z = 10,
-		SOLVE_Z = 11,
+		DONE 		 = 0,
+		INIT 		 = -1,
+		FACTORIZE_Z  = 10,
+		SOLVE_Z 	 = 11,
 		FACTORIZE_ZH = 20,
-		SOLVE_ZH = 21,
-		MULTIPLY_A = 30,
-		MULTIPLY_B = 40,
-		RERUN = -2
+		SOLVE_ZH 	 = 21,
+		MULTIPLY_A 	 = 30,
+		MULTIPLY_B 	 = 40,
+		RERUN 		 = -2
 	};
 
 protected:
 	Feast_interval_solver_base();
 
-#define ESL_MKL_FEAST_RCI(T)                                                                       \
-	Status mkl_feast_rci(Job&,                                                                     \
-						 MKL_UINT n,                                                               \
-						 Add_complex<T>& ze,                                                       \
-						 T* work1,                                                                 \
-						 Add_complex<T>* work2,                                                    \
-						 T* work3,                                                                 \
-						 T* work4,                                                                 \
-						 Remove_complex<T>& eps,                                                   \
-						 MKL_UINT& n_loops,                                                        \
-						 std::pair<Remove_complex<T>, Remove_complex<T>> eigen_values_interval,    \
-						 MKL_UINT n_eigen_values0,                                                 \
-						 Remove_complex<T>* eigen_values,                                          \
-						 T* eigen_vectors,                                                         \
-						 MKL_UINT& n_eigen_values,                                                 \
-						 Remove_complex<T>* residues);
+#define ESL_MKL_FEAST_RCI(T)                                                      \
+	Status mkl_feast_rci(														  \
+		Job&,																	  \
+		MKL_UINT 			n,                                                    \
+		Add_complex<T>& 	ze,                                                   \
+		T* 					work1,                                                \
+		Add_complex<T>* 	work2,                                                \
+		T* 					work3,                                                \
+		T* 					work4,                                                \
+		Remove_complex<T>& 	eps,                                               	  \
+		MKL_UINT& 			n_loops,                                              \
+		std::pair<Remove_complex<T>, Remove_complex<T>> eigen_values_interval,    \
+		MKL_UINT 			n_eigen_values0,                                      \
+		Remove_complex<T>* 	eigen_values,                                         \
+		T* 					eigen_vectors,                                        \
+		MKL_UINT& 			n_eigen_values,                                       \
+		Remove_complex<T>* 	residues);
 
 	ESL_MKL_FEAST_RCI(float)
 	ESL_MKL_FEAST_RCI(double)

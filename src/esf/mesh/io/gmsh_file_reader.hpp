@@ -1,8 +1,8 @@
-#include <esf/mesh/exception.hpp>
 #include <esf/mesh/mesh2.hpp>
 
 #include <fstream>
 #include <limits>
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -25,7 +25,7 @@ private:
 	{
 		(file_ >> ... >> args);
 		if (file_.bad())
-			throw Mesh_io_error("Error reading mesh file");
+			throw std::runtime_error("Error reading mesh file");
 	}
 
 	void ignore_line()

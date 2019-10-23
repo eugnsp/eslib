@@ -18,16 +18,14 @@
 
 namespace esl
 {
-template<
-	class Expr,
-	class Category>
+template<class Expr, class Category>
 class Dense : public Expression<Expr>
 {
 private:
-	using Base   = Expression<Expr>;
+	using Base = Expression<Expr>;
 
 public:
-	using Value  = Value_type<Expr>;
+	using Value = Value_type<Expr>;
 	using Layout = Layout_tag<Expr>;
 
 public:
@@ -45,9 +43,7 @@ public:
 	///////////////////////////////////////////////////////////////////////
 	/** Operators */
 
-	template<
-		class 	 Scalar,
-		typename = std::enable_if_t<std::is_convertible_v<Scalar, Value>>>
+	template<class Scalar, typename = std::enable_if_t<std::is_convertible_v<Scalar, Value>>>
 	Dense& operator=(const Scalar& scalar)
 	{
 		assign_scalar(scalar);
@@ -69,7 +65,7 @@ public:
 		internal::Add_equal<Expr, Expr2>::run(self(), expr);
 		return *this;
 	}*/
-	
+
 	template<class Expr2>
 	Dense& operator+=(const Expression<Expr2>& expr)
 	{
@@ -138,17 +134,13 @@ public:
 	/** Element access */
 
 	// Returns the matrix element (row, col)
-	decltype(auto) operator()(
-		const std::size_t row,
-		const std::size_t col)
+	decltype(auto) operator()(const std::size_t row, const std::size_t col)
 	{
 		return self()(row, col);
 	}
 
 	// Returns the matrix element (row, col)
-	decltype(auto) operator()(
-		const std::size_t row,
-		const std::size_t col) const
+	decltype(auto) operator()(const std::size_t row, const std::size_t col) const
 	{
 		return self()(row, col);
 	}
@@ -213,11 +205,7 @@ public:
 	///////////////////////////////////////////////////////////////////////
 	/** Block views */
 
-	template<
-		std::size_t start_row,
-		std::size_t start_col,
-		std::size_t rows,
-		std::size_t cols>
+	template<std::size_t start_row, std::size_t start_col, std::size_t rows, std::size_t cols>
 	auto view()
 	{
 		using Rows = internal::Range<start_row, rows>;
@@ -225,11 +213,7 @@ public:
 		return view_impl(Rows{}, Cols{});
 	}
 
-	template<
-		std::size_t start_row,
-		std::size_t start_col,
-		std::size_t rows,
-		std::size_t cols>
+	template<std::size_t start_row, std::size_t start_col, std::size_t rows, std::size_t cols>
 	auto view() const
 	{
 		using Rows = internal::Range<start_row, rows>;
@@ -237,11 +221,7 @@ public:
 		return view_impl(Rows{}, Cols{});
 	}
 
-	template<
-		std::size_t start_row,
-		std::size_t start_col,
-		std::size_t rows,
-		std::size_t cols>
+	template<std::size_t start_row, std::size_t start_col, std::size_t rows, std::size_t cols>
 	auto cview() const
 	{
 		return view<start_row, start_col, rows, cols>();
@@ -249,31 +229,22 @@ public:
 
 	///////////////////////////////////////////////////////////////////////
 
-	auto view(
-		const std::size_t start_row,
-		const std::size_t start_col,
-		const std::size_t rows,
-		const std::size_t cols)
+	auto view(const std::size_t start_row, const std::size_t start_col,
+			  const std::size_t rows, const std::size_t cols)
 	{
 		using Range = internal::Range<dynamic, dynamic>;
 		return view_impl(Range{start_row, rows}, Range{start_col, cols});
 	}
 
-	auto view(
-		const std::size_t start_row,
-		const std::size_t start_col,
-		const std::size_t rows,
-		const std::size_t cols) const
+	auto view(const std::size_t start_row, const std::size_t start_col,
+			  const std::size_t rows, const std::size_t cols) const
 	{
 		using Range = internal::Range<dynamic, dynamic>;
 		return view_impl(Range{start_row, rows}, Range{start_col, cols});
 	}
 
-	auto cview(
-		const std::size_t start_row,
-		 const std::size_t start_col,
-		 const std::size_t rows,
-		 const std::size_t cols) const
+	auto cview(const std::size_t start_row, const std::size_t start_col,
+			  const std::size_t rows, const std::size_t cols) const
 	{
 		return view(start_row, start_col, rows, cols);
 	}
@@ -326,9 +297,7 @@ public:
 
 	///////////////////////////////////////////////////////////////////////
 
-	template<
-		std::size_t start_row,
-		std::size_t rows>
+	template<std::size_t start_row, std::size_t rows>
 	auto rows_view()
 	{
 		using Rows = internal::Range<start_row, rows>;
@@ -336,9 +305,7 @@ public:
 		return view_impl(Rows{}, Cols{0, cols()});
 	}
 
-	template<
-		std::size_t start_row,
-		std::size_t rows>
+	template<std::size_t start_row, std::size_t rows>
 	auto rows_view() const
 	{
 		using Rows = internal::Range<start_row, rows>;
@@ -346,9 +313,7 @@ public:
 		return view_impl(Rows{}, Cols{0, cols()});
 	}
 
-	template<
-		std::size_t start_row,
-		std::size_t rows>
+	template<std::size_t start_row, std::size_t rows>
 	auto rows_cview() const
 	{
 		return rows_view<start_row, rows>();
@@ -356,27 +321,21 @@ public:
 
 	///////////////////////////////////////////////////////////////////////
 
-	auto rows_view(
-		std::size_t start_row,
-		std::size_t rows)
+	auto rows_view(std::size_t start_row, std::size_t rows)
 	{
 		using Rows = internal::Range<dynamic, dynamic>;
 		using Cols = internal::Range<0, ct_cols_value<Expr>>;
 		return view_impl(Rows{start_row, rows}, Cols{0, cols()});
 	}
 
-	auto rows_view(
-		std::size_t start_row,
-		std::size_t rows) const
+	auto rows_view(std::size_t start_row, std::size_t rows) const
 	{
 		using Rows = internal::Range<dynamic, dynamic>;
 		using Cols = internal::Range<0, ct_cols_value<Expr>>;
 		return view_impl(Rows{start_row, rows}, Cols{0, cols()});
 	}
 
-	auto rows_cview(
-		std::size_t start_row,
-		std::size_t rows) const
+	auto rows_cview(std::size_t start_row, std::size_t rows) const
 	{
 		return rows_view(start_row, rows);
 	}
@@ -429,9 +388,7 @@ public:
 
 	///////////////////////////////////////////////////////////////////////
 
-	template<
-		std::size_t start_col,
-		std::size_t cols>
+	template<std::size_t start_col, std::size_t cols>
 	auto cols_view()
 	{
 		using Rows = internal::Range<0, ct_rows_value<Expr>>;
@@ -439,9 +396,7 @@ public:
 		return view_impl(Rows{0, rows()}, Cols{});
 	}
 
-	template<
-		std::size_t start_col,
-		std::size_t cols>
+	template<std::size_t start_col, std::size_t cols>
 	auto cols_view() const
 	{
 		using Rows = internal::Range<0, ct_rows_value<Expr>>;
@@ -449,9 +404,7 @@ public:
 		return view_impl(Rows{0, rows()}, Cols{});
 	}
 
-	template<
-		std::size_t start_col,
-		std::size_t cols>
+	template<std::size_t start_col, std::size_t cols>
 	auto cols_cview() const
 	{
 		return cols_view<start_col, cols>();
@@ -459,27 +412,21 @@ public:
 
 	///////////////////////////////////////////////////////////////////////
 
-	auto cols_view(
-		std::size_t start_col,
-		std::size_t cols)
+	auto cols_view(std::size_t start_col, std::size_t cols)
 	{
 		using Rows = internal::Range<0, ct_rows_value<Expr>>;
 		using Cols = internal::Range<dynamic, dynamic>;
 		return view_impl(Rows{0, rows()}, Cols{start_col, cols});
 	}
 
-	auto cols_view(
-		std::size_t start_col,
-		std::size_t cols) const
+	auto cols_view(std::size_t start_col, std::size_t cols) const
 	{
 		using All_rows = internal::Range<0, ct_rows_value<Expr>>;
 		using Cols = internal::Range<dynamic, dynamic>;
 		return view_impl(All_rows{0, rows()}, Cols{start_col, cols});
 	}
 
-	auto cols_cview(
-		std::size_t start_col,
-		std::size_t cols) const
+	auto cols_cview(std::size_t start_col, std::size_t cols) const
 	{
 		return cols_view(start_col, cols);
 	}
@@ -591,22 +538,14 @@ public:
 	// }
 
 private:
-	template<
-		class Rows,
-		class Cols>
-	auto view_impl(
-		Rows rows,
-		Cols cols)
+	template<class Rows, class Cols>
+	auto view_impl(Rows rows, Cols cols)
 	{
 		return View<Expr, Rows, Cols, Category>{self(), std::move(rows), std::move(cols)};
 	}
 
-	template<
-		class Rows,
-		class Cols>
-	auto view_impl(
-		Rows rows,
-		Cols cols) const
+	template<class Rows, class Cols>
+	auto view_impl(Rows rows, Cols cols) const
 	{
 		return View<const Expr, Rows, Cols, Category>{self(), std::move(rows), std::move(cols)};
 	}

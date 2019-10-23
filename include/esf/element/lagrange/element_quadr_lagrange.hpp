@@ -24,7 +24,8 @@ public:
 	// as the matrix of the size (# quadr. points) x (# dofs)
 	static constexpr auto basis()
 	{
-		return esl::make_matrix<n_points, n_dofs>([](auto quadr, auto dof) constexpr {
+		return esl::make_matrix<n_points, n_dofs>([](auto quadr, auto dof) constexpr
+		{
 			return Element::basis(dof, Quadr::point(quadr));
 		});
 	}
@@ -33,24 +34,18 @@ public:
 	// as the matrix of the size (# quadr. points) x (# dofs)
 	static constexpr auto basis_grad()
 	{
-		return esl::make_matrix<n_points, n_dofs>([](auto quadr, auto dof) constexpr {
+		return esl::make_matrix<n_points, n_dofs>([](auto quadr, auto dof) constexpr
+		{
 			return Element::basis_grad(dof, Quadr::point(quadr));
 		});
 	}
 };
 
-template<std::size_t order,
-         class 		 Space_dim,
-		 class 		 Quadr>
+template<std::size_t order, class Space_dim, class Quadr>
 class Element_quadr<Lagrange<order, Space_dim>, Quadr> :
-	public Element_quadr_lagrange<Lagrange<order, Space_dim>, Quadr>
-{};
+	public Element_quadr_lagrange<Lagrange<order, Space_dim>, Quadr> {};
 
-template<std::size_t order,
-         class 		 Space_dim,
-		 class 		 Quadr>
+template<std::size_t order, class Space_dim, class Quadr>
 class Element_quadr<Discontinuous_lagrange<order, Space_dim>, Quadr> :
-	public Element_quadr_lagrange<Discontinuous_lagrange<order, Space_dim>, Quadr>
-{};
-
+	public Element_quadr_lagrange<Discontinuous_lagrange<order, Space_dim>, Quadr> {};
 } // namespace esf

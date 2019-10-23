@@ -17,8 +17,8 @@ private:
 	using Base = internal::Iterator_base<Element_tag, Mesh<Dim2>>;
 
 public:
-	Circulator_vertex_face(const Mesh<Dim2>& mesh, Halfedge_index halfedge) :
-		Base(mesh), halfedge_(halfedge)
+	Circulator_vertex_face(const Mesh<Dim2>& mesh, Halfedge_index halfedge)
+		: Base(mesh), halfedge_(halfedge)
 	{
 		assert(is_valid(halfedge));
 		set_view_index();
@@ -70,8 +70,8 @@ private:
 
 	auto get_face_index() const
 	{
-		return view_.mesh().face_index(std::is_same_v<Circ_tag, Face_circ_tag> ? twin(halfedge_)
-																			   : halfedge_);
+		return view_.mesh().face_index(
+			std::is_same_v<Circ_tag, Face_circ_tag> ? twin(halfedge_) : halfedge_);
 	}
 
 private:

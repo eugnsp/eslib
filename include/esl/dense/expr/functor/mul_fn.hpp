@@ -36,7 +36,8 @@ public:
 		return expr2.cols();
 	}
 
-	static Value element(const Expr1& expr1, const Expr2& expr2, std::size_t row, std::size_t col)
+	static Value element(const Expr1& expr1, const Expr2& expr2,
+						 const std::size_t row, const std::size_t col)
 	{
 		auto result = Value{};
 		for (std::size_t i = 0; i < expr1.cols(); ++i)

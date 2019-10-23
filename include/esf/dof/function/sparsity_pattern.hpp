@@ -19,9 +19,7 @@ namespace esf
 {
 namespace internal
 {
-template<
-	class Symmetry_tag,
-	class System>
+template<class Symmetry_tag, class System>
 esl::Sparsity_pattern<Symmetry_tag> sparsity_pattern(const System& system)
 {
 	esl::Sparsity_pattern<Symmetry_tag> pattern(system.dof_mapper().n_free_dofs());
@@ -37,7 +35,7 @@ esl::Sparsity_pattern<Symmetry_tag> sparsity_pattern(const System& system)
 			for (std::size_t i = 0; i < dofs.size(); ++i)
 				if (dofs[i].is_free)
 					for (Index d = 0; d < var.dim(); ++d)
-						indices.push_back(dofs[i].index + d * dofs.size());
+						indices.push_back(dofs[i].index + d);
 		});
 
 		for (std::size_t i = 0; i < indices.size(); ++i)
@@ -73,12 +71,8 @@ esl::Sparsity_pattern<Symmetry_tag> sparsity_pattern(const System& system)
 }
 } // namespace internal
 
-template<
-	class Sparse_matrix,
-	class System>
-void compute_and_set_sparsity_pattern(
-	const System&  system,
-	Sparse_matrix& matrix)
+template<class Sparse_matrix, class System>
+void compute_and_set_sparsity_pattern(const System& system, Sparse_matrix& matrix)
 {
 	using Symmetry = typename Sparse_matrix::Symmetry_tag;
 
@@ -86,14 +80,9 @@ void compute_and_set_sparsity_pattern(
 	matrix.set_sparsity_pattern(std::move(pattern));
 }
 
-template<
-	class Sparse_matrix,
-	class System,
-	class Coupling_fn>
+template<class Sparse_matrix, class System, class Coupling_fn>
 void compute_and_set_sparsity_pattern(
-	const System&  system,
-	Coupling_fn&&  coupling_fn,
-	Sparse_matrix& matrix)
+	const System& system, Coupling_fn&& coupling_fn, Sparse_matrix& matrix)
 {
 	using Symmetry = typename Sparse_matrix::Symmetry_tag;
 
@@ -102,14 +91,9 @@ void compute_and_set_sparsity_pattern(
 	matrix.set_sparsity_pattern(std::move(pattern));
 }
 
-template<
-	class Sparse_matrix,
-	class System,
-	class Coupling_fn>
+template<class Sparse_matrix, class System, class Coupling_fn>
 void compute_and_set_sparsity_pattern2(
-	const System&  system,
-	Coupling_fn&&  coupling_fn,
-	Sparse_matrix& matrix)
+	const System& system, Coupling_fn&& coupling_fn, Sparse_matrix& matrix)
 {
 	using Symmetry = typename Sparse_matrix::Symmetry_tag;
 

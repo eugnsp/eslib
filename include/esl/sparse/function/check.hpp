@@ -38,9 +38,12 @@ private:
 	const Check_result check_result_;
 };
 
-template<typename Value, class Symmetry_tag>
-Csr_matrix_check_error_code check(const Csr_matrix<Value, Symmetry_tag, MKL_UINT>& matrix,
-								  bool print_error = false)
+template<
+	typename Value,
+	class    Symmetry_tag>
+Csr_matrix_check_error_code check(
+	const Csr_matrix<Value, Symmetry_tag, MKL_UINT>& matrix,
+	bool print_error = false)
 {
 	assert(matrix.rows() == matrix.cols());
 

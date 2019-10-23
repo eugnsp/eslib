@@ -5,10 +5,7 @@
 
 namespace esf
 {
-template<
-	class 	 Element,
-	typename T 		    = double,
-	bool 	 is_strong_ = true>
+template<class Element, typename T = double, bool is_strong_ = true>
 class Uniform_boundary_cond : public Boundary_cond<Element>
 {
 private:
@@ -22,19 +19,13 @@ public:
 public:
 	using Base::Base;
 
-	Uniform_boundary_cond(
-		const Mesh<Space_dim>& mesh,
-		const double 		   value)
-	:	Base(mesh),
-		value_(value)
+	Uniform_boundary_cond(const Mesh<Space_dim>& mesh, const double value)
+		: Base(mesh), value_(value)
 	{}
 
-	Uniform_boundary_cond(
-		const Mesh<Space_dim>&         mesh,
-		const typename Base::Boundary& boundary,
-		const double 				   value)
-	:	Base(mesh, boundary),
-		value_(value)
+	Uniform_boundary_cond(const Mesh<Space_dim>& mesh, const typename Base::Boundary& boundary,
+						  const double value)
+		: Base(mesh, boundary), value_(value)
 	{}
 
 	template<class Element_index>

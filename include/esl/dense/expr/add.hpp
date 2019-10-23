@@ -10,15 +10,10 @@
 
 namespace esl::internal
 {
-template<
-	class Expr1,
-	class Expr2,
-	typename = void>
+template<class Expr1, class Expr2, typename = void>
 struct Add_equal
 {
-	static void run(
-		Expr1& 		 expr1,
-		const Expr2& expr2)
+	static void run(Expr1& expr1, const Expr2& expr2)
 	{
 		assert(expr1.rows() == expr2.rows());
 		assert(expr1.cols() == expr2.cols());
@@ -29,17 +24,13 @@ struct Add_equal
 	}
 };
 
-template<class Expr1,
-		 class Expr2,
-		 typename = std::enable_if_t<
+template<class Expr1, class Expr2,
+	     typename = std::enable_if_t<
 		 	std::is_same_v<Value_type<Expr1>, Value_type<Expr2>> &&
 			internal::is_fd_or_cfd<Value_type<Expr1>> &&
-			internal::is_dynamic<Expr1> &&
-			internal::is_dynamic<Expr2> &&
-			internal::is_vector<Expr1> &&
-			internal::is_vector<Expr2>>>
-void add(Dense<Expr1, Lvalue>& 		 expr1,
-		 const Dense<Expr2, Lvalue>& expr2)
+			internal::is_dynamic<Expr1> && internal::is_dynamic<Expr2> &&
+			internal::is_vector<Expr1> && internal::is_vector<Expr2>>>
+void add(Dense<Expr1, Lvalue>& expr1, const Dense<Expr2, Lvalue>& expr2)
 {
 	assert(expr1.size() == expr2.size());
 
@@ -47,19 +38,13 @@ void add(Dense<Expr1, Lvalue>& 		 expr1,
 		expr1.self().data(), expr1.self().col_inc());
 }
 
-template<class 							 Expr1,
-		 class 							 Expr2,
-		 typename 						 Scalar,
-		 template<class, typename> class Fn,
-		 typename = std::enable_if_t<
+template<class Expr1, class Expr2, typename Scalar, template<class, typename> class Fn,
+	     typename = std::enable_if_t<
 		 	std::is_same_v<Value_type<Expr1>, Value_type<Expr2>> &&
 			internal::is_fd_or_cfd<Value_type<Expr1>> &&
-			internal::is_dynamic<Expr1> &&
-			internal::is_dynamic<Expr2> &&
-			internal::is_vector<Expr1> &&
-			internal::is_vector<Expr2>>>
-void add(Dense<Expr1, Lvalue>& 								  expr1,
-		 const Dense<Scalar_expr<Expr2, Scalar, Fn>, Rvalue>& expr2)
+			internal::is_dynamic<Expr1> && internal::is_dynamic<Expr2> &&
+			internal::is_vector<Expr1> && internal::is_vector<Expr2>>>
+void add(Dense<Expr1, Lvalue>& expr1, const Dense<Scalar_expr<Expr2, Scalar, Fn>, Rvalue>& expr2)
 {
 	assert(expr1.size() == expr2.size());
 

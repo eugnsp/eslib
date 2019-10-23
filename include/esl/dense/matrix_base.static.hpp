@@ -13,11 +13,7 @@
 
 namespace esl::internal
 {
-template<
-	std::size_t ct_rows,
-	std::size_t ct_cols,
-	class 		Expr,
-	class 		Layout>
+template<std::size_t ct_rows, std::size_t ct_cols, class Expr, class Layout>
 class Matrix_base : public Dense<Expr, Lvalue>, public Shape<ct_rows, ct_cols, Layout>
 {
 private:
@@ -40,13 +36,10 @@ public:
 		Dense_base::assign_scalar(value);
 	}
 
-	template<
-		typename... Values,
-		typename = std::enable_if_t<
-			sizeof...(Values) == ct_rows * ct_cols &&
-			(std::is_convertible_v<Values, Value> && ...)>>
-	explicit constexpr Matrix_base(Values&&... values)
-	:	data_{std::forward<Values>(values)...}
+	template<typename... Values,
+		typename = std::enable_if_t<sizeof...(Values) == ct_rows * ct_cols &&
+									(std::is_convertible_v<Values, Value> && ...)>>
+	explicit constexpr Matrix_base(Values&&... values) : data_{std::forward<Values>(values)...}
 	{}
 
 	template<class Expr2>
@@ -61,7 +54,7 @@ public:
 	using Dense_base::operator=;
 
 	Matrix_base& operator=(const Matrix_base&) = default;
-	Matrix_base& operator=(Matrix_base&&) 	   = default;
+	Matrix_base& operator=(Matrix_base&&) = default;
 
 	////////////////////////////////////////////////////////////////////////
 	/** Extents */
@@ -88,17 +81,13 @@ public:
 	/** Element access */
 
 	// Returns the matrix element
-	constexpr Value& operator()(
-		const std::size_t row,
-		const std::size_t col)
+	constexpr Value& operator()(const std::size_t row, const std::size_t col)
 	{
 		return data_[this->linear_index(row, col)];
 	}
 
 	// Returns the matrix element
-	constexpr const Value& operator()(
-		const std::size_t row,
-		const std::size_t col) const
+	constexpr const Value& operator()(const std::size_t row, const std::size_t col) const
 	{
 		return data_[this->linear_index(row, col)];
 	}
@@ -133,9 +122,7 @@ public:
 		data_.swap(other.data_);
 	}
 
-	static void resize(
-		const std::size_t rows,
-		const std::size_t cols)
+	static void resize(const std::size_t rows, const std::size_t cols)
 	{
 		assert(rows == ct_rows);
 		assert(cols == ct_cols);

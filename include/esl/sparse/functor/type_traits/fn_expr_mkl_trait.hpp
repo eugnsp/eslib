@@ -10,11 +10,11 @@
 
 namespace esl::internal
 {
-template<class Expr1, class Expr2, typename Value>
-struct Fn_expr_assign_trait<
-	Expr1,
-	Expr2,
-	Lvalue_block_tag<Value>,
+template<
+	class Expr1,
+	class Expr2,
+	typename Value>
+struct Fn_expr_assign_trait<Expr1, Expr2, Lvalue_block_tag<Value>,
 	Binary_expr_tag<Mkl_sparse_matrix_t<Value>, Lvalue_block_tag<Value>, Fn_mul_tag>,
 	std::enable_if_t<is_fd_or_cfd<Value>>>
 {

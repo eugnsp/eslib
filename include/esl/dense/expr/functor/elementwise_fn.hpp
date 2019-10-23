@@ -7,9 +7,7 @@
 
 namespace esl::internal
 {
-template<
-	class Expr1,
-	class Expr2>
+template<class Expr1, class Expr2>
 class Elementwise_fn
 {
 public:
@@ -22,24 +20,19 @@ public:
 	static constexpr auto ct_cols = extent_static(ct_cols_value<Expr1>, ct_cols_value<Expr2>);
 
 public:
-	static void check_sizes(
-		[[maybe_unused]] const Expr1& expr1,
-		[[maybe_unused]] const Expr2& expr2)
+	static void check_sizes([[maybe_unused]] const Expr1& expr1,
+							[[maybe_unused]] const Expr2& expr2)
 	{
 		assert(expr1.rows() == expr2.rows());
 		assert(expr1.cols() == expr2.cols());
 	}
 
-	static std::size_t rows(
-		const Expr1& expr1,
-		const Expr2&)
+	static std::size_t rows(const Expr1& expr1, const Expr2&)
 	{
 		return expr1.rows();
 	}
 
-	static std::size_t cols(
-		const Expr1& expr1,
-		const Expr2&)
+	static std::size_t cols(const Expr1& expr1, const Expr2&)
 	{
 		return expr1.cols();
 	}

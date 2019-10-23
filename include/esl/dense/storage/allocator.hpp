@@ -27,9 +27,7 @@ constexpr std::size_t get_alignment()
 		return alignof(T);
 }
 
-template<
-	typename    T,
-	std::size_t alignment>
+template<typename T, std::size_t alignment>
 class Allocator
 {
 public:

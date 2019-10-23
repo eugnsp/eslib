@@ -3,10 +3,10 @@
 #include <esf/function/gradients.hpp>
 #include <esf/function/jacobian.hpp>
 #include <esf/index.hpp>
-#include <esf/type_traits.hpp>
 #include <esf/mesh/mesh2.hpp>
 #include <esf/quadr/quadr.hpp>
 #include <esf/quadr/quadr_point_index.hpp>
+#include <esf/type_traits.hpp>
 
 #include <esl/dense.hpp>
 #include <esu/type_traits.hpp>
@@ -51,7 +51,7 @@ namespace esf
 // TODO : use make_matrix ?
 // Returns a local mass matrix
 template<class Element, class Quadr = esf::Quadr<2 * Element::order, typename Element::Space_dim>,
-	class Fn>
+	     class Fn>
 auto mass_matrix(Fn fn, double scale)
 {
 	constexpr auto n_dofs = Element::total_cell_dofs;
@@ -85,9 +85,8 @@ constexpr auto mass_matrix(double scale)
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<class Element, class Quadr>
-using Grad = esl::Matrix<
-	std::conditional_t<internal::is_dim1<Element>, double, esl::Vector_2d>,
-	Quadr::size, Element::total_cell_dofs>;
+using Grad = esl::Matrix<std::conditional_t<internal::is_dim1<Element>, double, esl::Vector_2d>,
+						 Quadr::size, Element::total_cell_dofs>;
 
 // Returns a local stiffness matrix
 template<class Element, class Quadr, class Func>
@@ -107,7 +106,7 @@ auto stiffness_matrix(const Grad<Element, Quadr>& grads, Func func, double scale
 
 // Returns a local stiffness matrix
 template<class Element,
-	class Quadr = esf::Quadr<2 * (Element::order - 1), typename Element::Space_dim>>
+	     class Quadr = esf::Quadr<2 * (Element::order - 1), typename Element::Space_dim>>
 auto stiffness_matrix(const Grad<Element, Quadr>& grads, double scale)
 {
 	return stiffness_matrix<Element, Quadr>(grads, math::One{}, scale);
@@ -115,9 +114,10 @@ auto stiffness_matrix(const Grad<Element, Quadr>& grads, double scale)
 
 // Returns a local stiffness matrix
 template<class Element,
-	class Quadr = esf::Quadr<2 * (Element::order - 1), typename Element::Space_dim>, class Func>
-auto stiffness_matrix(
-	const Grad<Element, Quadr>& grads, Func func, esl::Matrix_2d eps, double scale)
+	     class Quadr = esf::Quadr<2 * (Element::order - 1), typename Element::Space_dim>,
+		 class Func>
+auto stiffness_matrix(const Grad<Element, Quadr>& grads, Func func,
+                      esl::Matrix_2d eps, double scale)
 {
 	constexpr auto n_dofs = Element::total_cell_dofs;
 

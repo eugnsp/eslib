@@ -26,18 +26,20 @@ public:
 
 public:
 	using Cell_index = Edge_index;
+
 	using Vertex_view = Element_view<Vertex_tag, Mesh>;
-	using Edge_view = Element_view<Edge_tag, Mesh>;
-	using Cell_view = Edge_view;
+	using Edge_view   = Element_view<Edge_tag, Mesh>;
+	using Cell_view   = Edge_view;
 
 	using Vertex_iter = Random_access_iterator<Vertex_tag, Mesh>;
-	using Edge_iter = Random_access_iterator<Edge_tag, Mesh>;
-	using Cell_iter = Edge_iter;
+	using Edge_iter   = Random_access_iterator<Edge_tag, Mesh>;
+	using Cell_iter   = Edge_iter;
 
 public:
 	Mesh() = default;
 
-	explicit Mesh(std::vector<esf::Point1> vertices) : vertices_(std::move(vertices))
+	explicit Mesh(std::vector<esf::Point1> vertices)
+		: vertices_(std::move(vertices))
 	{
 		assert(std::is_sorted(vertices_.begin(), vertices_.end()));
 	}
@@ -46,12 +48,12 @@ public:
 	/** Capacity */
 
 	esf::Vertex_index n_vertices() const;
-	esf::Edge_index n_edges() const;
-	Cell_index n_cells() const;
+	esf::Edge_index   n_edges() const;
+	Cell_index        n_cells() const;
 
 	esf::Vertex_index n_elements(Vertex_tag) const;
-	esf::Edge_index n_elements(Edge_tag) const;
-	Cell_index n_elements(Cell_tag) const;
+	esf::Edge_index   n_elements(Edge_tag) const;
+	Cell_index        n_elements(Cell_tag) const;
 
 	bool is_empty() const;
 

@@ -17,10 +17,8 @@ class Dunavant_points_group
 
 public:
 	template<typename... Coords>
-	constexpr Dunavant_points_group(double 	  weight,
-									Coords... coords) :
-		weight_(weight),
-		coords_{coords...}
+	constexpr Dunavant_points_group(double weight, Coords... coords)
+		: weight_(weight), coords_{coords...}
 	{
 		static_assert(sizeof...(Coords) == n);
 	}
@@ -42,12 +40,8 @@ public:
 			return {
 				V{coords_[0], coords_[1]}, V{coords_[1], coords_[0]}, V{coords_[1], coords_[1]}};
 		else if constexpr (n == 3)
-			return {V{coords_[0], coords_[1]},
-					V{coords_[0], coords_[2]},
-					V{coords_[1], coords_[2]},
-					V{coords_[1], coords_[0]},
-					V{coords_[2], coords_[0]},
-					V{coords_[2], coords_[1]}};
+			return {V{coords_[0], coords_[1]}, V{coords_[0], coords_[2]}, V{coords_[1], coords_[2]},
+				V{coords_[1], coords_[0]}, V{coords_[2], coords_[0]}, V{coords_[2], coords_[1]}};
 	}
 
 	// Computes the sum (weight) * (fn(start_index) + fn(start_index + 1) + ...)

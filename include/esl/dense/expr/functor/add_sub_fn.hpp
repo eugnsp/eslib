@@ -6,9 +6,7 @@
 
 namespace esl::internal
 {
-template<
-	class Expr1,
-	class Expr2>
+template<class Expr1, class Expr2>
 class Add_fn : public Elementwise_fn<Expr1, Expr2>
 {
 public:
@@ -21,9 +19,7 @@ public:
 	}
 };
 
-template<
-	class Expr1,
-	class Expr2>
+template<class Expr1, class Expr2>
 class Sub_fn : public Elementwise_fn<Expr1, Expr2>
 {
 public:

@@ -9,9 +9,7 @@
 namespace esl::internal
 {
 // Dynamic storage class
-template<
-	typename Value,
-	std::size_t alignment = get_alignment<Value>()>
+template<typename Value, std::size_t alignment = get_alignment<Value>()>
 class Dynamic_storage
 {
 private:

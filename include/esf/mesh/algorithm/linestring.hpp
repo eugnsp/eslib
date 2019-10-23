@@ -32,8 +32,7 @@ void elements_in_linestring_push_back(const Mesh2::Halfedge_view& halfedge_view,
 } // namespace internal
 
 template<typename... Index_types>
-void elements_in_linestring(const Mesh2& mesh,
-							const Linestring& linestring,
+void elements_in_linestring(const Mesh2& mesh, const Linestring& linestring,
 							std::vector<Index_types>&... indices)
 {
 	(indices.clear(), ...);

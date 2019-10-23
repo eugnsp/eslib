@@ -14,7 +14,7 @@ class Element_view<Vertex_tag, Mesh2> : public internal::Element_view_base<Verte
 public:
 	using Vertex_circ = Circulator<Vertex_tag, Vertex_out_circ_tag>;
 
-	using Halfedge_in_circ = Circulator<Halfedge_tag, Vertex_in_circ_tag>;
+	using Halfedge_in_circ  = Circulator<Halfedge_tag, Vertex_in_circ_tag>;
 	using Halfedge_out_circ = Circulator<Halfedge_tag, Vertex_out_circ_tag>;
 
 	using Edge_circ = Circulator<Edge_tag, Vertex_out_circ_tag>;

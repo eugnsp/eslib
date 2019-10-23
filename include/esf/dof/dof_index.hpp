@@ -6,7 +6,7 @@ namespace esf
 struct Dof_index
 {
 public:
-	Index index  = invalid_index;
+	Index index = invalid_index;
 	bool is_free = true;
 
 	bool is_valid() const
@@ -27,23 +27,17 @@ public:
 	}
 };
 
-inline Dof_index operator+(
-	Dof_index index,
-	Index     delta)
+inline Dof_index operator+(Dof_index index, Index delta)
 {
 	return (index += delta);
 }
 
-inline Dof_index operator+(
-	Index     delta,
-	Dof_index index)
+inline Dof_index operator+(Index delta, Dof_index index)
 {
 	return index + delta;
 }
 
-inline Dof_index operator-(
-	Dof_index index,
-	Index     delta)
+inline Dof_index operator-(Dof_index index, Index delta)
 {
 	return (index -= delta);
 }

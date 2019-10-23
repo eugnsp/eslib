@@ -7,9 +7,7 @@
 
 namespace esf
 {
-template<class 		 Element,
-		 std::size_t ct_dim_ = 1,
-		 class... 	 Bnd_conds>
+template<class Element, std::size_t ct_dim_ = 1, class... Bnd_conds>
 class Var : public internal::Var_base<Element, Bnd_conds...>
 {
 	static_assert(ct_dim_ > 0);
@@ -40,8 +38,7 @@ public:
 };
 
 // Class of a variable with dynamic dimension
-template<class    Element,
-		 class... Bnd_conds>
+template<class Element, class... Bnd_conds>
 class Var_x : public internal::Var_base<Element, Bnd_conds...>
 {
 public:

@@ -99,13 +99,15 @@ void Element_view<Face_tag, Mesh2>::get_indices(Halfedge_index first,
 	assert(**(++circ) == first);
 }
 
-void Element_view<Face_tag, Mesh2>::get_vertices(Vertices& vertices) const
+auto Element_view<Face_tag, Mesh2>::vertices() const -> Vertices
 {
+	Vertices vertices;
 	auto circ = vertex_circ();
 	vertices[0] = circ->vertex();
 	vertices[1] = (++circ)->vertex();
 	vertices[2] = (++circ)->vertex();
 
 	assert(++circ == vertex_circ());
+	return vertices;
 }
 } // namespace esf

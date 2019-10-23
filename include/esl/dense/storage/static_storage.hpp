@@ -9,10 +9,7 @@
 namespace esl::internal
 {
 // Static storage class
-template<
-	typename    Value,
-	std::size_t ct_size,
-	std::size_t alignment = get_alignment<Value>()>
+template<typename Value, std::size_t ct_size, std::size_t alignment = get_alignment<Value>()>
 class Static_storage
 {
 	static_assert(ct_size > 0);
@@ -25,8 +22,7 @@ public:
 
 	template<typename... Values>
 	explicit constexpr Static_storage(Values&&... values)
-	:
-		data_{std::forward<Values>(values)...}
+		: data_{std::forward<Values>(values)...}
 	{
 		static_assert(sizeof...(Values) == ct_size);
 	}
@@ -79,9 +75,7 @@ private:
 };
 
 // Static zero-sized storage class
-template<
-	typename    Value,
-	std::size_t alignment>
+template<typename Value, std::size_t alignment>
 class Static_storage<Value, 0, alignment>
 {
 public:

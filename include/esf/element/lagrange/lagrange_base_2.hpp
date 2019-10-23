@@ -18,9 +18,7 @@ public:
 
 public:
 	// Returns the value of the basis function (dof) at the given point (point)
-	static constexpr auto basis(std::size_t dof,
-								esl::Vector_2d point)
-		-> double
+	static constexpr double basis(const std::size_t dof, const esl::Vector_2d& point)
 	{
 		const auto r = ijk_by_dof_index(dof);
 
@@ -32,8 +30,7 @@ public:
 	}
 
 	// Returns the value of the basis function (dof) gradient at the given point (point)
-	static constexpr auto basis_grad(std::size_t dof,
-									 esl::Vector_2d point)
+	static constexpr auto basis_grad(const std::size_t dof, const esl::Vector_2d& point)
 		-> esl::Vector_2d
 	{
 		const auto r = ijk_by_dof_index(dof);
@@ -58,13 +55,12 @@ public:
 			pz_dz += prod_frac_xmk_nmk(z, r[2], p);
 
 		// pz/dx = pz/dy = -pz/dz
-		return esl::Vector_2d(py * (px * -pz_dz + pz * px_dx) * order,
-							  px * (py * -pz_dz + pz * py_dy) * order);
+		return esl::Vector_2d(
+			py * (px * -pz_dz + pz * px_dx) * order, px * (py * -pz_dz + pz * py_dy) * order);
 	}
 
 private:
-	static constexpr auto ijk_by_dof_index(std::size_t dof,
-										   std::size_t order = order_)
+	static constexpr auto ijk_by_dof_index(std::size_t dof, const std::size_t order = order_)
 		-> std::array<std::size_t, 3>
 	{
 		[[maybe_unused]] const auto n_total_dofs = (order + 1) * (order + 2) / 2;

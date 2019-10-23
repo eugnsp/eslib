@@ -14,9 +14,7 @@
 
 namespace esf
 {
-template<class 		 System_,
-		 std::size_t var_idx,
-		 typename 	 Value>
+template<class System_, std::size_t var_idx, typename Value>
 class Solution_view
 {
 public:
@@ -24,21 +22,20 @@ public:
 	using Mesh   = typename System::Mesh;
 
 private:
-	using Var 	  = typename System::template Var<var_idx>;
+	using Var     = Var_type<System, var_idx>;
 	using Element = typename Var::Element;
 	static constexpr Var_index<var_idx> var_index{};
 
 public:
-	Solution_view(const System& system, const esl::Vector_x<Value>& solution) :
-		system_(system), solution_(solution)
+	Solution_view(const System& system, const esl::Vector_x<Value>& solution)
+		: system_(system), solution_(solution)
 	{}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	/** Solution values access */
 
 	template<class Quadr>
-	auto at_quadr(
-		const typename System::Dof_mapper::template Var_dofs<var_idx, Cell_tag>& dofs) const
+	auto at_quadr(const typename System::Dof_mapper::template Var_dofs<var_idx, Cell_tag>& dofs) const
 	{
 		esl::Vector<Value, Quadr::size> vals_at_quadr{};
 
@@ -64,46 +61,57 @@ public:
 	auto at(Mesh_element_index mesh_element_index) const
 	{
 		static_assert(Element::has_dofs(Mesh_element_tag{}));
-		constexpr auto n_element_dofs = Element::dofs(Mesh_element_tag{});
+		constexpr auto n_dofs = Element::dofs(Mesh_element_tag{});
 
 		const auto& var = system_.variable(var_index);
 		const auto dofs = esf::dofs(system_, mesh_element_index, var_index);
+		assert(dofs.size() == n_dofs);
 
-		if constexpr (Var::ct_dim == 1 && n_element_dofs == 1)
-			return solution_[dofs[0].index];
-		else
-		{
-			esl::Matrix<Value, Var::ct_dim, n_element_dofs> values;
-			values.resize(var.dim(), n_element_dofs);
-			for (std::size_t dim = 0; dim < var.dim(); ++dim)
-				for (std::size_t dof = 0; dof < n_element_dofs; ++dof)
-					values(dim, dof) = solution_[dofs[0].index + dim + dof * var.dim()];
+		esl::Matrix<Value, Var::ct_dim, n_dofs> values;
+		values.resize(var.dim(), n_dofs);
+		for (std::size_t dim = 0; dim < var.dim(); ++dim)
+			for (std::size_t dof = 0; dof < n_dofs; ++dof)
+				values(dim, dof) = solution_[dofs[dof].index + dim];
 
-			return values;
-		}
+		return values;
 	}
 
-	template<class Mesh_element_index>
-	auto operator[](Mesh_element_index mesh_element_index) const
+	auto at(const typename Mesh::Cell_view& cell) const
 	{
-		return at(mesh_element_index);
+		constexpr auto n_dofs = Element::total_cell_dofs;
+
+		const auto& var = system_.variable(var_index);
+		const auto dofs = esf::dofs(system_, cell, var_index);
+		assert(dofs.size() == n_dofs);
+
+		esl::Matrix<Value, Var::ct_dim, n_dofs> values;
+		values.resize(var.dim(), n_dofs);
+		for (std::size_t dim = 0; dim < var.dim(); ++dim)
+			for (std::size_t dof = 0; dof < n_dofs; ++dof)
+				values(dim, dof) = solution_[dofs[dof].index + dim];
+
+		return values;
 	}
 
-	Value at(const Point2& pt,
-			 const typename Mesh::Cell_view& cell) const
+	template<class T>
+	auto operator[](const T& ref) const
+	{
+		return at(ref);
+	}
+
+	Value at(const Point2& pt, const typename Mesh::Cell_view& cell) const
 	{
 		static_assert(internal::is_dim2<Mesh>);
 
 		const auto pt_ref = point_to_ref_triangle(pt, cell);
-		const auto dofs = system_.dof_mapper().template dofs<var_idx>(cell);
+		const auto dofs = esf::dofs(system_, cell, var_index);
 		Value value{};
 		for (Local_index id = 0; id < dofs.size(); ++id)
 			value += Element::basis(id, pt_ref) * solution_[dofs[id].index];
 		return value;
 	}
 
-	Value operator()(const Point2& pt,
-				   	 const typename Mesh::Cell_view& cell) const
+	Value operator()(const Point2& pt, const typename Mesh::Cell_view& cell) const
 	{
 		return at(pt, cell);
 	}
@@ -123,22 +131,16 @@ protected:
 	const esl::Vector_x<Value>& solution_;
 };
 
-template<class 		 Quadr,
-		 class 		 System,
-		 std::size_t var,
-		 typename 	 Value>
-auto at_quadr(const Solution_view<System, var, Value>&       solution,
+template<class Quadr, class System, std::size_t var, typename Value>
+auto at_quadr(const Solution_view<System, var, Value>& solution,
 			  const typename System::template Var_dofs<var>& dofs)
 {
 	return solution.template at_quadr<Quadr>(dofs);
 }
 
-template<class 		 Quadr,
-		 class 		 System,
-		 std::size_t var,
-		 typename  	 Value>
+template<class Quadr, class System, std::size_t var, typename Value>
 auto at_quadr(const Solution_view<System, var, Value>& solution,
-			  const typename System::Mesh::Cell_view&  cell)
+			  const typename System::Mesh::Cell_view& cell)
 {
 	return solution.template at_quadr<Quadr>(cell);
 }

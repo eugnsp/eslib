@@ -7,10 +7,7 @@
 
 namespace esl
 {
-template<
-	class 	 Expr_,
-	typename Scalar_,
-	template<class, typename> class Fn_>
+template<class Expr_, typename Scalar_, template<class, typename> class Fn_>
 class Scalar_expr : public Dense<Scalar_expr<Expr_, Scalar_, Fn_>, Rvalue>
 {
 public:
@@ -20,15 +17,9 @@ public:
 	using Fn     = Fn_<Expr, Scalar>;
 
 public:
-	template<
-		class 	 Expr_f,
-		typename Scalar_f>
-	Scalar_expr(
-		Expr_f&&   expr,
-		Scalar_f&& scalar)
-	:
-		expr_(std::forward<Expr_f>(expr)),
-		scalar_(std::forward<Scalar_f>(scalar))
+	template<class Expr_f, typename Scalar_f>
+	Scalar_expr(Expr_f&& expr, Scalar_f&& scalar)
+		: expr_(std::forward<Expr_f>(expr)), scalar_(std::forward<Scalar_f>(scalar))
 	{}
 
 	std::size_t rows() const
@@ -41,9 +32,7 @@ public:
 		return expr_.cols();
 	}
 
-	Value operator()(
-		const std::size_t row,
-		const std::size_t col) const
+	Value operator()(const std::size_t row, const std::size_t col) const
 	{
 		return Fn::element(expr_, scalar_, row, col);
 	}
@@ -66,10 +55,7 @@ private:
 ///////////////////////////////////////////////////////////////////////
 /** Type traits */
 
-template<
-	class	 Expr,
-	typename Scalar,
-	template<class, typename> class Fn>
+template<class Expr, typename Scalar, template<class, typename> class Fn>
 struct Traits<Scalar_expr<Expr, Scalar, Fn>>
 {
 	using Value  = typename Fn<Expr, Scalar>::Value;

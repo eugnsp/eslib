@@ -6,10 +6,8 @@
 
 namespace esf::internal
 {
-template<class 		 Space_dim_,
-		 std::size_t vertex_dofs_,
-		 std::size_t edge_dofs_,
-		 std::size_t face_dofs_ = 0>
+template<class Space_dim_, std::size_t vertex_dofs_,
+		 std::size_t edge_dofs_, std::size_t face_dofs_ = 0>
 class Element_base
 {
 	static_assert(is_dim2<Space_dim_> || face_dofs_ == 0);

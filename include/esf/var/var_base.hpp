@@ -14,8 +14,7 @@
 
 namespace esf::internal
 {
-template<class    Element_,
-		 class... Bnd_conds>
+template<class Element_, class... Bnd_conds>
 class Var_base
 {
 public:
@@ -70,7 +69,8 @@ public:
 	template<class Fn>
 	void for_each_strong_bnd_cond(Fn fn) const
 	{
-		for_each_bnd_cond([&fn]<class Bnd_cond>(const Bnd_cond& bnd_cond) {
+		for_each_bnd_cond([&fn]<class Bnd_cond>(const Bnd_cond& bnd_cond)
+		{
 			if constexpr (Bnd_cond::is_strong)
 				fn(bnd_cond);
 		});
@@ -79,7 +79,8 @@ public:
 	template<class Fn>
 	void for_each_weak_bnd_cond(Fn fn) const
 	{
-		for_each_bnd_cond([&fn]<class Bnd_cond>(const Bnd_cond& bnd_cond) {
+		for_each_bnd_cond([&fn]<class Bnd_cond>(const Bnd_cond& bnd_cond)
+		{
 			if constexpr (!Bnd_cond::is_strong)
 				fn(bnd_cond);
 		});

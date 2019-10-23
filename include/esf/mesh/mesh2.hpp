@@ -39,21 +39,21 @@ public:
 	using Space_dim = Dim2;
 
 public:
-	using Vertex_view = Element_view<Vertex_tag, Mesh>;
+	using Vertex_view   = Element_view<Vertex_tag, Mesh>;
 	using Halfedge_view = Element_view<Halfedge_tag, Mesh>;
-	using Edge_view = Element_view<Edge_tag, Mesh>;
-	using Face_view = Element_view<Face_tag, Mesh>;
-	using Cell_view = Face_view;
+	using Edge_view     = Element_view<Edge_tag, Mesh>;
+	using Face_view     = Element_view<Face_tag, Mesh>;
+	using Cell_view     = Face_view;
 
-	using Vertex_iter = Random_access_iterator<Vertex_tag, Mesh>;
+	using Vertex_iter   = Random_access_iterator<Vertex_tag, Mesh>;
 	using Halfedge_iter = Random_access_iterator<Halfedge_tag, Mesh>;
-	using Edge_iter = Random_access_iterator<Edge_tag, Mesh>;
-	using Face_iter = Random_access_iterator<Face_tag, Mesh>;
-	using Cell_iter = Face_iter;
+	using Edge_iter     = Random_access_iterator<Edge_tag, Mesh>;
+	using Face_iter     = Random_access_iterator<Face_tag, Mesh>;
+	using Cell_iter     = Face_iter;
 
-	using Boundary_vertex_circ = Circulator<Vertex_tag, Face_circ_tag>;
+	using Boundary_vertex_circ   = Circulator<Vertex_tag, Face_circ_tag>;
 	using Boundary_halfedge_circ = Circulator<Halfedge_tag, Face_circ_tag>;
-	using Boundary_edge_circ = Circulator<Edge_tag, Face_circ_tag>;
+	using Boundary_edge_circ     = Circulator<Edge_tag, Face_circ_tag>;
 
 private:
 	using Base = internal::Halfedge_structure;
@@ -106,10 +106,10 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	/** Views */
 
-	Vertex_view view(Vertex_index) const;
+	Vertex_view   view(Vertex_index) const;
 	Halfedge_view view(Halfedge_index) const;
-	Edge_view view(Edge_index) const;
-	Face_view view(Face_index) const;
+	Edge_view     view(Edge_index) const;
+	Face_view     view(Face_index) const;
 
 	//////////////////////////////////////////////////////////////////////////
 	/** Iterators */
@@ -134,9 +134,9 @@ public:
 	Cell_iter end_cell() const;
 	esu::Iterable<Cell_iter> cells() const;
 
-	Boundary_vertex_circ boundary_vertex_circ() const;
+	Boundary_vertex_circ   boundary_vertex_circ() const;
 	Boundary_halfedge_circ boundary_halfedge_circ() const;
-	Boundary_edge_circ boundary_edge_circ() const;
+	Boundary_edge_circ     boundary_edge_circ() const;
 
 	//////////////////////////////////////////////////////////////////////////
 

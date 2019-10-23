@@ -7,9 +7,7 @@
 
 namespace esl::internal
 {
-template<
-	std::size_t ct_rows,
-	std::size_t ct_cols>
+template<std::size_t ct_rows, std::size_t ct_cols>
 class Shape_base
 {
 public:
@@ -52,16 +50,12 @@ public:
 	}
 
 protected:
-	constexpr Shape_base(
-		std::size_t rows,
-		std::size_t cols) noexcept
-	: 	cols_(cols)
+	constexpr Shape_base(std::size_t rows, std::size_t cols) noexcept : cols_(cols)
 	{
 		assert(rows == rows_);
 	}
 
-	void set(std::size_t rows,
-			 std::size_t cols)
+	void set(std::size_t rows, std::size_t cols)
 	{
 		assert(rows == ct_rows);
 		cols_ = cols;
@@ -92,16 +86,12 @@ public:
 	}
 
 protected:
-	constexpr Shape_base(
-		std::size_t rows,
-		std::size_t cols) noexcept
-	:	rows_(rows)
+	constexpr Shape_base(std::size_t rows, std::size_t cols) noexcept : rows_(rows)
 	{
 		assert(cols == cols_);
 	}
 
-	void set(std::size_t rows,
-			 std::size_t cols)
+	void set(std::size_t rows, std::size_t cols)
 	{
 		rows_ = rows;
 		assert(cols == ct_cols);
@@ -132,15 +122,10 @@ public:
 	}
 
 protected:
-	constexpr Shape_base(
-		std::size_t rows,
-		std::size_t cols) noexcept
-	:	rows_(rows), cols_(cols)
+	constexpr Shape_base(std::size_t rows, std::size_t cols) noexcept : rows_(rows), cols_(cols)
 	{}
 
-	void set(
-		std::size_t rows,
-		std::size_t cols)
+	void set(std::size_t rows, std::size_t cols)
 	{
 		rows_ = rows;
 		cols_ = cols;

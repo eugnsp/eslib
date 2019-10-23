@@ -12,9 +12,6 @@
 #include <cstddef>
 #include <utility>
 
-template<class>
-class TD;
-
 namespace esf::internal
 {
 template<class Var_list>
@@ -26,19 +23,15 @@ private:
 
 protected:
 	template<std::size_t var_idx>
-	using Var  = typename Var_list::template Nth<var_idx>;
+	using Var = typename Var_list::template Nth<var_idx>;
 
 	using Mesh = esf::Mesh<typename Var_list::Space_dim>;
 
 public:
-	template<
-		std::size_t var_idx,
-		class 		Mesh_element_tag>
+	template<std::size_t var_idx, class Mesh_element_tag>
 	using Var_dofs = Dof_index_vector<Var<var_idx>::Element::dofs(Mesh_element_tag{})>;
 
-	template<
-		std::size_t var_idx,
-		class 		Mesh_element_tag>
+	template<std::size_t var_idx, class Mesh_element_tag>
 	using Var_total_dofs = Dof_index_vector<Var<var_idx>::Element::total_dofs(Mesh_element_tag{})>;
 
 public:
@@ -54,16 +47,13 @@ public:
 		assert(indices_.all_of([](auto index) { return index.is_valid(); }));
 	}
 
-	template<
-		class Symmetry_tag,
-		class System>
-	static auto sparsity_pattern(const System& system)
-	-> esl::Sparsity_pattern<Symmetry_tag>
+	template<class Symmetry_tag, class System>
+	static esl::Sparsity_pattern<Symmetry_tag> sparsity_pattern(const System& system)
 	{
 		return esf::internal::sparsity_pattern<Symmetry_tag>(system);
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	/** Capacity */
 
 	esf::Index n_dofs() const
@@ -82,15 +72,14 @@ public:
 	}
 
 private:
-	////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	/** Initialization */
 
 	template<class System>
 	void compute_n_dofs(const System& system)
 	{
 		n_dofs_ = 0;
-		for_each_variable_and_element<Var_list>([this, &system](auto var, auto element_tag)
-		{
+		for_each_variable_and_element<Var_list>([this, &system](auto var, auto element_tag) {
 			const auto n_dofs = system.variable(var).dofs(element_tag);
 			const auto n_elements = *system.mesh().n_elements(element_tag);
 			n_dofs_ += n_dofs * n_elements;
@@ -106,7 +95,7 @@ private:
 			[this, &system]<std::size_t var_idx>(Var_index<var_idx> var_index)
 		{
 			using Variable = typename Var_list::template Nth<var_idx>;
-			using Element  = typename Variable::Element;
+			using Element = typename Variable::Element;
 
 			const auto& var = system.variable(var_index);
 			var.for_each_strong_bnd_cond([this, &var, var_index](const auto& bnd_cond)
@@ -148,7 +137,6 @@ private:
 			for (Element_index ei{}; ei < system.mesh().n_elements(element_tag); ++ei)
 			{
 				Dof_index& dof = indices_.at(ei, var);
-
 				auto& index = dof.is_free ? free_index : const_index;
 				dof.index = index;
 				index += system.variable(var).dofs(element_tag);

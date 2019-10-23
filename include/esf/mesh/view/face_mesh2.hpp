@@ -17,16 +17,16 @@ public:
 
 	using Vertices = std::array<Point2, 3>;
 
-	using Vertex_indices = std::array<Vertex_index, 3>;
+	using Vertex_indices   = std::array<Vertex_index, 3>;
 	using Halfedge_indices = std::array<Halfedge_index, 3>;
-	using Edge_indices = std::array<Edge_index, 3>;
+	using Edge_indices     = std::array<Edge_index, 3>;
 	using Edge_with_dir_indices = std::array<std::pair<Edge_index, bool>, 3>;
 
 public:
-	using Vertex_circ = Circulator<Vertex_tag, Face_circ_tag>;
+	using Vertex_circ   = Circulator<Vertex_tag, Face_circ_tag>;
 	using Halfedge_circ = Circulator<Halfedge_tag, Face_circ_tag>;
-	using Edge_circ = Circulator<Edge_tag, Face_circ_tag>;
-	using Face_circ = Circulator<Face_tag, Face_circ_tag>;
+	using Edge_circ     = Circulator<Edge_tag, Face_circ_tag>;
+	using Face_circ     = Circulator<Face_tag, Face_circ_tag>;
 
 public:
 	using Element_view_base::Element_view_base;
@@ -42,10 +42,9 @@ public:
 	void get_indices(Vertex_indices&, Edge_indices&) const;
 	void get_indices(Vertex_indices&, Halfedge_indices&) const;
 	void get_indices(Vertex_indices&, Edge_with_dir_indices&) const;
-
 	void get_indices(Halfedge_index, Vertex_indices&, Halfedge_indices&) const;
 
-	void get_vertices(Vertices&) const;
+	Vertices vertices() const;
 
 	// 	Vertex_index vertex_index(Local_index) const;
 	// 	void vertex_indices(std::vector<Vertex_index>&) const;

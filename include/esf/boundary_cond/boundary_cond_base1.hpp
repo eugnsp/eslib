@@ -19,13 +19,11 @@ class Boundary_cond_base<Dim1, Element>
 	static_assert(Element::has_vertex_dofs);
 
 public:
-	using Boundary  = Point1;
+	using Boundary = Point1;
 
 public:
-	Boundary_cond_base(
-		const Mesh1&    mesh,
-		const Boundary& point)
-	:	vertex_(mesh.find_vertex(point))
+	Boundary_cond_base(const Mesh1& mesh, const Boundary& point)
+		: vertex_(mesh.find_vertex(point))
 	{}
 
 	template<class... Args>

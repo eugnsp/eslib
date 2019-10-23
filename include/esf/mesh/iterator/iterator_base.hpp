@@ -10,14 +10,16 @@ class Iterator_base
 {
 public:
 	using View = Element_view<Element_tag, Mesh>;
-	using Element_index = typename View::Element_index;
+	using Element_index  = typename View::Element_index;
 	using Internal_index = typename View::Internal_index;
 
 public:
-	explicit Iterator_base(const Mesh& mesh) : view_(mesh, Internal_index::invalid)
+	explicit Iterator_base(const Mesh& mesh)
+		: view_(mesh, Internal_index::invalid)
 	{}
 
-	Iterator_base(const Mesh& mesh, Internal_index index) : view_(mesh, index)
+	Iterator_base(const Mesh& mesh, Internal_index index)
+		: view_(mesh, index)
 	{}
 
 	Iterator_base& operator=(const Iterator_base& other)

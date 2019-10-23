@@ -7,9 +7,7 @@
 namespace esl
 {
 // Returns the Hilbert matrix
-template<
-	typename     T,
-	class Layout = Col_major>
+template<typename T, class Layout = Col_major>
 constexpr auto hilbert_matrix(const std::size_t size)
 {
 	return make_matrix<Layout>(
@@ -17,10 +15,7 @@ constexpr auto hilbert_matrix(const std::size_t size)
 }
 
 // Returns the Hilbert matrix
-template<
-	typename     T,
-	std::size_t  size,
-	class Layout = Col_major>
+template<typename T, std::size_t size, class Layout = Col_major>
 constexpr auto hilbert_matrix()
 {
 	return make_matrix<size, size, Layout>(

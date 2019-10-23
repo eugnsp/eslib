@@ -8,15 +8,13 @@ namespace esl
 {
 namespace internal
 {
-template<class Expr,
-		 class Category>
+template<class Expr, class Category>
 void dense_match(const Dense<Expr, Category>&);
 
 int dense_match(...);
 
 template<class Expr>
-struct Is_dense_trait : std::is_void<decltype(internal::dense_match(std::declval<Expr>()))>
-{};
+struct Is_dense_trait : std::is_void<decltype(internal::dense_match(std::declval<Expr>()))> {};
 } // namespace internal
 
 template<class Expr>

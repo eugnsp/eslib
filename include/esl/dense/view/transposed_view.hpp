@@ -9,18 +9,17 @@
 
 namespace esl
 {
-template<class Expr,
-		 class Category>
+template<class Expr, class Category>
 class Transposed_view : public Dense<Transposed_view<Expr, Category>, Category>
 {
 public:
 	template<class Expr_f>
 	Transposed_view(Expr_f&& expr)
-	:	expr_(std::forward<Expr_f>(expr))
+		: expr_(std::forward<Expr_f>(expr))
 	{}
 
 	Transposed_view(const Transposed_view&) = default;
-	Transposed_view(Transposed_view&&)      = default;
+	Transposed_view(Transposed_view&&) = default;
 
 	Transposed_view& operator=(const Transposed_view& other)
 	{
@@ -71,16 +70,12 @@ public:
 	//////////////////////////////////////////////////////////////////////
 	/** Element access */
 
-	decltype(auto) operator()(
-		const std::size_t row,
-		const std::size_t col)
+	decltype(auto) operator()(const std::size_t row, const std::size_t col)
 	{
 		return expr_(col, row);
 	}
 
-	decltype(auto) operator()(
-		const std::size_t row,
-		const std::size_t col) const
+	decltype(auto) operator()(const std::size_t row, const std::size_t col) const
 	{
 		if constexpr (std::is_same_v<Category, Lvalue>)
 			return std::as_const(expr_(col, row));
@@ -105,12 +100,10 @@ private:
 ///////////////////////////////////////////////////////////////////////
 /** Type traits */
 
-template<
-	class Expr,
-	class Category>
+template<class Expr, class Category>
 struct Traits<Transposed_view<Expr, Category>>
 {
-	using Value  = Value_type<Expr>;
+	using Value = Value_type<Expr>;
 	using Layout = typename internal::Transpose_layout<Layout_tag<Expr>>::Type;
 
 	static constexpr std::size_t rows = ct_cols_value<Expr>;

@@ -11,7 +11,8 @@ template<class Expr, bool print_info>
 class Printer
 {
 public:
-	explicit Printer(const Expr& expr, const int width) : expr_(expr), width_(width)
+	Printer(const Expr& expr, const int width)
+		: expr_(expr), width_(width)
 	{
 		assert(width >= 0);
 	}
@@ -28,7 +29,7 @@ public:
 			if constexpr (is_lvalue_block<Expr>)
 				os << ", row stride = " << expr_.row_stride()
 				   << ", col_stride = " << expr_.col_stride()
-				   << ", lead_dim = " << expr_.lead_dim();
+				   << ", lead_dim = "   << expr_.lead_dim();
 			os << '\n';
 		}
 

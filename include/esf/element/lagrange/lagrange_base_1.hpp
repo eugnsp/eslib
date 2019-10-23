@@ -17,9 +17,7 @@ public:
 
 public:
 	// Returns the value of the basis function (dof) at the given point (point)
-	static constexpr auto basis(std::size_t dof,
-								Point1 point)
-		-> double
+	static constexpr double basis(const std::size_t dof, const Point1 point)
 	{
 		const auto r = ij_by_dof_index(dof);
 
@@ -28,9 +26,7 @@ public:
 	}
 
 	// Returns the value of the basis function (dof) gradient at the given point (point)
-	static constexpr auto basis_grad(std::size_t dof,
-									 Point1 point)
-		-> double
+	static constexpr double basis_grad(const std::size_t dof, const Point1 point)
 	{
 		const auto r = ij_by_dof_index(dof);
 
@@ -50,8 +46,7 @@ public:
 	}
 
 private:
-	static constexpr auto ij_by_dof_index(std::size_t dof)
-		-> std::array<std::size_t, 2>
+	static constexpr std::array<std::size_t, 2> ij_by_dof_index(std::size_t dof)
 	{
 		[[maybe_unused]] const auto n_total_dofs = order + 1;
 		assert(dof < n_total_dofs);

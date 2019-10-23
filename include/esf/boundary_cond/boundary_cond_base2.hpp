@@ -17,7 +17,7 @@ class Boundary_cond_base<Dim2, Element>
 	static_assert(Element::has_vertex_dofs || Element::has_edge_dofs);
 
 public:
-	using Boundary  = Linestring;
+	using Boundary = Linestring;
 
 public:
 	Boundary_cond_base(const Mesh2& mesh)
@@ -41,8 +41,7 @@ public:
 		}
 	}
 
-	Boundary_cond_base(const Mesh2&    mesh,
-					   const Boundary& boundary)
+	Boundary_cond_base(const Mesh2& mesh, const Boundary& boundary)
 	{
 		if constexpr (Element::has_vertex_dofs && Element::has_edge_dofs)
 			elements_in_linestring(mesh, boundary, vertices_, halfedges_);
@@ -67,7 +66,7 @@ public:
 	}
 
 protected:
-	std::vector<Vertex_index>   vertices_;
+	std::vector<Vertex_index> vertices_;
 	std::vector<Halfedge_index> halfedges_;
 };
 } // namespace esf::internal

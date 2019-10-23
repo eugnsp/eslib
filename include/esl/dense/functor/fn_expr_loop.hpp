@@ -12,32 +12,24 @@ template<class Fn>
 class Fn_expr_element_wise
 {
 public:
-	template<class Expr_dst,
-			 class Expr_src>
-	void operator()(Expr_dst&       dst,
-					const Expr_src& src) const
+	template<class Expr_dst, class Expr_src>
+	void operator()(Expr_dst& dst, const Expr_src& src) const
 	{
 		// Prefer contiguous writes to contiguous reads
 		(*this)(dst, src, Layout_tag<Expr_dst>{});
 	}
 
 private:
-	template<class Expr_dst,
-			 class Expr_src>
-	void operator()(Expr_dst&       dst,
-					const Expr_src& src,
-					Col_major) const
+	template<class Expr_dst, class Expr_src>
+	void operator()(Expr_dst& dst, const Expr_src& src, Col_major) const
 	{
 		for (std::size_t col = 0; col < dst.cols(); ++col)
 			for (std::size_t row = 0; row < dst.rows(); ++row)
 				Fn{}(dst(row, col), src(row, col));
 	}
 
-	template<class Expr_dst,
-			 class Expr_src>
-	void operator()(Expr_dst&       dst,
-					const Expr_src& src,
-					Row_major) const
+	template<class Expr_dst, class Expr_src>
+	void operator()(Expr_dst& dst, const Expr_src& src, Row_major) const
 	{
 		for (std::size_t row = 0; row < dst.rows(); ++row)
 			for (std::size_t col = 0; col < dst.cols(); ++col)

@@ -23,9 +23,9 @@ private:
 	using Base = Csr_pattern<Symmetry_, Index_>;
 
 public:
-	using Value = Value_;
+	using Value    = Value_;
 	using Symmetry = Symmetry_;
-	using Index = Index_;
+	using Index    = Index_;
 
 public:
 	//Csr_matrix() = default;

@@ -1,5 +1,5 @@
 #pragma once
-#include <esl/core/tags.hpp>
+#include <esl/dense/tags.hpp>
 
 #include <cassert>
 #include <cstddef>

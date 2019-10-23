@@ -27,12 +27,10 @@ class Lagrange<order, Dim2> :
 template<std::size_t order>
 class Discontinuous_lagrange<order, Dim1> :
 	public internal::Element_base<Dim1, 0, order + 1>,
-	public internal::Lagrange_base_1<order>
-{};
+	public internal::Lagrange_base_1<order> {};
 
 template<std::size_t order>
 class Discontinuous_lagrange<order, Dim2> :
 	public internal::Element_base<Dim2, 0, 0, (order + 1) * (order + 2) / 2>,
-	public internal::Lagrange_base_2<order>
-{};
+	public internal::Lagrange_base_2<order> {};
 } // namespace esf

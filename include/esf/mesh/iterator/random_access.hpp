@@ -20,10 +20,10 @@ public:
 	/** STL member types */
 
 	using iterator_category = std::random_access_iterator_tag;
-	using value_type = View;
-	using difference_type = std::make_signed_t<Index>;
-	using pointer = View*;
-	using reference = View&;
+	using value_type        = View;
+	using difference_type   = std::make_signed_t<Index>;
+	using pointer           = View*;
+	using reference         = View&;
 
 public:
 	using Base::Base;

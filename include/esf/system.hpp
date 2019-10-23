@@ -19,8 +19,7 @@
 
 namespace esf
 {
-template<class 				   Var_list_,
-		 template<class> class Dof_mapper_ = Dof_mapper>
+template<class Var_list_, template<class> class Dof_mapper_>
 class System
 {
 public:
@@ -35,7 +34,8 @@ public:
 	static constexpr std::size_t n_vars = Var_list::size;
 
 public:
-	System(const Mesh& mesh) : mesh_(mesh)
+	System(const Mesh& mesh)
+		: mesh_(mesh)
 	{}
 
 	template<class... Args>

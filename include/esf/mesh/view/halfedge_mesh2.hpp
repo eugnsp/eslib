@@ -13,7 +13,7 @@ public:
 	using Geometry_tag = Segment2_tag;
 
 	using Vertex_view = Element_view<Vertex_tag, Mesh2>;
-	using Face_view = Element_view<Face_tag, Mesh2>;
+	using Face_view   = Element_view<Face_tag, Mesh2>;
 
 public:
 	using Element_view_base::Element_view_base;
