@@ -4,22 +4,21 @@
 #include <esf/tags.hpp>
 
 #include <cassert>
+#include <cstddef>
 
 namespace esf
 {
-using V = Element_view<Edge_tag, Mesh2>;
-
-bool V::is_boundary() const
+bool Element_view<Edge_tag, Mesh2>::is_boundary() const
 {
 	return mesh_.is_boundary(**this);
 }
 
-const esf::Point2& V::vertex(Local_index index) const
+const Point2& Element_view<Edge_tag, Mesh2>::vertex(std::size_t index) const
 {
 	return mesh_.vertex(vertex_index(index));
 }
 
-Vertex_index V::vertex_index(Local_index index) const
+Vertex_index Element_view<Edge_tag, Mesh2>::vertex_index(std::size_t index) const
 {
 	assert(index < 2);
 

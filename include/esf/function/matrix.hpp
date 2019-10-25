@@ -3,9 +3,9 @@
 #include <esf/function/gradients.hpp>
 #include <esf/function/jacobian.hpp>
 #include <esf/index.hpp>
+#include <esf/index.hpp>
 #include <esf/mesh/mesh2.hpp>
 #include <esf/quadr/quadr.hpp>
-#include <esf/quadr/quadr_point_index.hpp>
 #include <esf/type_traits.hpp>
 
 #include <esl/dense.hpp>
@@ -48,42 +48,6 @@ struct One : Constant<static_cast<T>(1)>
 
 namespace esf
 {
-// TODO : use make_matrix ?
-// Returns a local mass matrix
-template<class Element, class Quadr = esf::Quadr<2 * Element::order, typename Element::Space_dim>,
-	     class Fn>
-auto mass_matrix(Fn fn, double scale)
-{
-	constexpr auto n_dofs = Element::total_cell_dofs;
-
-	esl::Matrix_d<n_dofs, n_dofs> m;
-	for (Local_index s = 0; s < n_dofs; ++s)
-		for (Local_index r = 0; r < n_dofs; ++r)
-			m(r, s) = scale * Quadr::sum([r, s, &fn](auto iq) {
-				auto constexpr basis = Element_quadr<Element, Quadr>::basis();
-				return fn(iq) * basis(iq, r) * basis(iq, s);
-			});
-
-	return m;
-}
-
-// Returns a local mass matrix
-template<class Element, class Quadr = esf::Quadr<2 * Element::order, typename Element::Space_dim>>
-constexpr auto mass_matrix(double scale)
-{
-	const auto mat_fn = [scale](std::size_t i, std::size_t j) {
-		return scale * Quadr::sum([i, j](std::size_t iq) {
-			auto constexpr basis = Element_quadr<Element, Quadr>::basis();
-			return basis(iq, i) * basis(iq, j);
-		});
-	};
-
-	constexpr auto n_dofs = Element::total_cell_dofs;
-	return esl::make_matrix<n_dofs, n_dofs>(mat_fn);
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-
 template<class Element, class Quadr>
 using Grad = esl::Matrix<std::conditional_t<internal::is_dim1<Element>, double, esl::Vector_2d>,
 						 Quadr::size, Element::total_cell_dofs>;
@@ -95,8 +59,8 @@ auto stiffness_matrix(const Grad<Element, Quadr>& grads, Func func, double scale
 	constexpr auto n_dofs = Element::total_cell_dofs;
 
 	esl::Matrix_d<n_dofs, n_dofs> m;
-	for (Local_index i = 0; i < n_dofs; ++i)
-		for (Local_index j = 0; j < n_dofs; ++j)
+	for (std::size_t i = 0; i < n_dofs; ++i)
+		for (std::size_t j = 0; j < n_dofs; ++j)
 			m(i, j) = scale * Quadr::sum([i, j, &grads, &func](auto q) {
 				return func(q) * esl::dot(grads(q, i), grads(q, j));
 			});
@@ -122,9 +86,10 @@ auto stiffness_matrix(const Grad<Element, Quadr>& grads, Func func,
 	constexpr auto n_dofs = Element::total_cell_dofs;
 
 	esl::Matrix_d<n_dofs, n_dofs> m;
-	for (Local_index i = 0; i < n_dofs; ++i)
-		for (Local_index j = 0; j < n_dofs; ++j)
-			m(i, j) = scale * Quadr::sum([i, j, &grads, &func, &eps](auto q) {
+	for (std::size_t i = 0; i < n_dofs; ++i)
+		for (std::size_t j = 0; j < n_dofs; ++j)
+			m(i, j) = scale * Quadr::sum([i, j, &grads, &func, &eps](auto q)
+			{
 				return func(q) * esl::dot(grads(q, i), eps * grads(q, j));
 			});
 
@@ -153,36 +118,5 @@ auto stiffness_matrix(const Mesh2::Cell_view& cell, double scale)
 {
 	const auto grads = gradients<Element, Quadr>(inv_transp_jacobian(cell));
 	return stiffness_matrix<Element, Quadr>(grads, scale);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-// Returns a local load vector
-template<class Element, class Quadr = esf::Quadr<Element::order, typename Element::Space_dim>,
-	class Fn>
-auto load_vector(Fn fn, double scale)
-{
-	constexpr auto n_dofs = Element::total_cell_dofs;
-
-	return esl::make_vector<n_dofs>([&fn, scale](auto i) {
-		return scale * Quadr::sum([i, &fn](Index iq) {
-			constexpr auto basis = Element_quadr<Element, Quadr>::basis();
-			return fn(Quadr_point_index<Quadr>{iq}) * basis(iq, i);
-		});
-	});
-}
-
-// Returns a local load vector
-template<class Element, class Quadr = esf::Quadr<Element::order, typename Element::Space_dim>>
-auto load_vector(double scale)
-{
-	constexpr auto n_dofs = Element::total_cell_dofs;
-
-	return esl::make_vector<n_dofs>([scale](auto i) {
-		return scale * Quadr::sum([i](Local_index q) {
-			constexpr auto basis = Element_quadr<Element, Quadr>::basis();
-			return basis(q, i);
-		});
-	});
 }
 } // namespace esf

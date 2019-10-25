@@ -32,15 +32,6 @@ template<class Element_tag, class Mesh>
 class Element_view;
 
 //////////////////////////////////////////////////////////////////////////
-/** Finite elements */
-
-template<std::size_t order, class Space_dim = Dim2>
-class Lagrange;
-
-template<std::size_t order, class Space_dim = Dim2>
-class Discontinuous_lagrange;
-
-//////////////////////////////////////////////////////////////////////////
 
 template<std::size_t, class Space_dim>
 class Quadr;

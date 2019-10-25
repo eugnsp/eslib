@@ -1,5 +1,5 @@
 #pragma once
-#include <esf/index.hpp>
+#include <cstddef>
 
 namespace esf
 {
@@ -7,6 +7,6 @@ template<class Quadr_>
 struct Quadr_point_index
 {
 	using Quadr = Quadr_;
-	Index index;
+	std::size_t index;
 };
 } // namespace esf

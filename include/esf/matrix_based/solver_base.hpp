@@ -2,7 +2,6 @@
 #include <esf/solution_view.hpp>
 #include <esf/system.hpp>
 #include <esf/type_traits.hpp>
-#include <esf/utility/system_for_each.hpp>
 
 #include <esl/dense.hpp>
 
@@ -90,7 +89,7 @@ protected:
 
 	void set_bnd_values()
 	{
-		esf::for_each_variable(system_,
+		system_.for_each_variable(
 			[this]<std::size_t vi, class Var>(Var_index<vi> var_index, const Var& var)
 		{
 			using Element = typename Var::Element;
@@ -100,7 +99,7 @@ protected:
 				if constexpr (Element::has_vertex_dofs)
 					for (auto& vertex : bnd_cond.vertices())
 					{
-						const auto vertex_dofs = dofs(system(), vertex, var_index);
+						const auto vertex_dofs = dofs(system_, vertex, var_index);
 						for (std::size_t i = 0; i < vertex_dofs.size(); ++i)
 						{
 							assert(!vertex_dofs[i].is_free);
@@ -111,7 +110,7 @@ protected:
 				if constexpr (internal::is_dim2<System> && Element::has_edge_dofs)
 					for (auto& halfedge : bnd_cond.halfedges())
 					{
-						const auto halfedge_dofs = dofs(system(), halfedge, var_index);
+						const auto halfedge_dofs = dofs(system_, halfedge, var_index);
 						for (std::size_t i = 0; i < halfedge_dofs.size(); ++i)
 						{
 							assert(!halfedge_dofs[i].is_free);

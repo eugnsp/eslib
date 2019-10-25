@@ -18,9 +18,8 @@ template<class Linestring>
 double length(const Linestring& linestring, Linestring_tag)
 {
 	double l = 0;
-	esu::for_each_pair(linestring.begin_vertex(),
-					   linestring.end_vertex(),
-					   [&l](const auto& v1, const auto& v2) { l += distance(v1, v2); });
+	esu::for_each_pair(linestring.begin_vertex(), linestring.end_vertex(),
+		[&l](const auto& v1, const auto& v2) { l += distance(v1, v2); });
 
 	return l;
 }

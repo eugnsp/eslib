@@ -37,12 +37,12 @@ auto V::face_circ() const -> Face_circ
 	return Face_circ{mesh_, mesh_.halfedge_index(index_)};
 }
 
-Local_index V::n_edges() const
+std::size_t V::n_edges() const
 {
 	auto he = halfedge_in_circ();
 	const auto he_first = he;
 
-	Local_index n = 0;
+	std::size_t n = 0;
 	do
 		++n;
 	while (++he != he_first);
@@ -50,7 +50,7 @@ Local_index V::n_edges() const
 	return n;
 }
 
-Local_index V::n_faces() const
+std::size_t V::n_faces() const
 {
 	return n_edges() - is_boundary();
 }

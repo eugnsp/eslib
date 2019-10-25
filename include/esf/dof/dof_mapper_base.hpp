@@ -3,13 +3,13 @@
 #include <esf/dof/function.hpp>
 #include <esf/dof/mesh_vars_map.hpp>
 #include <esf/type_traits.hpp>
-#include <esf/utility/system_for_each.hpp>
 #include <esf/var.hpp>
 
 #include <esl/dense.hpp>
 
 #include <cassert>
 #include <cstddef>
+#include <type_traits>
 #include <utility>
 
 namespace esf::internal
@@ -79,10 +79,11 @@ private:
 	void compute_n_dofs(const System& system)
 	{
 		n_dofs_ = 0;
-		for_each_variable_and_element<Var_list>([this, &system](auto var, auto element_tag) {
-			const auto n_dofs = system.variable(var).dofs(element_tag);
-			const auto n_elements = *system.mesh().n_elements(element_tag);
-			n_dofs_ += n_dofs * n_elements;
+		const auto& mesh = system.mesh();
+		system.for_each_variable_and_element(
+			[this, &mesh](auto /* var_index */, auto element_tag, const auto& var)
+		{
+			n_dofs_ += var.dofs(element_tag) * *mesh.n_elements(element_tag);
 		});
 	}
 
@@ -91,13 +92,11 @@ private:
 	{
 		n_free_dofs_ = n_dofs_;
 
-		esf::for_each_variable<Var_list>(
-			[this, &system]<std::size_t var_idx>(Var_index<var_idx> var_index)
+		system.for_each_variable(
+			[this]<std::size_t var_idx, class Var>(Var_index<var_idx> var_index, const Var& var)
 		{
-			using Variable = typename Var_list::template Nth<var_idx>;
-			using Element = typename Variable::Element;
+			using Element = typename Var::Element;
 
-			const auto& var = system.variable(var_index);
 			var.for_each_strong_bnd_cond([this, &var, var_index](const auto& bnd_cond)
 			{
 				if constexpr (Element::has_vertex_dofs)
@@ -129,17 +128,18 @@ private:
 		Index free_index = 0;
 		Index const_index = n_free_dofs_;
 
-		for_each_variable_and_element<Var_list>(
-			[this, &system, &free_index, &const_index](auto var, auto element_tag)
+		const auto& mesh = system.mesh();
+		system.for_each_variable_and_element(
+			[this, &mesh, &free_index, &const_index](auto var_index, auto element_tag, auto& var)
 		{
-			using Element_index = esf::internal::Element_index_by_tag<decltype(element_tag)>;
-
-			for (Element_index ei{}; ei < system.mesh().n_elements(element_tag); ++ei)
+			const auto n_elements = mesh.n_elements(element_tag);
+			using I = std::remove_const_t<decltype(n_elements)>;
+			for (I i{}; i < n_elements; ++i)
 			{
-				Dof_index& dof = indices_.at(ei, var);
+				Dof_index& dof = indices_.at(i, var_index);
 				auto& index = dof.is_free ? free_index : const_index;
 				dof.index = index;
-				index += system.variable(var).dofs(element_tag);
+				index += var.dofs(element_tag);
 			}
 		});
 	}

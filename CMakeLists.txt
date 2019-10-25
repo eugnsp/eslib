@@ -14,6 +14,7 @@ target_compile_options(eslib PRIVATE -Wall -Wpedantic -Wextra -Werror=return-typ
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 	target_compile_options(eslib PRIVATE -Wno-psabi)
+	target_compile_options(eslib PUBLIC -fconcepts)
 endif()
 
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)

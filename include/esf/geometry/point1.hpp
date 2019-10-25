@@ -29,7 +29,7 @@ public:
 		return x_;
 	}
 
-	constexpr double x() const
+	constexpr const double& x() const
 	{
 		return x_;
 	}
@@ -46,6 +46,11 @@ inline bool operator<(const Point1& lhs, const Point1& rhs)
 inline bool operator==(const Point1& a, const Point1& b)
 {
 	return equals(a, b);
+}
+
+inline bool operator!=(const Point1& a, const Point1& b)
+{
+	return !(a == b);
 }
 
 std::ostream& operator<<(std::ostream& out, const Point1& p);

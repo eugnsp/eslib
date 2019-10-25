@@ -5,6 +5,7 @@
 
 #include <cassert>
 #include <cstddef>
+#include <utility>
 
 namespace esf
 {
@@ -18,12 +19,12 @@ public:
 	using Space_dim = Dim1;
 
 	// The total number of quadrature points
-	static constexpr Local_index size = points.size();
+	static constexpr std::size_t size = points.size();
 
 public:
 	// Returns the quadrature point with the given index
 	// on the reference interval [0, 1]
-	static constexpr Point1 point(Local_index point)
+	static constexpr Point1 point(std::size_t point)
 	{
 		assert(point < size);
 
@@ -36,12 +37,12 @@ public:
 	template<class Fn>
 	static constexpr auto sum(Fn fn)
 	{
-		return sum_impl(fn, Make_local_index_sequence<size>{});
+		return sum_impl(fn, std::make_index_sequence<size>{});
 	}
 
 private:
-	template<class Fn, Local_index... indices>
-	static constexpr auto sum_impl(Fn fn, Local_index_sequence<indices...>)
+	template<class Fn, std::size_t... indices>
+	static constexpr auto sum_impl(Fn fn, std::index_sequence<indices...>)
 	{
 		return (... + (points[indices].weight * fn(indices)));
 	}

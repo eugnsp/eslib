@@ -106,7 +106,7 @@ public:
 		const auto pt_ref = point_to_ref_triangle(pt, cell);
 		const auto dofs = esf::dofs(system_, cell, var_index);
 		Value value{};
-		for (Local_index id = 0; id < dofs.size(); ++id)
+		for (std::size_t id = 0; id < dofs.size(); ++id)
 			value += Element::basis(id, pt_ref) * solution_[dofs[id].index];
 		return value;
 	}

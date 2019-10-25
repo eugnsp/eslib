@@ -26,11 +26,30 @@ struct Var_list
 
 	// Returns the list of variables as an `std::tuple`
 	using Tuple = Tuple_map<esu::Type_identity>;
-};
 
-namespace internal
-{
-template<class Var_list, std::size_t i>
-using Nth_variable = typename Var_list::template Nth<i>;
-}
+	template<class Fn>
+	static void for_each_variable(Fn fn)
+	{
+		[&fn]<std::size_t... var_idxs>(std::index_sequence<var_idxs...>)
+		{
+			((void)fn(Var_index<var_idxs>{}), ...);
+		}
+		(std::make_index_sequence<size>{});
+	}
+
+	template<class Fn>
+	static void for_each_variable_and_element(Fn fn)
+	{
+		for_each_variable([&fn]<std::size_t var_idx>(Var_index<var_idx> var_index)
+		{
+			using Element = typename Var_type<Var_list, var_idx>::Element;
+			if constexpr (Element::has_vertex_dofs)
+				fn(var_index, Vertex_tag{});
+			if constexpr (Element::has_edge_dofs)
+				fn(var_index, Edge_tag{});
+			if constexpr (Element::has_face_dofs)
+				fn(var_index, Face_tag{});
+		});
+	}
+};
 } // namespace esf

@@ -223,7 +223,7 @@ public:
 			for_each_var<Var_list>([&](auto var1) {
 				const auto& v1 = system.variable(var1);
 
-				for (Local_index dim1 = 0; dim1 < v1.dim(); ++dim1)
+				for (std::size_t dim1 = 0; dim1 < v1.dim(); ++dim1)
 					for (Index layer1 = 0; layer1 < n_layers_; ++layer1)
 					{
 						const auto& dofs1 = std::get<var1>(dofs[layer1]);
@@ -234,7 +234,7 @@ public:
 
 							// TODO : O(n^2) -> O(n) with iterators or sparse matrices
 
-							for (Local_index dim2 = 0; dim2 < v2.dim(); ++dim2)
+							for (std::size_t dim2 = 0; dim2 < v2.dim(); ++dim2)
 								for (Index layer2 = 0; layer2 < n_layers_; ++layer2)
 									if (coupling(var1, var2, dim1, dim2, layer1, layer2))
 									{

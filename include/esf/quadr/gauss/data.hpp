@@ -12,7 +12,7 @@ struct Gauss_point
 	double x;
 };
 
-template<Local_index t_order>
+template<std::size_t t_order>
 struct Gauss_data {};
 
 template<>

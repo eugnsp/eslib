@@ -55,7 +55,7 @@ bool contains(const Polygon& poly, const Point& point, Polygon_tag, Point2_tag)
 	const auto y = point.y();
 
 	const auto n = poly.n_vertices();
-	for (Local_index i = 0, j = n - 1; i < n; j = i++)
+	for (std::size_t i = 0, j = n - 1; i < n; j = i++)
 	{
 		auto&& vi = poly.vertex(i);
 		auto&& vj = poly.vertex(j);

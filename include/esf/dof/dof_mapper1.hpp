@@ -3,6 +3,7 @@
 #include <esf/index.hpp>
 
 #include <array>
+#include <cstddef>
 
 namespace esf::internal
 {
@@ -81,7 +82,7 @@ private:
 		static_assert(Base::template Var<var>::Element::has_vertex_dofs);
 
 		const Dof_index& first_dof = this->indices_.at(vertex, Var_index<var>{});
-		for (Local_index i = 0; i < dofs.size(); ++i)
+		for (std::size_t i = 0; i < dofs.size(); ++i)
 			dofs[i] = first_dof + i;
 
 		// TODO : implements in terms of assign_dofs
@@ -123,7 +124,7 @@ private:
 		const esf::Dof_index& first_dof = this->indices_.at(element, esf::Var_index<var>{});
 
 		constexpr auto n = Element::dofs(esf::internal::Element_tag_by_index<Element_index>{});
-		for (esf::Local_index k = 0; k < n; ++k)
+		for (std::size_t k = 0; k < n; ++k)
 			dofs[i++] = first_dof + k;
 	}
 };

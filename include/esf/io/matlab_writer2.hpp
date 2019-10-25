@@ -1,7 +1,9 @@
 #pragma once
-#include <cassert>
 #include <esf/mesh/mesh2.hpp>
 #include <esl/io/matfile_writer.hpp>
+
+#include <cassert>
+#include <cstddef>
 #include <string>
 
 namespace esf
@@ -33,7 +35,7 @@ public:
 			std::array<Vertex_index, 3> vertices;
 			cell.get_indices(vertices);
 
-			for (Local_index r = 0; r < 3; ++r)
+			for (std::size_t r = 0; r < 3; ++r)
 			{
 				vertex_field[*vertices[r]] += field[**cell];
 				++norm[*vertices[r]];

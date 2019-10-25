@@ -126,6 +126,27 @@ public:
 		return dof_mapper_.memory_size();
 	}
 
+	template<class Fn>
+	void for_each_variable(Fn fn) const
+	{
+		Var_list::for_each_variable([this, &fn](auto var_index)
+		{
+			auto& var = variable(var_index);
+       		fn(var_index, var);
+		});
+	}
+
+	template<class Fn>
+	void for_each_variable_and_element(Fn fn) const
+	{
+		Var_list::for_each_variable_and_element(
+			[this, &fn](auto var_index, auto Element_tag)
+		{
+			auto& var = variable(var_index);
+       		fn(var_index, Element_tag, var);
+		});
+	}
+
 private:
 	// 	template<std::size_t var = 0>
 	// 	void set_constraints()
@@ -197,9 +218,8 @@ private:
 	const Mesh& mesh_;
 };
 
-template<class 				   Var_list,
-		 template<class> class Dof_mapper>
-std::ostream& operator<<(std::ostream& 						 out,
+template<class Var_list, template<class> class Dof_mapper>
+std::ostream& operator<<(std::ostream& out,
 						 const System<Var_list, Dof_mapper>& system)
 {
 	out << system.name() << '\n'

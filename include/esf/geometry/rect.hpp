@@ -15,21 +15,14 @@ public:
 public:
 	Rect() = default;
 
-	Rect(
-		const Point2 bottom_left,
-		const double width,
-		const double height)
-	:	bottom_left_(bottom_left),
-		width_(width),
-		height_(height)
+	Rect(const Point2& bottom_left, const double width, const double height)
+		: bottom_left_(bottom_left), width_(width), height_(height)
 	{
 		assert(width_ >= 0 && height_ >= 0);
 	}
 
-	Rect(
-		const Point2 bottom_left,
-		const Point2 top_right)
-	:	Rect(bottom_left, top_right.x() - bottom_left.x(), top_right.y() - bottom_left.y())
+	Rect(const Point2& bottom_left, const Point2& top_right)
+		: Rect(bottom_left, top_right.x() - bottom_left.x(), top_right.y() - bottom_left.y())
 	{}
 
 	double top() const
@@ -62,22 +55,22 @@ public:
 		return height_;
 	}
 
-	esf::Point2 bottom_left() const
+	Point2 bottom_left() const
 	{
 		return bottom_left_;
 	}
 
-	esf::Point2 bottom_right() const
+	Point2 bottom_right() const
 	{
 		return {bottom(), right()};
 	}
 
-	esf::Point2 top_left() const
+	Point2 top_left() const
 	{
 		return {top(), left()};
 	}
 
-	esf::Point2 top_right() const
+	Point2 top_right() const
 	{
 		return {top(), right()};
 	}
@@ -128,8 +121,8 @@ public:
 	// 	}
 
 private:
-	const Point2 bottom_left_;
-	const double width_ = 0;
-	const double height_ = 0;
+	Point2 bottom_left_{0, 0};
+	double width_  = 0;
+	double height_ = 0;
 };
 } // namespace esf

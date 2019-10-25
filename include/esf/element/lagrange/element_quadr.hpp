@@ -1,5 +1,5 @@
 #pragma once
-#include <esf/index.hpp>
+#include <esf/element/lagrange/lagrange.hpp>
 #include <esf/type_traits.hpp>
 
 #include <esl/dense.hpp>
@@ -24,10 +24,11 @@ public:
 	// as the matrix of the size (# quadr. points) x (# dofs)
 	static constexpr auto basis()
 	{
-		return esl::make_matrix<n_points, n_dofs>([](auto quadr, auto dof) constexpr
-		{
-			return Element::basis(dof, Quadr::point(quadr));
-		});
+		return esl::make_matrix<n_points, n_dofs>(
+			[](std::size_t quadr, std::size_t dof) constexpr
+			{
+				return Element::basis(dof, Quadr::point(quadr));
+			});
 	}
 
 	// Returns the values of gradients of basis functions at the quadrature points

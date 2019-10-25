@@ -1,6 +1,5 @@
 #pragma once
-#include <esf/element/lagrange/util.hpp>
-#include <esf/index.hpp>
+#include <esf/element/lagrange/prod_frac.hpp>
 
 #include <esl/dense.hpp>
 
@@ -10,7 +9,7 @@
 
 namespace esf::internal
 {
-template<Local_index order_>
+template<std::size_t order_>
 class Lagrange_base_2
 {
 public:
@@ -30,8 +29,7 @@ public:
 	}
 
 	// Returns the value of the basis function (dof) gradient at the given point (point)
-	static constexpr auto basis_grad(const std::size_t dof, const esl::Vector_2d& point)
-		-> esl::Vector_2d
+	static constexpr esl::Vector_2d basis_grad(const std::size_t dof, const esl::Vector_2d& point)
 	{
 		const auto r = ijk_by_dof_index(dof);
 

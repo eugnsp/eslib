@@ -8,5 +8,6 @@
 #include <esf/matrix_based/solver.hpp>
 #include <esf/mesh/mesh1.hpp>
 #include <esf/mesh/mesh2.hpp>
+#include <esf/mesh/tensor_mesh.hpp>
 #include <esf/system.hpp>
 #include <esf/var.hpp>

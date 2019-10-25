@@ -3,6 +3,8 @@
 #include <esf/mesh/view/base.hpp>
 #include <esf/tags.hpp>
 
+#include <cstddef>
+
 namespace esf
 {
 
@@ -19,12 +21,12 @@ public:
 	using Element_view_base::Element_view_base;
 
 	const Point2& vertex() const;
-	const Point2& vertex(Local_index) const;
+	const Point2& vertex(std::size_t) const;
 
 	Point2 vector() const;
 
 	Vertex_index vertex_index() const;
-	Vertex_index vertex_index(Local_index) const;
+	Vertex_index vertex_index(std::size_t) const;
 
 	Edge_index edge_index() const;
 
@@ -85,11 +87,11 @@ public:
 
 	Face_index face_index() const;
 	Face_index twin_face_index() const;
-	Face_index face_index(Local_index) const; // The face on the left (right) has local index 0 (1)
+	Face_index face_index(std::size_t) const; // The face on the left (right) has local index 0 (1)
 
 	Face_view face_view() const;
 	Face_view twin_face_view() const;
-	Face_view face_view(Local_index) const; // The face on the left (right) has local index 0 (1)
+	Face_view face_view(std::size_t) const; // The face on the left (right) has local index 0 (1)
 
 	// 	// Index oppositeVertexIndex(Local_index) const;
 	//

@@ -19,14 +19,14 @@ public:
 		return ticks_.back().n + 1;
 	}
 
-	void add_tick(double coord)
+	void add_tick(const double coord)
 	{
 		assert(ticks_.empty());
 
 		ticks_.push_back({0, coord, 0});
 	}
 
-	void add_tick(std::size_t n, double coord, double bowing = 0)
+	void add_tick(const std::size_t n, const double coord, const double bowing = 0)
 	{
 		assert(!ticks_.empty());
 		assert(n > ticks_.back().n);
@@ -36,12 +36,13 @@ public:
 		ticks_.push_back({n, coord, bowing});
 	}
 
-	std::vector<esf::Point1> grid() const
+	std::vector<Point1> grid() const
 	{
-		std::vector<esf::Point1> grid(ticks_.back().n + 1);
+		std::vector<Point1> grid(ticks_.back().n + 1);
 
 		grid.front().x() = ticks_.front().coord;
-		esu::for_each_pair(ticks_.begin(), ticks_.end(), [&grid](auto& left, auto& right) {
+		esu::for_each_pair(ticks_.begin(), ticks_.end(), [&grid](auto& left, auto& right)
+		{
 			make_grid_on_interval(grid, left, right);
 		});
 
@@ -56,9 +57,8 @@ private:
 		const double bowing;
 	};
 
-	static void make_grid_on_interval(std::vector<esf::Point1>& grid,
-									  const Tick& left,
-									  const Tick& right)
+	static void make_grid_on_interval(std::vector<Point1>& grid,
+									  const Tick& left, const Tick& right)
 	{
 		if (right.bowing == 0)
 		{

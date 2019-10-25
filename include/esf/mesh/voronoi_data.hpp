@@ -21,7 +21,7 @@ public:
 		data_.resize(2 * mesh_.n_edges(), {});
 
 		for (auto edge = mesh_.begin_edge(); edge != mesh_.end_edge(); ++edge)
-			for (Local_index k = 0; k < 2; ++k)
+			for (std::size_t k = 0; k < 2; ++k)
 			{
 				const auto face = edge->face_view(k);
 				if (!face.is_valid())

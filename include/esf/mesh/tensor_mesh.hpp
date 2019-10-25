@@ -1,5 +1,5 @@
 #pragma once
-#include <esf/geom.hpp>
+#include <esf/geometry.hpp>
 #include <esf/mesh/mesh2.hpp>
 
 #include <algorithm>
@@ -11,10 +11,10 @@
 namespace esf
 {
 // A triangular tensor mesh
-class Tri_tensor_mesh : public Mesh<Dim2>
+class Tri_tensor_mesh : public Mesh2
 {
 public:
-	using Grid = std::vector<double>;
+	using Grid = std::vector<Point1>;
 
 public:
 	// Constructs a triangular tensor mesh from x- and y-gridlines
@@ -35,13 +35,13 @@ public:
 		Tri_tensor_mesh(std::move(grid_x), std::move(grid_y), [](auto...) { return true; })
 	{}
 
-	virtual Vertex_index find_vertex(const Point& point) const override
+	virtual Vertex_index find_vertex(const Point2& point) const override
 	{
-		const auto ix = binary_find(grid_x_, point.x());
+		const auto ix = binary_find(grid_x_, Point1{point.x()});
 		if (ix == grid_x_.end())
 			return Vertex_index::invalid;
 
-		const auto iy = binary_find(grid_y_, point.y());
+		const auto iy = binary_find(grid_y_, Point1{point.y()});
 		if (iy == grid_y_.end())
 			return Vertex_index::invalid;
 
@@ -82,26 +82,26 @@ private:
 		std::vector<Vertex_index> prev(nx), next(nx);
 
 		for (Index i = 0; i < nx; ++i)
-			prev[i] = add_vertex({grid_x_[i], grid_y_[0]});
+			prev[i] = add_vertex({grid_x_[i].x(), grid_y_[0].x()});
 
 		for (Index j = 1; j < ny; ++j)
 		{
 			for (Index i = 0; i < nx; ++i)
-				next[i] = add_vertex({grid_x_[i], grid_y_[j]});
+				next[i] = add_vertex({grid_x_[i].x(), grid_y_[j].x()});
 
 			for (Index i = 0; i < nx - 1; ++i)
 			{
-				const Rect rect({grid_x_[i], grid_y_[j - 1]}, {grid_x_[i + 1], grid_y_[j]});
+				const Rect rect({grid_x_[i].x(), grid_y_[j - 1].x()}, {grid_x_[i + 1].x(), grid_y_[j].x()});
 				if (bisection(rect))
 				{												   //     *---*  next
 					add_cell({prev[i], prev[i + 1], next[i + 1]}); //     | / |
 					add_cell({prev[i], next[i + 1], next[i]});	   //     *---*  prev
-				}												   //	    i  i+1
+				}												   //	  i  i+1
 				else
 				{												   //     *---*  next
 					add_cell({next[i], prev[i], prev[i + 1]});	   //     | \ |
 					add_cell({next[i], prev[i + 1], next[i + 1]}); //     *---*  prev
-				}												   //	    i  i+1
+				}												   //	  i  i+1
 			}
 
 			std::swap(prev, next);
@@ -114,10 +114,10 @@ private:
 		assert(!check());
 	}
 
-	static Grid::const_iterator binary_find(const Grid& grid, double value)
+	static Grid::const_iterator binary_find(const Grid& grid, const Point1 value)
 	{
-		const auto it = std::lower_bound(grid.begin(), grid.end(), value, Is_geom_less{});
-		if (it == grid.end() || !is_geom_equal(*it, value))
+		const auto it = std::lower_bound(grid.begin(), grid.end(), value);
+		if (it == grid.end() || *it != value)
 			return grid.end();
 		else
 			return it;

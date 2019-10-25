@@ -48,7 +48,7 @@ esf::Point2 center(const Polygon& geom, Polygon_tag)
 
 	// TODO : generic
 	auto center = geom.vertex(0);
-	for (Local_index i = 1; i < n; ++i)
+	for (std::size_t i = 1; i < n; ++i)
 		center += geom.vertex(i);
 
 	center /= n;

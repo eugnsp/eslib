@@ -1,7 +1,6 @@
 #pragma once
 #include <esf/dof/function.hpp>
 #include <esf/index.hpp>
-#include <esf/utility/system_for_each.hpp>
 #include <esf/var.hpp>
 
 #include <esl/sparse/sparsity_pattern.hpp>
@@ -28,7 +27,7 @@ esl::Sparsity_pattern<Symmetry_tag> sparsity_pattern(const System& system)
 	for (auto& cell : system.mesh().cells())
 	{
 		indices.clear();
-		esf::for_each_variable(system,
+		system.for_each_variable(
 			[&]<std::size_t var_idx, class Var>(Var_index<var_idx> var_index, const Var& var)
 		{
 			const auto dofs = esf::dofs(system, cell, var_index);

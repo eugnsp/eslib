@@ -4,6 +4,8 @@
 
 #include <esl/dense.hpp>
 
+#include <cstddef>
+
 namespace esf
 {
 namespace internal
@@ -12,8 +14,8 @@ template<class Element, class Quadr, class Grads, class Inv_tr_jacobian>
 auto gradients(Grads& grads, const Inv_tr_jacobian& j)
 {
 	constexpr auto basis_grads = esf::Element_quadr<Element, Quadr>::basis_grad();
-	for (esf::Local_index i = 0; i < grads.rows(); ++i)
-		for (esf::Local_index r = 0; r < grads.cols(); ++r)
+	for (std::size_t i = 0; i < grads.rows(); ++i)
+		for (std::size_t r = 0; r < grads.cols(); ++r)
 			grads(i, r) = j * basis_grads(i, r);
 }
 } // namespace internal

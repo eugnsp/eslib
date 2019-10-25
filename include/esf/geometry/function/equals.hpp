@@ -26,7 +26,8 @@ bool equals(const Polygon1& polygon1, const Polygon2& polygon2, Polygon_tag, Pol
 	if (polygon1.n_vertices() != polygon2.n_vertices())
 		return false;
 
-	const auto equals_pred = [](const auto& point1, const auto& point2) {
+	const auto equals_pred = [](const auto& point1, const auto& point2)
+	{
 		return equals(point1, point2);
 	};
 
@@ -38,9 +39,7 @@ bool equals(const Polygon1& polygon1, const Polygon2& polygon2, Polygon_tag, Pol
 template<class Geometry1, class Geometry2>
 bool equals(const Geometry1& geometry1, const Geometry2& geometry2)
 {
-	return internal::equals(geometry1,
-							geometry2,
-							typename Geometry1::Geometry_tag{},
-							typename Geometry2::Geometry_tag{});
+	return internal::equals(geometry1, geometry2,
+		typename Geometry1::Geometry_tag{}, typename Geometry2::Geometry_tag{});
 }
 } // namespace esf

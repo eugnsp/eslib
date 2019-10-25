@@ -4,6 +4,7 @@
 #include <esf/mesh/view/base.hpp>
 #include <esf/tags.hpp>
 
+#include <cstddef>
 #include <iosfwd>
 
 namespace esf
@@ -31,8 +32,8 @@ public:
 	Edge_circ edge_circ() const;
 	Face_circ face_circ() const;
 
-	Local_index n_edges() const;
-	Local_index n_faces() const;
+	std::size_t n_edges() const;
+	std::size_t n_faces() const;
 
 	// Outputs human readable information about the view
 	void print(std::ostream&) const;

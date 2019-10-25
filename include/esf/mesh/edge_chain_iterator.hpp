@@ -32,8 +32,8 @@ namespace esf
 // 			ViewType view_;
 // 		};
 
-class Edge_chain_edge_iterator :
-	public internal::Iterator_base<Edge_tag, Mesh2, std::forward_iterator_tag>
+class Edge_chain_edge_iterator
+	: public internal::Iterator_base<Edge_tag, Mesh2, std::forward_iterator_tag>
 {
 private:
 	using Edge_list = std::vector<Index>;
@@ -41,9 +41,8 @@ private:
 public:
 	Edge_chain_edge_iterator(const Mesh2& mesh,
 							 Edge_list::const_iterator it,
-							 Edge_list::const_iterator itEnd) :
-		Iterator_base(mesh),
-		it_(it), itEnd_(itEnd)
+							 Edge_list::const_iterator itEnd)
+		: Iterator_base(mesh), it_(it), itEnd_(itEnd)
 	{
 		if (it != itEnd)
 			set_view_index(*it);

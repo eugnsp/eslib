@@ -28,8 +28,8 @@ public:
 
 	bool is_boundary() const;
 
-	const esf::Point2& vertex(Local_index) const;
-	Vertex_index vertex_index(Local_index) const;
+	const Point2& vertex(std::size_t) const;
+	Vertex_index vertex_index(std::size_t) const;
 
 	// Outputs human readable information about the view
 	void print(std::ostream&) const;

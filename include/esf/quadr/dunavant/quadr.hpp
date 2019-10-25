@@ -18,10 +18,10 @@ namespace internal
 {
 // Dunavant quadrature integration
 template<std::size_t order, class Group_index_sequence>
-class Dunavant_quadr;
+class Dunavant_quadr_impl;
 
 template<std::size_t order, std::size_t... group_indices>
-class Dunavant_quadr<order, std::index_sequence<group_indices...>>
+class Dunavant_quadr_impl<order, std::index_sequence<group_indices...>>
 {
 private:
 	static constexpr auto point_groups = Dunavant_data<order>::groups;
@@ -58,16 +58,16 @@ private:
 };
 
 template<std::size_t order>
-using Dunavant_quadr_t = Dunavant_quadr<order,
+using Dunavant_quadr = Dunavant_quadr_impl<order,
 	std::make_index_sequence<std::tuple_size_v<decltype(Dunavant_data<order>::groups)>>>;
 } // namespace internal
 
 // Quadrature integration
 template<std::size_t order>
-class Quadr<order, Dim2> : public internal::Dunavant_quadr_t<order>
+class Quadr<order, Dim2> : public internal::Dunavant_quadr<order>
 {
 private:
-	using Base = internal::Dunavant_quadr_t<order>;
+	using Base = internal::Dunavant_quadr<order>;
 
 public:
 	using Space_dim = Dim2;

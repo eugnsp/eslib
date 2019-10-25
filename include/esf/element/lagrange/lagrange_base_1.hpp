@@ -1,7 +1,6 @@
 #pragma once
-#include <esf/element/lagrange/util.hpp>
+#include <esf/element/lagrange/prod_frac.hpp>
 #include <esf/geometry/point1.hpp>
-#include <esf/index.hpp>
 
 #include <array>
 #include <cassert>
@@ -9,7 +8,7 @@
 
 namespace esf::internal
 {
-template<Local_index order_>
+template<std::size_t order_>
 class Lagrange_base_1
 {
 public:

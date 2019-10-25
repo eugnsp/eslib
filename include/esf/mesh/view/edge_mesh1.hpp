@@ -5,6 +5,7 @@
 #include <esf/tags.hpp>
 
 #include <array>
+#include <cstddef>
 
 namespace esf
 {
@@ -21,8 +22,8 @@ public:
 
 	bool is_boundary() const;
 
-	const Point1& vertex(Local_index) const;
-	Vertex_index vertex_index(Local_index) const;
+	const Point1& vertex(std::size_t) const;
+	Vertex_index vertex_index(std::size_t) const;
 
 	void get_indices(Vertex_indices&) const;
 

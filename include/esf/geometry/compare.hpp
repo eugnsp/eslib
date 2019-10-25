@@ -4,8 +4,8 @@
 namespace esf
 {
 // Maximum distance between two points so that they are considered equal
-#ifdef ES_GEOM_DELTA
-inline constexpr double delta = ES_GEOM_DELTA;
+#ifdef ESF_GEOM_DELTA
+inline constexpr double delta = ESF_GEOM_DELTA;
 #else
 inline constexpr double delta = 1e-6;
 #endif

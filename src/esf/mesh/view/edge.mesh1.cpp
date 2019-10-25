@@ -3,6 +3,7 @@
 #include <esf/mesh/mesh1.hpp>
 
 #include <cassert>
+#include <cstddef>
 #include <tuple>
 
 namespace esf
@@ -12,12 +13,12 @@ bool Element_view<Edge_tag, Mesh1>::is_boundary() const
 	return mesh_.is_boundary(**this);
 }
 
-const Point1& Element_view<Edge_tag, Mesh1>::vertex(Local_index index) const
+const Point1& Element_view<Edge_tag, Mesh1>::vertex(std::size_t index) const
 {
 	return mesh_.vertex(vertex_index(index));
 }
 
-Vertex_index Element_view<Edge_tag, Mesh1>::vertex_index(Local_index index) const
+Vertex_index Element_view<Edge_tag, Mesh1>::vertex_index(std::size_t index) const
 {
 	assert(index < 2);
 	if (index == 0)

@@ -25,13 +25,9 @@ private:
 public:
 	using Base::Base;
 
-	template<
-		typename X,
-		typename Y>
-	Point2(
-		X x,
-		Y y)
-	:	Base{static_cast<double>(x), static_cast<double>(y)}
+	template<typename X, typename Y>
+	Point2(X x, Y y)
+		: Base{static_cast<double>(x), static_cast<double>(y)}
 	{}
 
 	double& x()
@@ -44,12 +40,12 @@ public:
 		return (*this)[1];
 	}
 
-	double x() const
+	const double& x() const
 	{
 		return (*this)[0];
 	}
 
-	double y() const
+	const double& y() const
 	{
 		return (*this)[1];
 	}
