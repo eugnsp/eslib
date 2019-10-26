@@ -9,30 +9,33 @@
 
 namespace esl
 {
-// clang-format off
-template<class Expr, std::enable_if_t<internal::is_extent_static_and_eq(ct_rows_value<Expr>, 2) &&
-									  internal::is_extent_static_and_eq(ct_cols_value<Expr>, 2), int> = 0>
-void invert(Dense<Expr, Lvalue>& expr)
+#ifdef __cpp_concepts
+template<class Expr>
+requires internal::is_lvalue<Expr> && ct_rows_value<Expr> == 2 && ct_cols_value<Expr> == 2
+#else
+template<class Expr, typename = std::enable_if_t<
+	internal::is_lvalue<Expr> && ct_rows_value<Expr> == 2 && ct_cols_value<Expr> == 2>>
+#endif
+void invert(Expr&& expr)
 {
-	const auto d = det(expr);
-
-	using std::swap;
-	swap(expr(0, 0), expr(1, 1));
-
-	expr(0, 0) /= d;
-	expr(1, 1) /= d;
-	expr(1, 0) /= -d;
-	expr(0, 1) /= -d;
+	std::swap(expr(0, 0), expr(1, 1));
+	const auto one_over_d = 1 / det(expr);
+	expr(0, 0) *=  one_over_d;
+	expr(1, 1) *=  one_over_d;
+	expr(1, 0) *= -one_over_d;
+	expr(0, 1) *= -one_over_d;
 }
 
-template<class Expr, std::enable_if_t<internal::is_extent_static_and_eq(ct_rows_value<Expr>, 2) &&
-									  internal::is_extent_static_and_eq(ct_cols_value<Expr>, 2), int> = 0>
-void invert_transpose(Dense<Expr, Lvalue>& expr)
+#ifdef __cpp_concepts
+template<class Expr>
+requires internal::is_lvalue<Expr> && ct_rows_value<Expr> == 2 && ct_cols_value<Expr> == 2
+#else
+template<class Expr, typename = std::enable_if_t<
+	internal::is_lvalue<Expr> && ct_rows_value<Expr> == 2 && ct_cols_value<Expr> == 2>>
+#endif
+void invert_transpose(Expr&& expr)
 {
 	invert(expr);
-
-	using std::swap;
-	swap(expr(0, 1), expr(1, 0));
+	std::swap(expr(0, 1), expr(1, 0));
 }
-// clang-format on
 } // namespace esl

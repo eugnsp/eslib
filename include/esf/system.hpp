@@ -28,9 +28,6 @@ public:
 	using Mesh 		 = esf::Mesh<Space_dim>;
 	using Dof_mapper = Dof_mapper_<Var_list>;
 
-	template<std::size_t var_idx>
-	using Var = typename Var_list::template Nth<var_idx>;
-
 	static constexpr std::size_t n_vars = Var_list::size;
 
 public:

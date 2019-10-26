@@ -1,8 +1,10 @@
 #pragma once
 #include <esf/dof/dof_mapper_base.hpp>
 #include <esf/index.hpp>
+#include <esf/tags.hpp>
+#include <esf/type_traits.hpp>
 
-#include <array>
+#include <cassert>
 #include <cstddef>
 
 namespace esf::internal
@@ -20,112 +22,118 @@ private:
 	static constexpr std::size_t n_vars = Var_list::size;
 
 public:
-	template<std::size_t vi>
-	using Var_dofs = typename Base::template Var_dofs<vi>;
+	template<std::size_t var_idx, class Mesh_element_tag>
+	using Var_dofs = typename Base::template Var_dofs<var_idx, Mesh_element_tag>;
 
-	using Vars_dofs = typename Base::Vars_dofs;
-
-	template<std::size_t vi>
-	using Var_vertex_dofs = typename Base::template Var_vertex_dofs<vi>;
-
-	template<std::size_t vi>
-	using Var_edge_dofs = typename Base::template Var_edge_dofs<vi>;
+	template<std::size_t var_idx, class Mesh_element_tag = Cell_tag>
+    using Var_total_dofs = typename Base::template Var_total_dofs<var_idx, Mesh_element_tag>;
 
 public:
-	template<std::size_t var = 0>
-	Var_dofs<var> dofs(const Edge_view& cell) const
+	template<std::size_t var_idx = 0>
+	auto dofs(const Edge_view& edge, std::size_t var_dim, Var_index<var_idx> = {}) const
+		-> Var_total_dofs<var_idx>
 	{
-		Var_dofs<var> dofs;
-		dofs_impl<var>(cell, dofs);
-		return dofs;
+		static_assert(var_idx < n_vars);
+
+		Vertex_indices vertices;
+		edge.get_indices(vertices);
+		return dofs_impl<var_idx>(vertices, *edge, var_dim);
 	}
 
-	Vars_dofs all_dofs(const Edge_view& cell) const
-	{
-		Vars_dofs dofs_list;
-		dofs2(cell, dofs_list);
-		return dofs_list;
-	}
+    template<std::size_t var_idx = 0, class Mesh_element_index,
+             class Mesh_element_tag = internal::Element_tag_by_index<Mesh_element_index>>
+    auto dofs(Mesh_element_index mesh_element, std::size_t var_dim,
+			  Var_index<var_idx> var_index = {}) const
+        -> Var_dofs<var_idx, Mesh_element_tag>
+    {
+        static_assert(var_idx < n_vars);
+        static_assert(Base::template Var<var_idx>::Element::has_dofs(Mesh_element_tag{}));
 
-	template<std::size_t var = 0>
-	void vertex_dofs(Vertex_index vertex, Var_vertex_dofs<var>& dofs) const
-	{
-		var_vertex_dofs<var>(vertex, dofs);
-	}
+        Var_dofs<var_idx, Mesh_element_tag> dofs;
+        const auto& first_dof = this->indices_.at(mesh_element, var_index);
 
-	template<std::size_t var = 0>
-	Var_vertex_dofs<var> vertex_dofs(Vertex_index vertex) const
-	{
-		Var_vertex_dofs<var> dofs;
-		var_vertex_dofs<var>(vertex, dofs);
-		return dofs;
-	}
+        for (Index i = 0; i < dofs.size(); ++i)
+            dofs[i] = first_dof + i * var_dim;
+
+        return dofs;
+    }
+
+	// Vars_dofs all_dofs(const Edge_view& edge) const
+	// {
+	// 	Vars_dofs dofs_list;
+	// 	dofs2(edge, dofs_list);
+	// 	return dofs_list;
+	// }
+
+	// template<std::size_t var = 0>
+	// void vertex_dofs(Vertex_index vertex, Var_vertex_dofs<var>& dofs) const
+	// {
+	// 	var_vertex_dofs<var>(vertex, dofs);
+	// }
+
+	// template<std::size_t var = 0>
+	// Var_vertex_dofs<var> vertex_dofs(Vertex_index vertex) const
+	// {
+	// 	Var_vertex_dofs<var> dofs;
+	// 	var_vertex_dofs<var>(vertex, dofs);
+	// 	return dofs;
+	// }
 
 private:
-	template<std::size_t var>
-	void dofs_impl(const Edge_view& edge, Var_dofs<var>& dofs) const
+	// void dofs2(const Edge_view& cell, Vars_dofs& dofs) const
+	// {
+	// 	dofs_impl3(cell, dofs, std::make_index_sequence<n_vars>{});
+	// }
+
+	// template<std::size_t var>
+	// void var_vertex_dofs(Vertex_index vertex, Var_vertex_dofs<var>& dofs) const
+	// {
+	// 	static_assert(Base::template Var<var>::Element::has_vertex_dofs);
+
+	// 	const Dof_index& first_dof = this->indices_.at(vertex, Var_index<var>{});
+	// 	for (std::size_t i = 0; i < dofs.size(); ++i)
+	// 		dofs[i] = first_dof + i;
+
+	// 	// TODO : implements in terms of assign_dofs
+	// }
+
+	// template<std::size_t... vars>
+	// void dofs_impl3(const typename Mesh::Edge_view& edge, Vars_dofs& dofs,
+	// 				std::index_sequence<vars...>) const
+	// {
+	// 	Vertex_indices vertices;
+	// 	edge.get_indices(vertices);
+
+	// 	(var_dofs_impl<vars>(vertices, *edge, std::get<vars>(dofs)), ...);
+	// }
+
+	template<std::size_t var_idx>
+	auto dofs_impl([[maybe_unused]] const Vertex_indices& vertices,
+				   [[maybe_unused]] esf::Edge_index edge, std::size_t var_dim) const
+		-> Var_total_dofs<var_idx>
 	{
-		Vertex_indices vertices;
-		edge.get_indices(vertices);
+		using Element = typename Var_type<Var_list, var_idx>::Element;
 
-		var_dofs_impl<var>(vertices, *edge, dofs);
-	}
+		Var_total_dofs<var_idx> dofs;
+		auto dof = dofs.data(); // TODO : replace with .begin()
 
-	void dofs2(const Edge_view& cell, Vars_dofs& dofs) const
-	{
-		dofs_impl3(cell, dofs, std::make_index_sequence<n_vars>{});
-	}
+        const auto assign =	[this, &dof, var_dim]<class Mesh_element_index>(
+			                	Mesh_element_index mesh_element_index)
+		{
+            const auto first = this->indices_.at(mesh_element_index, esf::Var_index<var_idx>{});
+            constexpr auto n = Element::dofs(internal::Element_tag_by_index<Mesh_element_index>{});
+            for (Index i = 0; i < n; ++i)
+                *dof++ = first + i * var_dim;
+        };
 
-	template<std::size_t var>
-	void var_vertex_dofs(Vertex_index vertex, Var_vertex_dofs<var>& dofs) const
-	{
-		static_assert(Base::template Var<var>::Element::has_vertex_dofs);
-
-		const Dof_index& first_dof = this->indices_.at(vertex, Var_index<var>{});
-		for (std::size_t i = 0; i < dofs.size(); ++i)
-			dofs[i] = first_dof + i;
-
-		// TODO : implements in terms of assign_dofs
-	}
-
-	template<std::size_t... vars>
-	void dofs_impl3(const typename Mesh::Edge_view& edge, Vars_dofs& dofs,
-					std::index_sequence<vars...>) const
-	{
-		Vertex_indices vertices;
-		edge.get_indices(vertices);
-
-		(var_dofs_impl<vars>(vertices, *edge, std::get<vars>(dofs)), ...);
-	}
-
-	template<std::size_t var>
-	void var_dofs_impl([[maybe_unused]] const Vertex_indices& vertices,
-					   [[maybe_unused]] esf::Edge_index edge, Var_dofs<var>& dofs) const
-	{
-		using Element = typename Base::template Var<var>::Element;
-
-		// TODO : replace indexing with iterator (when iterators are ready in esl::)
-		std::size_t i = 0;
 		if constexpr (Element::has_vertex_dofs)
 			for (const auto vertex : vertices)
-				assign_dofs<var>(vertex, dofs, i);
+				assign(vertex);
 
 		if constexpr (Element::has_edge_dofs)
-			assign_dofs<var>(edge, dofs, i);
+			assign(edge);
 
-		assert(i == dofs.size());
-	}
-
-	template<std::size_t var, class Element_index>
-	void assign_dofs(Element_index element, Var_dofs<var>& dofs, std::size_t& i) const
-	{
-		using Element = typename Base::template Var<var>::Element;
-
-		const esf::Dof_index& first_dof = this->indices_.at(element, esf::Var_index<var>{});
-
-		constexpr auto n = Element::dofs(esf::internal::Element_tag_by_index<Element_index>{});
-		for (std::size_t k = 0; k < n; ++k)
-			dofs[i++] = first_dof + k;
+		assert(dof == dofs.data() + dofs.size());
 	}
 };
 } // namespace esf::internal

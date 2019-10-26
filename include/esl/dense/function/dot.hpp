@@ -37,8 +37,8 @@ auto dot(T v1, T v2)
 	return v1 * v2;
 }
 
-template<class Expr1, class Category1, class Expr2, class Category2>
-auto dot(const Dense<Expr1, Category1>& expr1, const Dense<Expr2, Category2>& expr2)
+template<class Expr1, class Expr2>
+auto dot(const Dense<Expr1>& expr1, const Dense<Expr2>& expr2)
 {
 	static_assert(internal::is_extent_dynamic_or_eq(ct_rows_value<Expr1>, ct_rows_value<Expr2>));
 	static_assert(internal::is_extent_dynamic_or_eq(ct_cols_value<Expr1>, ct_cols_value<Expr2>));

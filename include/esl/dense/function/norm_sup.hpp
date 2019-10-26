@@ -18,8 +18,8 @@ auto norm_sup(T v) -> decltype(std::abs(std::declval<T>()))
 	return std::abs(v);
 }
 
-template<class Expr, class Category>
-auto norm_sup(const Dense<Expr, Category>& expr)
+template<class Expr>
+auto norm_sup(const Dense<Expr>& expr)
 {
 	using Ret = decltype(std::abs(std::declval<Value_type<Expr>>()));
 	Ret norm{};

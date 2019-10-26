@@ -9,8 +9,8 @@
 
 namespace esl
 {
-template<class Expr, class Rows, class Cols, class Category>
-class View : public Dense<View<Expr, Rows, Cols, Category>, Category>
+template<class Expr, class Rows, class Cols>
+class View : public Dense<View<Expr, Rows, Cols>>
 {
 public:
 	template<class Expr_f>
@@ -29,7 +29,8 @@ public:
 
 	View& operator=(const View& other)
 	{
-		static_assert(std::is_same_v<Category, Lvalue>, "Expression should be an l-value");
+		static_assert(internal::is_lvalue<Expr>);
+
 		this->assign_expr(other);
 		return *this;
 	}
@@ -37,7 +38,8 @@ public:
 	template<class Other>
 	View& operator=(const Expression<Other>& other)
 	{
-		static_assert(std::is_same_v<Category, Lvalue>, "Expression should be an l-value");
+		static_assert(internal::is_lvalue<Expr>);
+
 		this->assign_expr(other);
 		return *this;
 	}
@@ -57,19 +59,22 @@ public:
 
 	std::size_t lead_dim() const
 	{
-		static_assert(is_lvalue_block<View>, "View should be an l-value block");
+		static_assert(internal::is_lvalue<Expr>);
+
 		return expr_.lead_dim();
 	}
 
 	std::size_t row_stride() const
 	{
-		static_assert(is_lvalue_block<View>, "View should be an l-value block");
+		static_assert(internal::is_lvalue<Expr>);
+
 		return expr_.row_stride();
 	}
 
 	std::size_t col_stride() const
 	{
-		static_assert(is_lvalue_block<View>, "View should be an l-value block");
+		static_assert(internal::is_lvalue<Expr>);
+
 		return expr_.col_stride();
 	}
 
@@ -83,7 +88,7 @@ public:
 
 	decltype(auto) operator()(const std::size_t row, const std::size_t col) const
 	{
-		if constexpr (std::is_same_v<Category, Lvalue>)
+		if constexpr (internal::is_lvalue<Expr>)
 			return std::as_const(expr_(rows_[row], cols_[col]));
 		else
 			return expr_(rows_[row], cols_[col]);
@@ -91,7 +96,7 @@ public:
 
 	auto data()
 	{
-		static_assert(is_lvalue_block<View>, "View should be an l-value block");
+		static_assert(is_lvalue_block<View>);
 		if constexpr (is_col_major<View>)
 			return expr_.data() + cols_.start() * lead_dim() + rows_.start();
 		else
@@ -100,7 +105,7 @@ public:
 
 	auto data() const
 	{
-		static_assert(is_lvalue_block<View>, "View should be an l-value block");
+		static_assert(is_lvalue_block<View>);
 		if constexpr (is_col_major<View>)
 			return &std::as_const(*(expr_.data() + cols_.start() * lead_dim() + rows_.start()));
 		else
@@ -117,11 +122,12 @@ private:
 ///////////////////////////////////////////////////////////////////////
 /** Type traits */
 
-template<class Expr, class Rows, class Cols, class Category>
-struct Traits<View<Expr, Rows, Cols, Category>>
+template<class Expr, class Rows, class Cols>
+struct Traits<View<Expr, Rows, Cols>>
 {
-	using Value  = Value_type<Expr>;
-	using Layout = Layout_tag<Expr>;
+	using Value    = Value_type<Expr>;
+	using Layout   = Layout_tag<Expr>;
+	using Category = Category_type<Expr>;
 
 	static constexpr std::size_t rows = ct_size_value<Rows>;
 	static constexpr std::size_t cols = ct_size_value<Cols>;

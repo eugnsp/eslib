@@ -14,10 +14,10 @@
 namespace esl::internal
 {
 template<std::size_t ct_rows, std::size_t ct_cols, class Expr, class Layout>
-class Matrix_base : public Dense<Expr, Lvalue>, public Shape<ct_rows, ct_cols, Layout>
+class Matrix_base : public Dense<Expr>, public Shape<ct_rows, ct_cols, Layout>
 {
 private:
-	using Dense_base = Dense<Expr, Lvalue>;
+	using Dense_base = Dense<Expr>;
 	using Shape_base = Shape<ct_rows, ct_cols, Layout>;
 
 public:

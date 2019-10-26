@@ -11,19 +11,19 @@ namespace esl
 template<class Expr>
 class Expression;
 
-template<class Expr, class Category>
+template<class Expr>
 class Dense;
 
 template<typename Value, std::size_t rows, std::size_t cols, class Layout = Col_major>
 class Matrix;
 
-template<class Expr, class Rows, class Cols, class Category>
+template<class Expr, class Rows, class Cols>
 class View;
 
-template<class Expr, class Category>
+template<class Expr>
 class Transposed_view;
 
-template<class Expr, class Category>
+template<class Expr>
 class Diag_view;
 
 template<class Expr, typename Scalar, template<class, typename> class Fn>

@@ -38,8 +38,8 @@ auto norm1(T v) -> decltype(std::abs(T{}))
 	return std::abs(v);
 }
 
-template<class Expr, class Category>
-auto norm1(const Dense<Expr, Category>& expr)
+template<class Expr>
+auto norm1(const Dense<Expr>& expr)
 {
 	return internal::Fn_norm1<Expr, internal::Mkl_expr_decay<Expr>>{}(expr);
 }

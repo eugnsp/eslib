@@ -1,6 +1,7 @@
 #pragma once
 #include <esl/dense/forward.hpp>
 #include <esl/dense/tags.hpp>
+#include <esl/dense/type_traits/is_lvalue.hpp>
 
 #include <cstddef>
 #include <type_traits>
@@ -26,17 +27,20 @@ struct Mkl_expr_decay_trait_impl<Matrix<Value, rows, cols, Layout>>
 };
 
 template<class Expr, auto begin1, auto size1, auto begin2, auto size2>
-struct Mkl_expr_decay_trait_impl<View<Expr, Range<begin1, size1>, Range<begin2, size2>, Lvalue>> :
-	Mkl_expr_decay_trait<Expr>
-{};
+struct Mkl_expr_decay_trait_impl<View<Expr, Range<begin1, size1>, Range<begin2, size2>>>
+{
+	using Type = std::conditional_t<internal::is_lvalue<Expr>,
+		typename Mkl_expr_decay_trait<Expr>::Type,
+		View<Expr, Range<begin1, size1>, Range<begin2, size2>>>;
+};
 
-template<class Expr>
-struct Mkl_expr_decay_trait_impl<Diag_view<Expr, Lvalue>> : Mkl_expr_decay_trait<Expr>
-{};
+// template<class Expr>
+// struct Mkl_expr_decay_trait_impl<Diag_view<Expr, Lvalue>> : Mkl_expr_decay_trait<Expr>
+// {};
 
-template<class Expr>
-struct Mkl_expr_decay_trait_impl<Transposed_view<Expr, Lvalue>> : Mkl_expr_decay_trait<Expr>
-{};
+// template<class Expr>
+// struct Mkl_expr_decay_trait_impl<Transposed_view<Expr, Lvalue>> : Mkl_expr_decay_trait<Expr>
+// {};
 
 template<class Expr, typename Scalar>
 struct Mkl_expr_decay_trait_impl<Scalar_expr<Expr, Scalar, Scalar_mul_left_fn>>

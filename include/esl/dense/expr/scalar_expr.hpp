@@ -8,7 +8,7 @@
 namespace esl
 {
 template<class Expr_, typename Scalar_, template<class, typename> class Fn_>
-class Scalar_expr : public Dense<Scalar_expr<Expr_, Scalar_, Fn_>, Rvalue>
+class Scalar_expr : public Dense<Scalar_expr<Expr_, Scalar_, Fn_>>
 {
 public:
 	using Value  = Value_type<Scalar_expr>;
@@ -58,8 +58,9 @@ private:
 template<class Expr, typename Scalar, template<class, typename> class Fn>
 struct Traits<Scalar_expr<Expr, Scalar, Fn>>
 {
-	using Value  = typename Fn<Expr, Scalar>::Value;
-	using Layout = Layout_tag<Expr>;
+	using Value    = typename Fn<Expr, Scalar>::Value;
+	using Layout   = Layout_tag<Expr>;
+	using Category = Rvalue;
 
 	static constexpr std::size_t rows = ct_rows_value<Expr>;
 	static constexpr std::size_t cols = ct_cols_value<Expr>;

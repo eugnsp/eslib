@@ -9,17 +9,14 @@ namespace esf
 {
 namespace internal
 {
-template<class, std::size_t var_idx>
-struct Var_type_w;
+template<class System, std::size_t var_idx>
+struct Var_type_w : Var_type_w<typename System::Var_list, var_idx> {};
 
 template<std::size_t var_idx, class... Variables>
 struct Var_type_w<Var_list<Variables...>, var_idx>
 {
 	using Type = esu::Nth<var_idx, Variables...>;
 };
-
-template<std::size_t var_idx, class Var_list, template<class> class Dof_mapper>
-struct Var_type_w<System<Var_list, Dof_mapper>, var_idx> : Var_type_w<Var_list, var_idx> {};
 }
 
 template<class T, std::size_t var_idx = 0>

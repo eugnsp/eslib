@@ -9,8 +9,8 @@
 
 namespace esl
 {
-template<class Expr, class Category>
-class Transposed_view : public Dense<Transposed_view<Expr, Category>, Category>
+template<class Expr>
+class Transposed_view : public Dense<Transposed_view<Expr>>
 {
 public:
 	template<class Expr_f>
@@ -23,7 +23,8 @@ public:
 
 	Transposed_view& operator=(const Transposed_view& other)
 	{
-		static_assert(std::is_same_v<Category, Lvalue>, "Expression should be an l-value");
+		static_assert(internal::is_lvalue<Expr>);
+
 		this->assign_expr(other);
 		return *this;
 	}
@@ -31,7 +32,8 @@ public:
 	template<class Other>
 	Transposed_view& operator=(const Expression<Other>& other)
 	{
-		static_assert(std::is_same_v<Category, Lvalue>, "Expression should be an l-value");
+		static_assert(internal::is_lvalue<Expr>);
+
 		this->assign_expr(other);
 		return *this;
 	}
@@ -51,19 +53,19 @@ public:
 
 	std::size_t lead_dim() const
 	{
-		static_assert(is_lvalue_block<Transposed_view>, "View should be an l-value block");
+		static_assert(internal::is_lvalue<Expr>);
 		return expr_.lead_dim();
 	}
 
 	std::size_t row_stride() const
 	{
-		static_assert(is_lvalue_block<Transposed_view>, "View should be an l-value block");
+		static_assert(internal::is_lvalue<Expr>);
 		return expr_.col_stride();
 	}
 
 	std::size_t col_stride() const
 	{
-		static_assert(is_lvalue_block<Transposed_view>, "View should be an l-value block");
+		static_assert(internal::is_lvalue<Expr>);
 		return expr_.row_stride();
 	}
 
@@ -77,7 +79,7 @@ public:
 
 	decltype(auto) operator()(const std::size_t row, const std::size_t col) const
 	{
-		if constexpr (std::is_same_v<Category, Lvalue>)
+		if constexpr (internal::is_lvalue<Expr>)
 			return std::as_const(expr_(col, row));
 		else
 			return expr_(col, row);
@@ -100,11 +102,12 @@ private:
 ///////////////////////////////////////////////////////////////////////
 /** Type traits */
 
-template<class Expr, class Category>
-struct Traits<Transposed_view<Expr, Category>>
+template<class Expr>
+struct Traits<Transposed_view<Expr>>
 {
-	using Value = Value_type<Expr>;
-	using Layout = typename internal::Transpose_layout<Layout_tag<Expr>>::Type;
+	using Value    = Value_type<Expr>;
+	using Layout   = typename internal::Transpose_layout<Layout_tag<Expr>>::Type;
+	using Category = Category_type<Expr>;
 
 	static constexpr std::size_t rows = ct_cols_value<Expr>;
 	static constexpr std::size_t cols = ct_rows_value<Expr>;

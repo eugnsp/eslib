@@ -18,15 +18,15 @@
 
 namespace esl
 {
-template<class Expr, class Category>
+template<class Expr>
 class Dense : public Expression<Expr>
 {
 private:
 	using Base = Expression<Expr>;
 
 public:
-	using Value = Value_type<Expr>;
-	using Layout = Layout_tag<Expr>;
+	using Value    = Value_type<Expr>;
+	using Layout   = Layout_tag<Expr>;
 
 public:
 	using Base::self;
@@ -69,7 +69,7 @@ public:
 	template<class Expr2>
 	Dense& operator+=(const Expression<Expr2>& expr)
 	{
-		static_assert(internal::is_lvalue<Category>, "Expression should be an l-value");
+		static_assert(internal::is_lvalue<Expr>);
 		static_assert(internal::is_extent_dynamic_or_eq(ct_rows_value<Expr>, ct_rows_value<Expr2>));
 		static_assert(internal::is_extent_dynamic_or_eq(ct_cols_value<Expr>, ct_cols_value<Expr2>));
 		assert(rows() == expr.rows());
@@ -82,7 +82,7 @@ public:
 	template<class Expr2>
 	Dense& operator-=(const Expression<Expr2>& expr)
 	{
-		static_assert(internal::is_lvalue<Category>, "Expression should be an l-value");
+		static_assert(internal::is_lvalue<Expr>);
 		static_assert(internal::is_extent_dynamic_or_eq(ct_rows_value<Expr>, ct_rows_value<Expr2>));
 		static_assert(internal::is_extent_dynamic_or_eq(ct_cols_value<Expr>, ct_cols_value<Expr2>));
 		assert(rows() == expr.rows());
@@ -95,7 +95,7 @@ public:
 	template<class Scalar>
 	Dense& operator*=(const Scalar& scalar)
 	{
-		static_assert(internal::is_lvalue<Category>, "Expression should be an l-value");
+		static_assert(internal::is_lvalue<Expr>);
 
 		internal::Fn_scalar_mul_assign_type<Expr, Scalar>{}(self(), scalar);
 		return *this;
@@ -104,7 +104,7 @@ public:
 	template<class Scalar>
 	Dense& operator/=(const Scalar& scalar)
 	{
-		static_assert(internal::is_lvalue<Category>, "Expression should be an l-value");
+		static_assert(internal::is_lvalue<Expr>);
 
 		internal::Fn_scalar_div_assign_type<Expr, Scalar>{}(self(), scalar);
 		return *this;
@@ -113,7 +113,7 @@ public:
 	template<class Scalar>
 	void assign_scalar(const Scalar& scalar)
 	{
-		static_assert(internal::is_lvalue<Category>, "Expression should be an l-value");
+		static_assert(internal::is_lvalue<Expr>);
 
 		internal::Fn_scalar_assign_type<Expr, Scalar>{}(self(), scalar);
 	}
@@ -121,7 +121,7 @@ public:
 	template<class Expr2>
 	void assign_expr(const Expression<Expr2>& expr)
 	{
-		static_assert(internal::is_lvalue<Category>, "Expression should be an l-value");
+		static_assert(internal::is_lvalue<Expr>);
 		static_assert(internal::is_extent_dynamic_or_eq(ct_rows_value<Expr>, ct_rows_value<Expr2>));
 		static_assert(internal::is_extent_dynamic_or_eq(ct_cols_value<Expr>, ct_cols_value<Expr2>));
 		assert(rows() == expr.rows());
@@ -436,12 +436,12 @@ public:
 
 	auto tr_view()
 	{
-		return Transposed_view<Expr, Category>{self()};
+		return Transposed_view<Expr>{self()};
 	}
 
 	auto tr_view() const
 	{
-		return Transposed_view<const Expr, Category>{self()};
+		return Transposed_view<const Expr>{self()};
 	}
 
 	auto tr_cview() const
@@ -454,12 +454,12 @@ public:
 
 	auto diag_view()
 	{
-		return Diag_view<Expr, Category>{self()};
+		return Diag_view<Expr>{self()};
 	}
 
 	auto diag_view() const
 	{
-		return Diag_view<const Expr, Category>{self()};
+		return Diag_view<const Expr>{self()};
 	}
 
 	auto diag_cview() const
@@ -541,13 +541,13 @@ private:
 	template<class Rows, class Cols>
 	auto view_impl(Rows rows, Cols cols)
 	{
-		return View<Expr, Rows, Cols, Category>{self(), std::move(rows), std::move(cols)};
+		return View<Expr, Rows, Cols>{self(), std::move(rows), std::move(cols)};
 	}
 
 	template<class Rows, class Cols>
 	auto view_impl(Rows rows, Cols cols) const
 	{
-		return View<const Expr, Rows, Cols, Category>{self(), std::move(rows), std::move(cols)};
+		return View<const Expr, Rows, Cols>{self(), std::move(rows), std::move(cols)};
 	}
 };
 } // namespace esl

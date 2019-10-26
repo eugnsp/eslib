@@ -10,7 +10,7 @@
 namespace esl
 {
 template<class Fn, class Layout = No_layout>
-class Fn_matrix : public Dense<Fn_matrix<Fn, Layout>, Rvalue>
+class Fn_matrix : public Dense<Fn_matrix<Fn, Layout>>
 {
 public:
 	using Value = Value_type<Fn_matrix>;
@@ -48,8 +48,9 @@ private:
 template<class Fn, class Layout_>
 struct Traits<Fn_matrix<Fn, Layout_>>
 {
-	using Value  = std::invoke_result_t<Fn, std::size_t, std::size_t>;
-	using Layout = Layout_;
+	using Value    = std::invoke_result_t<Fn, std::size_t, std::size_t>;
+	using Layout   = Layout_;
+	using Category = Rvalue;
 
 	static constexpr std::size_t rows = dynamic;
 	static constexpr std::size_t cols = dynamic;

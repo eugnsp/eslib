@@ -1,4 +1,5 @@
 #pragma once
+#include <esl/dense/type_traits/category_type.hpp>
 #include <esl/dense/type_traits/ct_extent.hpp>
 #include <esl/dense/type_traits/expr_storage.hpp>
 #include <esl/dense/type_traits/is_dense.hpp>

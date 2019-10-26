@@ -1,5 +1,5 @@
 #pragma once
-#include <esf/types.hpp>
+#include <esf/type_traits.hpp>
 
 #include <esl/dense.hpp>
 
@@ -18,7 +18,7 @@ public:
 
 private:
 	template<std::size_t var>
-	using Element = typename System::template Var_t<var>::Element;
+	using Element = typename Var_type<System, var>::Element;
 
 	using Vector = esl::Vector_x<Value>;
 	using Matrix = esl::Matrix_x<Value>;
@@ -58,23 +58,23 @@ public:
 			return 0;
 	}
 
-	template<class Quadr, std::size_t var = 0>
-	auto at_quadr(std::size_t index, const typename System::template Var_dofs<var>& dofs) const
-	{
-		assert(index < size());
-		esl::Vector<Value, Quadr::size> vals_at_quadr{};
+	// template<class Quadr, std::size_t var = 0>
+	// auto at_quadr(std::size_t index, const typename System::template Var_dofs<var>& dofs) const
+	// {
+	// 	assert(index < size());
+	// 	esl::Vector<Value, Quadr::size> vals_at_quadr{};
 
-		for (std::size_t iq = 0; iq < Quadr::size; ++iq)
-			for (std::size_t id = 0; id < dofs.size(); ++id)
-				if (dofs[id].is_free)
-				{
-					const auto v = eigen_vectors_(dofs[id].index, index);
-					vals_at_quadr[iq] +=
-						esf::Element_quadr<Element<var>, Quadr>::basis()(iq, id) * v;
-				}
+	// 	for (std::size_t iq = 0; iq < Quadr::size; ++iq)
+	// 		for (std::size_t id = 0; id < dofs.size(); ++id)
+	// 			if (dofs[id].is_free)
+	// 			{
+	// 				const auto v = eigen_vectors_(dofs[id].index, index);
+	// 				vals_at_quadr[iq] +=
+	// 					esf::Element_quadr<Element<var>, Quadr>::basis()(iq, id) * v;
+	// 			}
 
-		return vals_at_quadr;
-	}
+	// 	return vals_at_quadr;
+	// }
 
 	template<class Quadr, std::size_t var = 0>
 	auto at_quadr(std::size_t index, const typename Mesh::Cell_view& cell) const

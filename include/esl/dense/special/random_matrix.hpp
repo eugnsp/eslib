@@ -11,7 +11,7 @@
 namespace esl
 {
 template<class Random_distribution, class Random_generator>
-class Random_matrix : public Dense<Random_matrix<Random_distribution, Random_generator>, Rvalue>
+class Random_matrix : public Dense<Random_matrix<Random_distribution, Random_generator>>
 {
 public:
 	using Value = Value_type<Random_matrix>;
@@ -82,8 +82,9 @@ Matrix_x<T> random_int_matrix(std::size_t size)
 template<class Random_distribution, class Random_generator>
 struct Traits<Random_matrix<Random_distribution, Random_generator>>
 {
-	using Value = typename Random_distribution::result_type;
-	using Layout = No_layout;
+	using Value    = typename Random_distribution::result_type;
+	using Layout   = No_layout;
+	using Category = Rvalue;
 
 	static constexpr std::size_t rows = dynamic;
 	static constexpr std::size_t cols = dynamic;

@@ -29,12 +29,12 @@ std::string mkl_vsl_status_string(MKL_INT);
 } // namespace internal
 
 template<class Expr1, class Expr2>
-void cols_convolution(const Dense<Expr1, Lvalue>& x,
-					  Dense<Expr2, Lvalue>& y,
+void cols_convolution(const Dense<Expr1>& x, Dense<Expr2>& y,
 					  std::optional<std::size_t> y_start = {})
 {
-	static_assert(internal::have_same_value_types<Expr1, Expr2>, "Incompatible data types");
-	static_assert(internal::is_vector<Expr1>, "Expression should be a vector");
+	static_assert(internal::is_lvalue<Expr1> && internal::is_lvalue<Expr2>);
+	static_assert(internal::have_same_value_types<Expr1, Expr2>);
+	static_assert(internal::is_vector<Expr1>);
 
 	::VSLConvTaskPtr task;
 	ESL_CALL_MKL_VSL(::vsldConvNewTaskX1D,
@@ -64,10 +64,10 @@ void cols_convolution(const Dense<Expr1, Lvalue>& x,
 }
 
 template<class Expr1, class Expr2>
-void rows_convolution(const Dense<Expr1, Lvalue>& x,
-					  Dense<Expr2, Lvalue>& y,
+void rows_convolution(const Dense<Expr1>& x, Dense<Expr2>& y,
 					  std::optional<std::size_t> y_start = {})
 {
+	static_assert(internal::is_lvalue<Expr1> && internal::is_lvalue<Expr2>);
 	static_assert(internal::have_same_value_types<Expr1, Expr2>, "Incompatible data types");
 	static_assert(internal::is_vector<Expr1>, "Expression should be a vector");
 

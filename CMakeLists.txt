@@ -13,7 +13,7 @@ target_compile_options(eslib PRIVATE -Wall -Wpedantic -Wextra -Werror=return-typ
 					   $<$<CONFIG:DEBUG>:-O0 -ggdb> $<$<CONFIG:RELEASE>:-Wno-unused-parameter -Wno-deprecated-declarations -O3 -DNDEBUG>)
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-	target_compile_options(eslib PRIVATE -Wno-psabi)
+	target_compile_options(eslib PRIVATE -Wno-psabi -fmax-errors=1)
 	target_compile_options(eslib PUBLIC -fconcepts)
 endif()
 
@@ -30,18 +30,17 @@ target_link_directories(eslib PUBLIC "${MKL_LIB}")
 target_link_libraries(eslib PUBLIC "${MKL_LIBRARIES}")
 
 find_package(Boost)
-#enable_testing()
-#add_executable(eslib_test "test/esl_test.cpp")
-#if (Boost_FOUND)
-#	target_include_directories(esl_test PUBLIC "${Boost_INCLUDE_DIRS}")
-#endif()
-#target_link_libraries(esl_test PUBLIC esl)
-#target_compile_options(esl_test PRIVATE -Wall -Wpedantic -Wextra -Werror=return-type -m64 -march=native -O0 -g)
+enable_testing()
+add_executable(eslib_test "test/esl/esl_test.cpp")
+if (Boost_FOUND)
+	target_include_directories(eslib_test PUBLIC "${Boost_INCLUDE_DIRS}")
+endif()
+target_link_libraries(eslib_test PUBLIC eslib)
+target_compile_options(eslib_test PRIVATE -Wall -Wpedantic -Wextra -Werror=return-type -m64 -O0 -ggdb)
 
-#if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-#	target_compile_options(esl PRIVATE -Wno-psabi)
-#	target_compile_options(esl_test PRIVATE -Wno-psabi)
-#endif()
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+	target_compile_options(eslib_test PRIVATE -Wno-psabi)
+endif()
 
-#add_test(NAME esl_test COMMAND esl_test)
+add_test(NAME eslib_test COMMAND eslib_test)
 

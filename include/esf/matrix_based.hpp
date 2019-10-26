@@ -3,8 +3,10 @@
 #include <esf/dof/function.hpp>
 #include <esf/element.hpp>
 #include <esf/function.hpp>
+#include <esf/geometry.hpp>
 #include <esf/io.hpp>
 #include <esf/matrix_based/seq_cell_assembler.hpp>
+#include <esf/matrix_based/nl_solver.hpp>
 #include <esf/matrix_based/solver.hpp>
 #include <esf/mesh/mesh1.hpp>
 #include <esf/mesh/mesh2.hpp>

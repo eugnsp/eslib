@@ -26,8 +26,8 @@ public:
 };
 } // namespace internal
 
-template<class Expr, class Category>
-auto sum(const Dense<Expr, Category>& expr)
+template<class Expr>
+auto sum(const Dense<Expr>& expr)
 {
 	return internal::Fn_sum<Expr, internal::Mkl_expr_decay<Expr>>{}(expr.self());
 }

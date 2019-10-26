@@ -10,14 +10,14 @@
 
 namespace esl
 {
-template<class Expr, class Category>
-class Diag_view : public Dense<Diag_view<Expr, Category>, Category>
+template<class Expr>
+class Diag_view : public Dense<Diag_view<Expr>>
 {
 public:
 	using Traversal_order = Col_major;
 
 private:
-	using Base = Dense<Diag_view<Expr, Category>, Category>;
+	using Base = Dense<Diag_view<Expr>>;
 
 public:
 	template<class Expr_f>
@@ -32,7 +32,7 @@ public:
 
 	Diag_view& operator=(const Diag_view& other)
 	{
-		static_assert(std::is_same_v<Category, Lvalue>, "Expression should be an l-value");
+		static_assert(internal::is_lvalue<Expr>);
 		this->assign_expr(other);
 		return *this;
 	}
@@ -60,7 +60,7 @@ public:
 
 	std::size_t lead_dim() const
 	{
-		static_assert(is_lvalue_block<Diag_view>, "View should be an l-value block");
+		static_assert(internal::is_lvalue<Expr>);
 		return expr_.lead_dim() + 1;
 	}
 
@@ -86,7 +86,7 @@ public:
 	decltype(auto) operator()(const std::size_t row, const std::size_t col) const
 	{
 		assert(col == 0);
-		if constexpr (std::is_same_v<Category, Lvalue>)
+		if constexpr (internal::is_lvalue<Expr>)
 			return std::as_const(expr_(row, row));
 		else
 			return expr_(row, row);
@@ -109,11 +109,12 @@ private:
 ///////////////////////////////////////////////////////////////////////
 /** Traits */
 
-template<class Expr, class Category>
-struct Traits<Diag_view<Expr, Category>>
+template<class Expr>
+struct Traits<Diag_view<Expr>>
 {
-	using Value = Value_type<Expr>;
-	using Layout = Col_major;
+	using Value    = Value_type<Expr>;
+	using Layout   = Col_major;
+	using Category = Category_type<Expr>;
 
 	static constexpr std::size_t rows = std::min(ct_rows_value<Expr>, ct_cols_value<Expr>);
 	static constexpr std::size_t cols = 1;

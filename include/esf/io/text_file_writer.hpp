@@ -30,17 +30,14 @@ public:
 	}
 
 private:
-	template<typename T,
-			 typename = std::enable_if_t<std::is_scalar_v<T>>>
+	template<typename T, typename = std::enable_if_t<std::is_scalar_v<T>>>
 	void do_write(T value)
 	{
 		file_ << value;
 	}
 
-	template<class Expr,
-			 class Value_category,
-			 typename = std::enable_if_t<esl::is_vector_expr<Expr>>>
-	void do_write(const esl::Dense<Expr, Value_category>& expr)
+	template<class Expr, typename = std::enable_if_t<esl::is_vector_expr<Expr>>>
+	void do_write(const esl::Dense<Expr>& expr)
 	{
 		file_ << expr[0];
 		for (std::size_t i = 1; i < expr.size(); ++i)

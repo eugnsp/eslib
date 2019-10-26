@@ -17,10 +17,7 @@ template<class Expr1, class Mkl_tag1, class Expr2, class Mkl_tag2, typename = vo
 struct Fn_eigenvalues;
 
 template<class Expr1, class Expr2, typename Value>
-struct Fn_eigenvalues<Expr1,
-					  Lvalue_block_tag<Value>,
-					  Expr2,
-					  Lvalue_block_tag<Value>,
+struct Fn_eigenvalues<Expr1, Lvalue_block_tag<Value>, Expr2, Lvalue_block_tag<Value>,
 					  std::enable_if_t<is_fd<Value> && is_vector<Expr2>>>
 {
 	void operator()(Expr1& mat, Expr2& eigenvalues)
@@ -37,17 +34,17 @@ struct Fn_eigenvalues<Expr1,
 };
 } // namespace internal
 
-template<class Expr1, class Expr2>
-void eigenvalues(Dense<Expr1, Lvalue>& mat, Dense<Expr2, Lvalue>& eigenvalues)
-{
-	static_assert(internal::is_extent_dynamic_or_eq(ct_rows_value<Expr1>, ct_cols_value<Expr1>));
-	static_assert(internal::is_extent_dynamic_or_eq(ct_rows_value<Expr1>, ct_rows_value<Expr2>));
-	assert(mat.rows() == mat.cols());
-	assert(mat.rows() == eigenvalues.size());
+// template<class Expr1, class Expr2>
+// void eigenvalues(Dense<Expr1, Lvalue>& mat, Dense<Expr2, Lvalue>& eigenvalues)
+// {
+// 	static_assert(internal::is_extent_dynamic_or_eq(ct_rows_value<Expr1>, ct_cols_value<Expr1>));
+// 	static_assert(internal::is_extent_dynamic_or_eq(ct_rows_value<Expr1>, ct_rows_value<Expr2>));
+// 	assert(mat.rows() == mat.cols());
+// 	assert(mat.rows() == eigenvalues.size());
 
-	internal::Fn_eigenvalues<Expr1,
-							 internal::Mkl_expr_decay<Expr1>,
-							 Expr2,
-							 internal::Mkl_expr_decay<Expr2>>{}(mat.self(), eigenvalues.self());
-}
+// 	internal::Fn_eigenvalues<Expr1,
+// 							 internal::Mkl_expr_decay<Expr1>,
+// 							 Expr2,
+// 							 internal::Mkl_expr_decay<Expr2>>{}(mat.self(), eigenvalues.self());
+// }
 } // namespace esl

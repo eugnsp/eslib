@@ -24,8 +24,7 @@ public:
 
 public:
 	Matrix_based_solver_base(const Mesh& mesh)
-	:	linear_solver_(matrix_),
-		system_(mesh)
+		: linear_solver_(matrix_), system_(mesh)
 	{}
 
 	System& system()

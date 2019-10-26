@@ -104,14 +104,15 @@ Matrix(const Expression<Expr>&)->Matrix<Value_type<Expr>, ct_rows_value<Expr>, c
 template<typename Value_, std::size_t rows_, std::size_t cols_, class Layout_>
 struct Traits<Matrix<Value_, rows_, cols_, Layout_>>
 {
-	using Value = Value_;
-	using Layout = Layout_;
+	using Value    = Value_;
+	using Layout   = Layout_;
+	using Category = Lvalue;
 
 	static constexpr std::size_t rows = rows_;
 	static constexpr std::size_t cols = cols_;
 
 	static constexpr std::size_t row_stride = is_col_major<Layout> ? 1 : cols;
 	static constexpr std::size_t col_stride = is_row_major<Layout> ? 1 : rows;
-	static constexpr std::size_t lead_dim = is_col_major<Layout> ? rows : cols;
+	static constexpr std::size_t lead_dim   = is_col_major<Layout> ? rows : cols;
 };
 } // namespace esl

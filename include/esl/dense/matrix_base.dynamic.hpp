@@ -44,8 +44,8 @@ public:
 		assert(values.size() % ct_rows == 0);
 	}
 
-	template<class Expr, class Value_category>
-	Matrix_base(const Dense<Expr, Value_category>& expr)
+	template<class Expr>
+	Matrix_base(const Dense<Expr>& expr)
 		: Base(expr)
 	{}
 
@@ -91,8 +91,8 @@ public:
 		assert(values.size() % t_cols == 0);
 	}
 
-	template<class Expr, class Value_category>
-	Matrix_base(const Dense<Expr, Value_category>& expr)
+	template<class Expr>
+	Matrix_base(const Dense<Expr>& expr)
 		: Base(expr)
 	{}
 

@@ -10,20 +10,20 @@
 namespace esl
 {
 // clang-format off
-template<class Expr, class Category,
+template<class Expr,
 	std::enable_if_t<internal::is_extent_static_and_eq(ct_rows_value<Expr>, 2) &&
 					 internal::is_extent_static_and_eq(ct_cols_value<Expr>, 2), int> = 0>
-auto det(const Dense<Expr, Category>& expr)
+auto det(const Dense<Expr>& expr)
 {
 	return esu::det(
 		expr(0, 0), expr(1, 0),
 		expr(0, 1), expr(1, 1));
 }
 
-template<class Expr, class Category,
+template<class Expr,
 	std::enable_if_t<internal::is_extent_static_and_eq(ct_rows_value<Expr>, 3) &&
 					 internal::is_extent_static_and_eq(ct_cols_value<Expr>, 3), int> = 0>
-auto det(const Dense<Expr, Category>& expr)
+auto det(const Dense<Expr>& expr)
 {
 	return esu::det(
 		expr(0, 0), expr(1, 0), expr(2, 0),

@@ -7,8 +7,8 @@
 
 namespace esl
 {
-template<typename T = float, class Expr, class Category, class Row_titles, class Col_titles>
-void write_gnuplot_binary(const std::string& file_name, const Dense<Expr, Category>& expr,
+template<typename T = float, class Expr, class Row_titles, class Col_titles>
+void write_gnuplot_binary(const std::string& file_name, const Dense<Expr>& expr,
 						  Row_titles row_titles, Col_titles col_titles)
 {
 	std::ofstream file;
@@ -37,8 +37,8 @@ void write_gnuplot_binary(const std::string& file_name, const Dense<Expr, Catego
 	}
 }
 
-template<typename T = float, class Expr, class Category>
-void write_gnuplot_binary(const std::string& file_name, const Dense<Expr, Category>& expr)
+template<typename T = float, class Expr>
+void write_gnuplot_binary(const std::string& file_name, const Dense<Expr>& expr)
 {
 	const auto id = [](auto i) { return i; };
 	write_gnuplot_binary(file_name, expr, id, id);

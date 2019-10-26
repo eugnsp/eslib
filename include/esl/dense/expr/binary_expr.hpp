@@ -8,7 +8,7 @@
 namespace esl
 {
 template<class Expr1_, class Expr2_, template<class, class> class Fn_>
-class Binary_expr : public Dense<Binary_expr<Expr1_, Expr2_, Fn_>, Rvalue>
+class Binary_expr : public Dense<Binary_expr<Expr1_, Expr2_, Fn_>>
 {
 public:
 	using Expr1 = Expr1_;
@@ -59,8 +59,9 @@ private:
 template<class Expr1, class Expr2, template<class, class> class Fn>
 struct Traits<Binary_expr<Expr1, Expr2, Fn>>
 {
-	using Value = typename Fn<Expr1, Expr2>::Value;
-	using Layout = Common_layout_tag<Expr1, Expr2>;
+	using Value    = typename Fn<Expr1, Expr2>::Value;
+	using Layout   = Common_layout_tag<Expr1, Expr2>;
+	using Category = Rvalue;
 
 	static constexpr std::size_t rows = Fn<Expr1, Expr2>::ct_rows;
 	static constexpr std::size_t cols = Fn<Expr1, Expr2>::ct_cols;
