@@ -19,6 +19,7 @@ This is a collection of libraries that is being developed mostly for educational
 - Export in MATLAB `.mat` and Gnuplot binary matrix files
 - MKL inspector-executor sparse matrix wrapper
 - MKL Pardiso linear solver and MKL Feast eigensolver wrappers
+- GDB pretty printing
 
 ### `esf`: finite elements library
 
@@ -31,6 +32,7 @@ This is a collection of libraries that is being developed mostly for educational
 - Matrix-based linear, non-linear and eigensolvers
 - Mesh faces colouring and multi-threaded matrix assembly
 - Import from Gmsh mesh files, export into VTK, Matlab and Gnuplot files
+- GDB pretty printing
 
 ## Dependencies
 
