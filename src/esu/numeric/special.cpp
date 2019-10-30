@@ -1,4 +1,4 @@
-#include <esu/numeric/const.hpp>
+#include <esc/math.hpp>
 #include <esu/numeric/special.hpp>
 
 #include <cmath>
@@ -17,7 +17,7 @@ coefficients J.Mol.Struct. 368, 31 (1996) 10.1016/S0166-1280(96)90531-X
 
 */
 
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // Computes ln(1 + exp(x))
 double ln_one_p_exp(double x)
@@ -28,7 +28,7 @@ double ln_one_p_exp(double x)
 		return x + std::log1p(std::exp(-x));
 }
 
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /** Fermi-Dirac statistics */
 
 // Returns the Fermi function, F(x) = 1 / (1 + exp(x))
@@ -205,7 +205,7 @@ double fd_int_three_halves(double x)
 				 (9877.87829948067200 + s * (2644.71979353906092 + s * (128.863768007644572 + s))));
 	}
 
-	return fd / (-2 * math::sqrt_pi);
+	return fd / (-2 * esc::sqrt_pi);
 }
 
 // Returns the Fermi-Dirac integral of order -1/2 [Fuk15a]
@@ -344,7 +344,7 @@ double fd_int_minus_half(double x)
 								  t * (9.97897786755446178e-9 + t * 8.67667698791108582e-10))))));
 	}
 
-	return fd / math::sqrt_pi;
+	return fd / esc::sqrt_pi;
 }
 
 // Returns the Fermi-Dirac integral of order 1/2 [Fuk15a]
@@ -484,7 +484,7 @@ double fd_int_half(double x)
 					  (6569.98472532829094 + s * (280.706465851683809 + s)));
 	}
 
-	return fd * 2 / math::sqrt_pi;
+	return fd * 2 / esc::sqrt_pi;
 }
 
 // Returns the Fermi-Dirac integral of order 1 [Fuk15a]
@@ -528,7 +528,7 @@ double fd_int_one(double y)
 	}
 
 	if (y > 0)
-		fd = -fd + (math::pi_squared / 6) + (0.5 * y * y);
+		fd = -fd + (esc::pi_squared / 6) + (0.5 * y * y);
 
 	return fd;
 }
@@ -543,7 +543,7 @@ double inverse_fd_int_one(double x)
 // Returns the inverse Fermi-Dirac integral of order 1/2
 double inverse_fd_int_half(double x)
 {
-	x *= math::sqrt_pi / 2;
+	x *= esc::sqrt_pi / 2;
 
 	if (x < 1.17683303804380831)
 	{

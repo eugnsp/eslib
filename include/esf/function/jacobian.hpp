@@ -21,6 +21,12 @@ double inv_jacobian(const Segment& segment, Segment1_tag tag)
 	return 1 / jacobian(segment, tag);
 }
 
+template<typename Segment>
+double inv_transp_jacobian(const Segment& segment, Segment1_tag tag)
+{
+	return inv_jacobian(segment, tag);
+}
+
 // Returns the Jacobian of the transformation
 // from a given triangle to the reference one
 template<typename Triangle>

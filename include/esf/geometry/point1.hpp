@@ -13,7 +13,7 @@
 
 namespace esf
 {
-class Point1
+class Point1 final
 {
 public:
 	using Geometry_tag = Point1_tag;

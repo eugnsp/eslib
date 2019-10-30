@@ -1,4 +1,5 @@
 #pragma once
+#include <esl/dense/concepts.hpp>
 #include <esl/dense/forward.hpp>
 #include <esl/dense/function/det.hpp>
 #include <esl/dense/type_traits.hpp>
@@ -9,9 +10,10 @@
 
 namespace esl
 {
-#ifdef __cpp_concepts
+#ifdef ESL_CONCEPTS
 template<class Expr>
-requires internal::is_lvalue<Expr> && ct_rows_value<Expr> == 2 && ct_cols_value<Expr> == 2
+requires concepts::dense<std::remove_reference_t<Expr>> &&
+		 internal::is_lvalue<Expr> && ct_rows_value<Expr> == 2 && ct_cols_value<Expr> == 2
 #else
 template<class Expr, typename = std::enable_if_t<
 	internal::is_lvalue<Expr> && ct_rows_value<Expr> == 2 && ct_cols_value<Expr> == 2>>
@@ -26,9 +28,10 @@ void invert(Expr&& expr)
 	expr(0, 1) *= -one_over_d;
 }
 
-#ifdef __cpp_concepts
+#ifdef ESL_CONCEPTS
 template<class Expr>
-requires internal::is_lvalue<Expr> && ct_rows_value<Expr> == 2 && ct_cols_value<Expr> == 2
+requires concepts::dense<std::remove_reference_t<Expr>> &&
+		 internal::is_lvalue<Expr> && ct_rows_value<Expr> == 2 && ct_cols_value<Expr> == 2
 #else
 template<class Expr, typename = std::enable_if_t<
 	internal::is_lvalue<Expr> && ct_rows_value<Expr> == 2 && ct_cols_value<Expr> == 2>>

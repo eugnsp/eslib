@@ -1,5 +1,5 @@
 #pragma once
-#include <esl/dense/expression.hpp>
+#include <esl/dense/dense.hpp>
 #include <esl/dense/tags.hpp>
 #include <esl/dense/type_traits.hpp>
 #include <esl/dense/utility/ct_extent.hpp>

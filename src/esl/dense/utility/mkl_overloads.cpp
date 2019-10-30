@@ -14,7 +14,7 @@
 
 namespace esl::internal
 {
-//////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /** BLAS level 1 */
 
 #define ESL_IMPL_MKL_BLAS_AXPY_R(fn, T)                                                            \
@@ -54,7 +54,7 @@ ESL_IMPL_MKL_BLAS_AXPY_R(cblas_daxpy, double)
 ESL_IMPL_MKL_BLAS_AXPY_C(cblas_caxpy, std::complex<float>)
 ESL_IMPL_MKL_BLAS_AXPY_C(cblas_zaxpy, std::complex<double>)
 
-///////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 #define ESL_IMPL_MKL_BLAS_DOT(fn, T)                                                               \
 	T mkl_dot(const std::size_t n,                                                                 \
@@ -73,7 +73,7 @@ ESL_IMPL_MKL_BLAS_AXPY_C(cblas_zaxpy, std::complex<double>)
 ESL_IMPL_MKL_BLAS_DOT(cblas_sdot, float)
 ESL_IMPL_MKL_BLAS_DOT(cblas_ddot, double)
 
-///////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 #define ESL_IMPL_MKL_BLAS_NRM2(fn, T)                                                              \
 	Remove_complex<T> mkl_nrm2(const std::size_t n, const T* const data, const std::size_t inc)    \
@@ -86,7 +86,7 @@ ESL_IMPL_MKL_BLAS_NRM2(cblas_dnrm2, double)
 ESL_IMPL_MKL_BLAS_NRM2(cblas_scnrm2, std::complex<float>)
 ESL_IMPL_MKL_BLAS_NRM2(cblas_dznrm2, std::complex<double>)
 
-//////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /** BLAS levels 2 and 3 */
 
 #define ESL_IMPL_MKL_GEMV_R(fn, T)                                                                 \
@@ -150,7 +150,7 @@ ESL_IMPL_MKL_GEMV_R(cblas_dgemv, double)
 ESL_IMPL_MKL_GEMV_C(cblas_cgemv, std::complex<float>)
 ESL_IMPL_MKL_GEMV_C(cblas_zgemv, std::complex<double>)
 
-//////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 #define ESL_IMPL_MKL_GEMM_R(fn, T)                                                                 \
 	void mkl_gemm(const CBLAS_LAYOUT layout,                                                       \
@@ -221,7 +221,7 @@ ESL_IMPL_MKL_GEMM_R(cblas_dgemm, double)
 ESL_IMPL_MKL_GEMM_C(cblas_cgemm3m, std::complex<float>)
 ESL_IMPL_MKL_GEMM_C(cblas_zgemm3m, std::complex<double>)
 
-///////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /** BLAS-like extensions */
 
 #define ESL_IMPL_MKL_OMATCOPY(fn, T)                                                               \
@@ -253,7 +253,7 @@ ESL_IMPL_MKL_OMATCOPY(mkl_domatcopy, double)
 ESL_IMPL_MKL_OMATCOPY(mkl_comatcopy, std::complex<float>)
 ESL_IMPL_MKL_OMATCOPY(mkl_zomatcopy, std::complex<double>)
 
-//////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /** LAPACK */
 
 #define ESL_IMPL_MKL_LAPACK_SYTRD(fn, T)                                                           \
@@ -282,7 +282,7 @@ ESL_IMPL_MKL_OMATCOPY(mkl_zomatcopy, std::complex<double>)
 ESL_IMPL_MKL_LAPACK_SYTRD(LAPACKE_ssytrd, float)
 ESL_IMPL_MKL_LAPACK_SYTRD(LAPACKE_dsytrd, double)
 
-///////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 #define ESL_IMPL_MKL_LAPACK_STERF(fn, T)                                                           \
 	void mkl_lapack_sterf(const std::size_t n, T* const data_d, T* const data_e)                   \

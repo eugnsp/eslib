@@ -11,7 +11,7 @@ namespace esf::internal
 // weight and 1, 3 or 6 points that are obtained via all possible
 // permutations of 1, 2 or 3 barycentric coordinates
 template<std::size_t n>
-class Dunavant_points_group
+class Dunavant_points_group final
 {
 	static_assert(1 <= n && n <= 3);
 

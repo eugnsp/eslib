@@ -1,4 +1,5 @@
 #pragma once
+#include <esl/dense/concepts.hpp>
 #include <esl/dense/dense.hpp>
 #include <esl/dense/shape.hpp>
 #include <esl/dense/storage/static_storage.hpp>
@@ -24,7 +25,7 @@ public:
 	using Value = Value_type<Expr>;
 
 public:
-	//////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Constructors */
 
 	Matrix_base() = default;
@@ -36,10 +37,15 @@ public:
 		Dense_base::assign_scalar(value);
 	}
 
-	template<typename... Values,
-		typename = std::enable_if_t<sizeof...(Values) == ct_rows * ct_cols &&
-									(std::is_convertible_v<Values, Value> && ...)>>
-	explicit constexpr Matrix_base(Values&&... values) : data_{std::forward<Values>(values)...}
+	#ifdef __cpp_concepts
+	template<typename... Values>
+	requires sizeof...(Values) == ct_rows * ct_cols && (... && std::is_convertible_v<Values, Value>)
+	#else
+	template<typename... Values, typename = std::enable_if_t<
+				 sizeof...(Values) == ct_rows * ct_cols && (... && std::is_convertible_v<Values, Value>)>>
+	#endif
+	explicit constexpr Matrix_base(Values&&... values)
+		: data_{std::forward<Values>(values)...}
 	{}
 
 	template<class Expr2>
@@ -48,7 +54,7 @@ public:
 		Dense_base::assign_expr(expr);
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Assignments */
 
 	using Dense_base::operator=;
@@ -56,7 +62,7 @@ public:
 	Matrix_base& operator=(const Matrix_base&) = default;
 	Matrix_base& operator=(Matrix_base&&) = default;
 
-	////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Extents */
 
 	using Shape_base::cols;
@@ -77,7 +83,7 @@ public:
 		return size();
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Element access */
 
 	// Returns the matrix element
@@ -93,14 +99,26 @@ public:
 	}
 
 	constexpr Value& operator[](const std::size_t index)
+	#ifdef ESL_CONCEPTS
+	requires internal::is_vector<Expr>
+	#endif
 	{
-		static_assert(internal::is_vector<Expr>, "Expression should be a vector");
+		#ifndef ESL_CONCEPTS
+		static_assert(internal::is_vector<Expr>);
+		#endif
+
 		return (*this)(index, 0);
 	}
 
 	constexpr const Value& operator[](const std::size_t index) const
+	#ifdef ESL_CONCEPTS
+	requires internal::is_vector<Expr>
+	#endif
 	{
-		static_assert(internal::is_vector<Expr>, "Expression should be a vector");
+		#ifndef ESL_CONCEPTS
+		static_assert(internal::is_vector<Expr>);
+		#endif
+
 		return (*this)(index, 0);
 	}
 
@@ -114,7 +132,7 @@ public:
 		return (*this)[index];
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Modifiers */
 
 	void swap(Matrix_base& other) noexcept(std::is_nothrow_swappable_v<Value>)

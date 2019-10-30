@@ -26,7 +26,7 @@ inline constexpr bool is_extent_static_and_eq(const std::size_t ext1, const std:
 	return ext1 != dynamic && ext2 != dynamic && ext1 == ext2;
 }
 
-///////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 inline constexpr std::size_t extent_static_or_zero(const std::size_t ext)
 {

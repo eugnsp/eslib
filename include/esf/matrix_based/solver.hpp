@@ -8,8 +8,7 @@
 
 namespace esf
 {
-template<class System_,
-		 class Linear_solver_>
+template<class System_, class Linear_solver_>
 class Matrix_based_solver : public Matrix_based_solver_base<System_, Linear_solver_>
 {
 private:
@@ -35,8 +34,6 @@ public:
 	}
 
 protected:
-	//irtual void set_bnd_values() = 0;
-
 	virtual void before_solve()
 	{}
 

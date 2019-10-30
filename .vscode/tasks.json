@@ -6,7 +6,7 @@
 		{
 			"label": "Build eslib (Debug)",
 			"type": "shell",
-			"command": "cmake -DCMAKE_BUILD_TYPE=DEBUG .. && make -j4",
+			"command": "CXX=g++-9 cmake -DCMAKE_BUILD_TYPE=DEBUG .. && make -j4",
 			"options": {"cwd": "${workspaceRoot}/build"},
 			"group": {
 				"kind": "build",

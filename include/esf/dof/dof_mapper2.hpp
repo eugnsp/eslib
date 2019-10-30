@@ -1,5 +1,6 @@
 #pragma once
 #include <esf/dof/dof_mapper_base.hpp>
+#include <esf/forward.hpp>
 #include <esf/index.hpp>
 #include <esf/tags.hpp>
 #include <esf/type_traits.hpp>
@@ -10,10 +11,10 @@
 namespace esf::internal
 {
 template<class Var_list>
-class Dof_mapper<Dim2, Var_list> : public Dof_mapper_base<Var_list>
+class Dof_mapper_impl<Var_list, Dim2> : public Dof_mapper_base<Var_list>
 {
 private:
-	using Base = internal::Dof_mapper_base<Var_list>;
+	using Base = Dof_mapper_base<Var_list>;
 	using Mesh = typename Base::Mesh;
 	using Edge_view = typename Mesh::Edge_view;
 	using Face_view = typename Mesh::Face_view;
@@ -33,7 +34,7 @@ public:
 public:
 	template<std::size_t var_idx = 0>
 	auto dofs(const Face_view& face, Halfedge_index first_halfedge, std::size_t var_dim,
-		      Var_index<var_idx> = {}) const
+		      Var_index<var_idx> var_index = {}) const
 		-> Var_total_dofs<var_idx>
 	{
 		static_assert(var_idx < n_vars);
@@ -41,11 +42,11 @@ public:
 		Vertex_indices vertices;
 		Halfedge_indices halfedges;
 		face.get_indices(first_halfedge, vertices, halfedges);
-		return dofs_impl<var_idx>(vertices, halfedges, *face, var_dim);
+		return dofs_impl(vertices, halfedges, *face, var_index, var_dim);
 	}
 
 	template<std::size_t var_idx = 0>
-	auto dofs(const Face_view& face, std::size_t var_dim, Var_index<var_idx> = {}) const
+	auto dofs(const Face_view& face, std::size_t var_dim, Var_index<var_idx> var_index = {}) const
 		-> Var_total_dofs<var_idx>
 	{
 		static_assert(var_idx < n_vars);
@@ -53,7 +54,7 @@ public:
 		Vertex_indices vertices;
 		Halfedge_indices halfedges;
 		face.get_indices(vertices, halfedges);
-		return dofs_impl<var_idx>(vertices, halfedges, *face, var_dim);
+		return dofs_impl(vertices, halfedges, *face, var_index, var_dim);
 	}
 
 	// Vars_dofs all_dofs(const Face_view& cell) const
@@ -65,7 +66,7 @@ public:
 
 	template<std::size_t var_idx = 0, class Mesh_element_index,
 		     class Mesh_element_tag = internal::Element_tag_by_index<Mesh_element_index>>
-	auto dofs(Mesh_element_index mesh_element, std::size_t var_dim, 
+	auto dofs(Mesh_element_index mesh_element_index, std::size_t var_dim,
 			  Var_index<var_idx> var_index = {}) const
 		-> Var_dofs<var_idx, Mesh_element_tag>
 	{
@@ -73,36 +74,31 @@ public:
 		static_assert(Base::template Var<var_idx>::Element::has_dofs(Mesh_element_tag{}));
 
 		Var_dofs<var_idx, Mesh_element_tag> dofs;
-		const auto& first_dof = this->indices_.at(mesh_element, var_index);
-
-		for (Index i = 0; i < dofs.size(); ++i)
-			dofs[i] = first_dof + i * var_dim;
+		auto dof = dofs.data();
+		get_dofs(dof, mesh_element_index, var_index, var_dim);
+		assert(dof == dofs.data() + dofs.size());
 
 		return dofs;
 	}
 
 	template<std::size_t var_idx = 0>
-	auto dofs(Halfedge_index halfedge, std::size_t var_dim, 
-			  Var_index<var_idx> var_index = {}) const
+	auto dofs(Halfedge_index halfedge, std::size_t var_dim, Var_index<var_idx> var_index = {}) const
 		-> Var_dofs<var_idx, Edge_tag>
 	{
 		static_assert(var_idx < n_vars);
 		static_assert(Base::template Var<var_idx>::Element::has_edge_dofs);
 
 		Var_dofs<var_idx, Edge_tag> dofs;
-		const auto& first_dof = this->indices_.at(edge(halfedge), var_index);
-
-		if (is_first_halfedge(halfedge))
-			for (Index i = 0; i < dofs.size(); ++i)
-				dofs[i] = first_dof + i * var_dim;
-		else
-			for (Index i = 0; i < dofs.size(); ++i)
-				dofs[i] = first_dof + (dofs.size() - 1 - i) * var_dim;
+		auto dof = dofs.data();
+		get_dofs(dof, edge(halfedge), var_index, var_dim, !is_first_halfedge(halfedge));
+		assert(dof == dofs.data() + dofs.size());
 
 		return dofs;
 	}
 
 private:
+	using Base::get_dofs;
+
 	// void dofs2(const Face_view& face, Vars_dofs& dofs) const
 	// {
 	// 	dofs_impl3(face, dofs, std::make_index_sequence<n_vars>{});
@@ -121,33 +117,25 @@ private:
 	template<std::size_t var_idx>
 	auto dofs_impl([[maybe_unused]] const Vertex_indices& vertices,
 				   [[maybe_unused]] const Halfedge_indices& halfedges,
-				   [[maybe_unused]] Face_index face, std::size_t var_dim) const
+				   [[maybe_unused]] Face_index face,
+									Var_index<var_idx> var_index, std::size_t var_dim) const
 		-> Var_total_dofs<var_idx>
 	{
 		using Element = typename Var_type<Var_list, var_idx>::Element;
 
 		Var_total_dofs<var_idx> dofs;
-		auto dof = dofs.data(); // TODO : replace with .begin()
-
-		const auto assign = [this, &dof, var_dim]<class Mesh_element_index>(
-								Mesh_element_index mesh_element_index, bool reversed = false)
-		{
-			const auto first = this->indices_.at(mesh_element_index, esf::Var_index<var_idx>{});
-			constexpr auto n = Element::dofs(internal::Element_tag_by_index<Mesh_element_index>{});
-			for (Index i = 0; i < n; ++i)
-				*dof++ = first + (reversed ? n - i - 1 : i) * var_dim;
-		};
+		auto dof = dofs.data();
 
 		if constexpr (Element::has_vertex_dofs)
 			for (const auto vertex : vertices)
-				assign(vertex);
+				get_dofs(dof, vertex, var_index, var_dim);
 
 		if constexpr (Element::has_edge_dofs)
 			for (const auto halfedge : halfedges)
-				assign(edge(halfedge), is_first_halfedge(halfedge));
+				get_dofs(dof, edge(halfedge), var_index, var_dim, !is_first_halfedge(halfedge));
 
 		if constexpr (Element::has_face_dofs)
-			assign(face);
+			get_dofs(dof, face, var_index, var_dim);
 
 		assert(dof == dofs.data() + dofs.size());
 		return dofs;

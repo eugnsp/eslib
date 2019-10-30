@@ -31,11 +31,11 @@ public:
 		: system_(system), solution_(solution)
 	{}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Solution values access */
 
 	template<class Quadr>
-	auto at_quadr(const typename System::Dof_mapper::template Var_dofs<var_idx, Cell_tag>& dofs) const
+	auto at_quadr(const typename System::Dof_mapper::template Var_total_dofs<var_idx, Cell_tag>& dofs) const
 	{
 		esl::Vector<Value, Quadr::size> vals_at_quadr{};
 
@@ -52,14 +52,14 @@ public:
 	template<class Quadr>
 	auto at_quadr(const typename Mesh::Cell_view& cell) const
 	{
-		const auto dofs = system_.dof_mapper().template dofs<var_idx>(cell);
+		const auto dofs = esf::dofs(system_, cell, var_index);
 		return at_quadr<Quadr>(dofs);
 	}
 
-	template<class Mesh_element_index,
-			 class Mesh_element_tag = internal::Element_tag_by_index<Mesh_element_index>>
+	template<class Mesh_element_index>
 	auto at(Mesh_element_index mesh_element_index) const
 	{
+		using Mesh_element_tag = internal::Element_tag_by_index<Mesh_element_index>;
 		static_assert(Element::has_dofs(Mesh_element_tag{}));
 		constexpr auto n_dofs = Element::dofs(Mesh_element_tag{});
 
@@ -93,10 +93,22 @@ public:
 		return values;
 	}
 
-	template<class T>
-	auto operator[](const T& ref) const
+	template<class Mesh_element_index>
+	auto operator[](Mesh_element_index mesh_element_index) const
 	{
-		return at(ref);
+		using Mesh_element_tag = internal::Element_tag_by_index<Mesh_element_index>;
+		if constexpr (Var::ct_dim == 1 && Element::dofs(Mesh_element_tag{}) == 1)
+			return at(mesh_element_index)(0, 0);
+		else
+			return at(mesh_element_index);
+	}
+
+	auto operator[](const typename Mesh::Cell_view& cell) const
+	{
+		if constexpr (Var::ct_dim == 1 && Element::total_cell_dofs == 1)
+			return at(cell)(0, 0);
+		else
+			return at(cell);
 	}
 
 	Value at(const Point2& pt, const typename Mesh::Cell_view& cell) const
@@ -133,7 +145,7 @@ protected:
 
 template<class Quadr, class System, std::size_t var, typename Value>
 auto at_quadr(const Solution_view<System, var, Value>& solution,
-			  const typename System::template Var_dofs<var>& dofs)
+			  const typename System::Dof_mapper::template Var_total_dofs<var>& dofs)
 {
 	return solution.template at_quadr<Quadr>(dofs);
 }

@@ -42,7 +42,7 @@ struct Fn_scalar_div_assign_trait
 template<class Expr, typename Scalar, template<class, typename, class, typename = void> class Trait>
 using Make_fn_scalar_type = typename Trait<Expr, Scalar, Mkl_expr_decay<Expr>>::Type;
 
-//////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // Returns a functor for the X = a operation
 template<class Expr1, class Expr2>

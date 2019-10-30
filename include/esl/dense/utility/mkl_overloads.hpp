@@ -10,7 +10,7 @@
 
 namespace esl::internal
 {
-///////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /** BLAS level 1 */
 
 #define ESL_MKL_AXPY(T)                                                                            \
@@ -21,7 +21,7 @@ ESL_MKL_AXPY(double)
 ESL_MKL_AXPY(std::complex<float>)
 ESL_MKL_AXPY(std::complex<double>)
 
-///////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 #define ESL_MKL_DOT(T)                                                                             \
 	T mkl_dot(std::size_t n, const T* x, std::size_t inc_x, const T* y, std::size_t inc_y);
@@ -29,7 +29,7 @@ ESL_MKL_AXPY(std::complex<double>)
 ESL_MKL_DOT(float)
 ESL_MKL_DOT(double)
 
-///////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 #define ESL_MKL_NRM2(T) Remove_complex<T> mkl_nrm2(std::size_t n, const T* data, std::size_t inc);
 
@@ -38,7 +38,7 @@ ESL_MKL_NRM2(double)
 ESL_MKL_NRM2(std::complex<float>)
 ESL_MKL_NRM2(std::complex<double>)
 
-//////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /** BLAS levels 2 and 3 */
 
 #define ESL_MKL_GEMV(T)                                                                            \
@@ -62,7 +62,7 @@ ESL_MKL_GEMV(double)
 ESL_MKL_GEMV(std::complex<float>)
 ESL_MKL_GEMV(std::complex<double>)
 
-//////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 #define ESL_MKL_GEMM(T)                                                                            \
 	void mkl_gemm(CBLAS_LAYOUT, CBLAS_TRANSPOSE transp_a, CBLAS_TRANSPOSE transp_b, std::size_t m, \
@@ -86,7 +86,7 @@ ESL_MKL_GEMM(double)
 ESL_MKL_GEMM(std::complex<float>)
 ESL_MKL_GEMM(std::complex<double>)
 
-///////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /** BLAS-like extensions */
 
 #define ESL_MKL_OMATCOPY(T)                                                                        \
@@ -108,7 +108,7 @@ ESL_MKL_OMATCOPY(double)
 ESL_MKL_OMATCOPY(std::complex<float>)
 ESL_MKL_OMATCOPY(std::complex<double>)
 
-///////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /** LAPACK */
 
 #define ESL_MKL_LAPACK_SYTRD(T)                                                                    \
@@ -127,7 +127,7 @@ ESL_MKL_OMATCOPY(std::complex<double>)
 ESL_MKL_LAPACK_SYTRD(float)
 ESL_MKL_LAPACK_SYTRD(double)
 
-///////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 #define ESL_MKL_LAPACK_STERF(T) void mkl_lapack_sterf(std::size_t n, T* data_d, T* data_e);
 

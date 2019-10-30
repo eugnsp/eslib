@@ -6,7 +6,7 @@
 
 namespace esf
 {
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /** Mesh-related forward declarations */
 
 template<class Space_dim>
@@ -31,7 +31,7 @@ class Circulator_halfedge_edge;
 template<class Element_tag, class Mesh>
 class Element_view;
 
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 template<std::size_t, class Space_dim>
 class Quadr;
@@ -44,12 +44,12 @@ struct Var_list;
 
 namespace internal
 {
-template<class Space_dim, class Var_list>
-class Dof_mapper;
+template<class Var_list, class Space_dim>
+class Dof_mapper_impl;
 } // namespace internal
 
 template<class Var_list>
-using Dof_mapper = internal::Dof_mapper<typename Var_list::Space_dim, Var_list>;
+using Dof_mapper = internal::Dof_mapper_impl<Var_list, typename Var_list::Space_dim>;
 
 template<class Var_list,
 		 template<class> class Dof_mapper = Dof_mapper>

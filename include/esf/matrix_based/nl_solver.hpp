@@ -80,7 +80,6 @@ protected:
 		return esl::norm2(rhs_);
 	}
 
-	virtual void set_bnd_values() = 0;
 	virtual void assemble() = 0;
 
 	virtual void before_solve()
@@ -104,6 +103,8 @@ protected:
 
 	using Base::linear_solver_;
 	using Base::system_;
+
+	using Base::set_bnd_values;
 
 private:
 	esl::Vector_xd step_;

@@ -1,7 +1,7 @@
 #pragma once
+#include <esl/dense/concepts.hpp>
 #include <esl/dense/forward.hpp>
 #include <esl/dense/type_traits.hpp>
-#include <esl/dense/utility/ct_extent.hpp>
 
 #include <esu/numeric/det.hpp>
 
@@ -9,26 +9,30 @@
 
 namespace esl
 {
-// clang-format off
-template<class Expr,
-	std::enable_if_t<internal::is_extent_static_and_eq(ct_rows_value<Expr>, 2) &&
-					 internal::is_extent_static_and_eq(ct_cols_value<Expr>, 2), int> = 0>
-auto det(const Dense<Expr>& expr)
+#ifdef ESL_CONCEPTS
+template<class Expr>
+requires concepts::dense<Expr> && ct_rows_value<Expr> == 2 && ct_cols_value<Expr> == 2
+#else
+template<class Expr, std::enable_if_t<(is_dense<Expr> &&
+		     ct_rows_value<Expr> == 2 && ct_cols_value<Expr> == 2), int> = 0>
+#endif
+auto det(const Expr& expr)
 {
-	return esu::det(
-		expr(0, 0), expr(1, 0),
-		expr(0, 1), expr(1, 1));
+	return esu::det(expr(0, 0), expr(1, 0),
+				    expr(0, 1), expr(1, 1));
 }
 
-template<class Expr,
-	std::enable_if_t<internal::is_extent_static_and_eq(ct_rows_value<Expr>, 3) &&
-					 internal::is_extent_static_and_eq(ct_cols_value<Expr>, 3), int> = 0>
-auto det(const Dense<Expr>& expr)
+#ifdef ESL_CONCEPTS
+template<class Expr>
+requires concepts::dense<Expr> && ct_rows_value<Expr> == 3 && ct_cols_value<Expr> == 3
+#else
+template<class Expr, std::enable_if_t<(is_dense<Expr> &&
+		     ct_rows_value<Expr> == 3 && ct_cols_value<Expr> == 3), int> = 0>
+#endif
+auto det(const Expr& expr)
 {
-	return esu::det(
-		expr(0, 0), expr(1, 0), expr(2, 0),
-		expr(0, 1), expr(1, 1), expr(2, 1),
-		expr(0, 2), expr(1, 2), expr(2, 2));
+	return esu::det(expr(0, 0), expr(1, 0), expr(2, 0),
+					expr(0, 1), expr(1, 1), expr(2, 1),
+					expr(0, 2), expr(1, 2), expr(2, 2));
 }
-// clang-format on
 } // namespace esl

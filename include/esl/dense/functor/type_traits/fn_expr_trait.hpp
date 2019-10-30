@@ -30,7 +30,7 @@ template<class Expr1, class Expr2,
 using Make_fn_expr_type =
 	typename Trait<Expr1, Expr2, Mkl_expr_decay<Expr1>, Mkl_expr_decay<Expr2>>::Type;
 
-//////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // Returns a functor for the X = Y operation
 template<class Expr1, class Expr2>

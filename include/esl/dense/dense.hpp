@@ -1,8 +1,8 @@
 #pragma once
+#include <esl/dense/concepts.hpp>
 #include <esl/dense/expr.hpp>
 #include <esl/dense/expression.hpp>
 #include <esl/dense/forward.hpp>
-//#include <esl/dense/functor.hpp>
 #include <esl/dense/expr/add.hpp>
 #include <esl/dense/functor/type_traits.hpp>
 #include <esl/dense/tags.hpp>
@@ -25,13 +25,13 @@ private:
 	using Base = Expression<Expr>;
 
 public:
-	using Value    = Value_type<Expr>;
-	using Layout   = Layout_tag<Expr>;
+	using Value  = Value_type<Expr>;
+	using Layout = Layout_tag<Expr>;
 
 public:
 	using Base::self;
 
-	//////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Extents */
 
 	// Returns the number of rows
@@ -40,7 +40,7 @@ public:
 	// Returns the number of columns
 	using Base::cols;
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Operators */
 
 	template<class Scalar, typename = std::enable_if_t<std::is_convertible_v<Scalar, Value>>>
@@ -130,7 +130,7 @@ public:
 		internal::Fn_expr_assign_type<Expr, Expr2>{}(self(), expr.self());
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Element access */
 
 	// Returns the matrix element (row, col)
@@ -147,15 +147,27 @@ public:
 
 	// Returns the matrix element (index, 0)
 	decltype(auto) operator[](const std::size_t index)
+	#ifdef ESL_CONCEPTS
+	requires internal::is_vector<Expr>
+	#endif
 	{
-		static_assert(internal::is_vector<Expr>, "Expression should be a vector");
+		#ifndef ESL_CONCEPTS
+		static_assert(internal::is_vector<Expr>);
+		#endif
+
 		return self()(index, 0);
 	}
 
 	// Returns the matrix element (index, 0)
 	decltype(auto) operator[](const std::size_t index) const
+	#ifdef ESL_CONCEPTS
+	requires internal::is_vector<Expr>
+	#endif
 	{
-		static_assert(internal::is_vector<Expr>, "Expression should be a vector");
+		#ifndef ESL_CONCEPTS
+		static_assert(internal::is_vector<Expr>);
+		#endif
+
 		return self()(index, 0);
 	}
 
@@ -202,7 +214,7 @@ public:
 	// 		return !(*this == other);
 	// 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Block views */
 
 	template<std::size_t start_row, std::size_t start_col, std::size_t rows, std::size_t cols>
@@ -227,7 +239,7 @@ public:
 		return view<start_row, start_col, rows, cols>();
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 
 	auto view(const std::size_t start_row, const std::size_t start_col,
 			  const std::size_t rows, const std::size_t cols)
@@ -249,7 +261,7 @@ public:
 		return view(start_row, start_col, rows, cols);
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Row views */
 
 	template<std::size_t index>
@@ -274,7 +286,7 @@ public:
 		return row_view<index>();
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 
 	auto row_view(std::size_t index)
 	{
@@ -295,7 +307,7 @@ public:
 		return row_view(index);
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 
 	template<std::size_t start_row, std::size_t rows>
 	auto rows_view()
@@ -319,7 +331,7 @@ public:
 		return rows_view<start_row, rows>();
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 
 	auto rows_view(std::size_t start_row, std::size_t rows)
 	{
@@ -340,7 +352,7 @@ public:
 		return rows_view(start_row, rows);
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Column views */
 
 	template<std::size_t index>
@@ -365,7 +377,7 @@ public:
 		return col_view<index>();
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 
 	auto col_view(std::size_t index)
 	{
@@ -386,7 +398,7 @@ public:
 		return col_view(index);
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 
 	template<std::size_t start_col, std::size_t cols>
 	auto cols_view()
@@ -410,7 +422,7 @@ public:
 		return cols_view<start_col, cols>();
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 
 	auto cols_view(std::size_t start_col, std::size_t cols)
 	{
@@ -431,7 +443,7 @@ public:
 		return cols_view(start_col, cols);
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Transposed view */
 
 	auto tr_view()
@@ -449,7 +461,7 @@ public:
 		return tr_view();
 	}
 
-	///////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Diagonal view */
 
 	auto diag_view()

@@ -53,7 +53,7 @@ public:
 		return esf::internal::sparsity_pattern<Symmetry_tag>(system);
 	}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Capacity */
 
 	esf::Index n_dofs() const
@@ -71,8 +71,26 @@ public:
 		return indices_.memory_size();
 	}
 
+protected:
+	template<class Mesh_element_index, std::size_t var_idx, class Output_iterator>
+	void get_dofs(Output_iterator& dof, Mesh_element_index mesh_element_index,
+				  esf::Var_index<var_idx> var_index, std::size_t var_dim,
+				  bool reverse = false) const
+	{
+		using Element = typename Var_type<Var_list, var_idx>::Element;
+
+		const auto first_dof = indices_.at(mesh_element_index, var_index);
+		constexpr auto n = Element::dofs(internal::Element_tag_by_index<Mesh_element_index>{});
+		if (!reverse)
+			for (Index i = 0; i < n; ++i)
+				*dof++ = first_dof + static_cast<Index>(i * var_dim);
+		else
+			for (Index i = n; i > 0; --i)
+				*dof++ = first_dof + static_cast<Index>((i - 1) * var_dim);
+	}
+
 private:
-	////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////
 	/** Initialization */
 
 	template<class System>
@@ -144,9 +162,8 @@ private:
 		});
 	}
 
-protected:
+private:
 	Mesh_var_map<Mesh, Var_list, Dof_index> indices_;
-
 	Index n_dofs_ = 0;
 	Index n_free_dofs_ = 0;
 };

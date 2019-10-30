@@ -1,5 +1,5 @@
 #pragma once
-#include <esu/numeric/const.hpp>
+#include <esc/math.hpp>
 
 #include <cmath>
 
@@ -8,7 +8,7 @@ namespace esu
 // Computes ln(1 + exp(x))
 double ln_one_p_exp(double);
 
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /** Fermi-Dirac statistics */
 
 // Returns the Fermi function, F(x) = 1 / (1 + exp(x))
@@ -44,7 +44,7 @@ double inverse_fd_int_half(double);
 // Returns the inverse Fermi-Dirac integral of order 1/2 of exponential
 double inverseFermiDiracHalfExp(double);
 
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /** Bernoulli function B(x) = x / (e^x - 1) */
 
 // Returns the Bernoulli function
@@ -53,7 +53,7 @@ double bernoulli(double);
 // Returns the derivative of the Bernoulli function
 double bernoulli_derivative(double);
 
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // Returns the function f(x) = (e^x - 1) / x;
 double exp_m1_over_x(double);

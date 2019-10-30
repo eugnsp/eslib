@@ -20,8 +20,8 @@ public:
 	// Constructs a triangular tensor mesh from x- and y-gridlines
 	// bisecting each rectangle using the given predicate
 	template<class Bisection_strategy>
-	Tri_tensor_mesh(Grid grid_x, Grid grid_y, Bisection_strategy strategy) :
-		grid_x_(std::move(grid_x)), grid_y_(std::move(grid_y))
+	Tri_tensor_mesh(Grid grid_x, Grid grid_y, Bisection_strategy strategy)
+		: grid_x_(std::move(grid_x)), grid_y_(std::move(grid_y))
 	{
 		assert(std::is_sorted(grid_x_.begin(), grid_x_.end()));
 		assert(std::is_sorted(grid_y_.begin(), grid_y_.end()));
@@ -82,16 +82,16 @@ private:
 		std::vector<Vertex_index> prev(nx), next(nx);
 
 		for (Index i = 0; i < nx; ++i)
-			prev[i] = add_vertex({grid_x_[i].x(), grid_y_[0].x()});
+			prev[i] = add_vertex({grid_x_[i], grid_y_[0]});
 
 		for (Index j = 1; j < ny; ++j)
 		{
 			for (Index i = 0; i < nx; ++i)
-				next[i] = add_vertex({grid_x_[i].x(), grid_y_[j].x()});
+				next[i] = add_vertex({grid_x_[i], grid_y_[j]});
 
 			for (Index i = 0; i < nx - 1; ++i)
 			{
-				const Rect rect({grid_x_[i].x(), grid_y_[j - 1].x()}, {grid_x_[i + 1].x(), grid_y_[j].x()});
+				const Rect rect({grid_x_[i], grid_y_[j - 1]}, {grid_x_[i + 1], grid_y_[j]});
 				if (bisection(rect))
 				{												   //     *---*  next
 					add_cell({prev[i], prev[i + 1], next[i + 1]}); //     | / |

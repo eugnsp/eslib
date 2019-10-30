@@ -17,19 +17,22 @@ namespace esf
 {
 // Returns a local load vector
 template<class Element, class Quadr = esf::Quadr<Element::order, typename Element::Space_dim>,
-	class Fn>
+	     class Fn>
 auto load_vector(Fn fn, double scale)
 {
 	constexpr auto n_dofs = Element::total_cell_dofs;
 
 	return esl::make_vector<n_dofs>([&fn, scale](std::size_t i)
-	{
-		return scale * Quadr::sum([i, &fn](std::size_t iq)
 		{
-			constexpr auto basis = Element_quadr<Element, Quadr>::basis();
-			return fn(Quadr_point_index<Quadr>{iq}) * basis(iq, i);
+			return scale * Quadr::sum([i, &fn](std::size_t iq)
+				{
+					constexpr auto basis = Element_quadr<Element, Quadr>::basis();
+					if constexpr (std::is_invocable_v<Fn, Quadr_point_index<Quadr>>)
+						return fn(Quadr_point_index<Quadr>{iq}) * basis(iq, i);
+					else
+						return fn(iq) * basis(iq, i);
+				});
 		});
-	});
 }
 
 // Returns a local load vector
@@ -39,12 +42,12 @@ auto load_vector(double scale)
 	constexpr auto n_dofs = Element::total_cell_dofs;
 
 	return esl::make_vector<n_dofs>([scale](std::size_t i)
-	{
-		return scale * Quadr::sum([i](std::size_t q)
 		{
-			constexpr auto basis = Element_quadr<Element, Quadr>::basis();
-			return basis(q, i);
+			return scale * Quadr::sum([i](std::size_t iq)
+				{
+					constexpr auto basis = Element_quadr<Element, Quadr>::basis();
+					return basis(iq, i);
+				});
 		});
-	});
 }
 } // namespace esf

@@ -1,6 +1,5 @@
 #pragma once
 #include <esu/numeric/abs.hpp>
-#include <esu/numeric/const.hpp>
 #include <esu/numeric/det.hpp>
 #include <esu/numeric/even_odd.hpp>
 #include <esu/numeric/find_root_newton.hpp>

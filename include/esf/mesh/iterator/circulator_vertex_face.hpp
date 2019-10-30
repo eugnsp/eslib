@@ -9,7 +9,7 @@
 namespace esf
 {
 template<class Element_tag, class Circ_tag>
-class Circulator_vertex_face : public internal::Iterator_base<Element_tag, Mesh<Dim2>>
+class Circulator_vertex_face final : public internal::Iterator_base<Element_tag, Mesh<Dim2>>
 {
 private:
 	static_assert(std::is_same_v<Element_tag, Vertex_tag> || std::is_same_v<Element_tag, Face_tag>);
@@ -24,6 +24,9 @@ public:
 		set_view_index();
 	}
 
+	Circulator_vertex_face(const Circulator_vertex_face&) = default;
+
+	// TODO : need it?
 	Circulator_vertex_face& operator=(const Circulator_vertex_face& other)
 	{
 		Base::operator=(other);

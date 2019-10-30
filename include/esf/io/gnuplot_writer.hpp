@@ -27,7 +27,7 @@ public:
 
 		for (auto& face : solution_view.mesh().faces())
 		{
-			const auto values = solution_view[face];
+			const auto values = solution_view.at(face);
 			const auto vertices = face.vertices();
 			for (const std::size_t i : {0, 1, 2, 2})
 			{

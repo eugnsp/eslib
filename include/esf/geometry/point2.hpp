@@ -1,6 +1,7 @@
 #pragma once
 #include <esf/geometry/compare.hpp>
 #include <esf/geometry/function/equals.hpp>
+#include <esf/geometry/point1.hpp>
 #include <esf/tags.hpp>
 
 #include <esl/dense.hpp>
@@ -14,7 +15,7 @@
 
 namespace esf
 {
-class Point2 : public esl::Vector_2d
+class Point2 final : public esl::Vector_2d
 {
 public:
 	using Geometry_tag = Point2_tag;
@@ -28,6 +29,10 @@ public:
 	template<typename X, typename Y>
 	Point2(X x, Y y)
 		: Base{static_cast<double>(x), static_cast<double>(y)}
+	{}
+
+	Point2(Point1 x, Point1 y)
+		: Base{x.x(), y.x()}
 	{}
 
 	double& x()

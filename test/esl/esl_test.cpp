@@ -37,12 +37,12 @@ int main()
 
 	try
 	{
-		////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////
 		/** Type traits */
 
 		run<Type_trait_is_dense, int>();
 
-		////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////
 		/** Matrix class constructors */
 
 		run<Matrix_default_construction, int>();
@@ -62,7 +62,7 @@ int main()
 		run<Matrix_move_construction, Non_trivial>();
 		run<Matrix_default_construction, Non_trivial>();
 
-		// ////////////////////////////////////////////////////////////////////////////////////////////////
+		// ////////////////////////////////////////////////////////////////////////////////
 		/** Views */
 
 		// run<Block_view_lvalue_copy_constructor, int>();
@@ -70,7 +70,7 @@ int main()
 		// run<Block_view_lvalue_data, int>();
 		// run<Block_view_lvalue_const, int>();
 
-		// ////////////////////////////////////////////////////////////////////////////////////////////////
+		// ////////////////////////////////////////////////////////////////////////////////
 		// //> Binary expressions
 
 		// run<Binary_expr_constructor, int>();
@@ -139,15 +139,11 @@ int main()
 		// print(m5);
 		// std::cout << std::endl;
 
-		auto vec1 = esl::make_vector(2, [](auto i) { return 0. + i; });
-		auto vec2 = esl::make_vector(5, [](auto i) { return 1. + i; });
+		auto vec1 = esl::make_matrix<2, 2>([](auto i, auto j) { return 0. + i + j; });
+		auto vec2 = esl::make_matrix<3, 3>([](auto i, auto j) { return 1. + i + j; });
 
-		std::cout << printer_i(vec1) << std::endl;
-		std::cout << printer_i(vec2) << std::endl;
-
-		vec1 += vec2.rows_view(0, 2);
-
-		std::cout << printer_i(vec1) << std::endl;
+		det(vec1);
+		//invert(vec2);
 	}
 	catch (const std::exception& ex)
 	{
